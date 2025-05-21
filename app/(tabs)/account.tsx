@@ -1,5 +1,3 @@
-import QuoteBar from "@/components/elements/QuoteBar";
-import WakeUpCard from "@/components/elements/wakeUpcard";
 import { ThemeText } from "@/components/ui/TextElements";
 import { globalStyles } from "@/styles/global.css";
 import { Link } from "expo-router";
@@ -8,14 +6,12 @@ import { Pressable, Text, View } from "react-native";
 export default function Home() {
   return (
     <View style={globalStyles.safearea}>
-      <QuoteBar />
       <Text style={{ color: "white" }}>Hello wolrd</Text>
       <Link href={"/(auth)"}>
         <Pressable style={{ height: 200, width: 200 }}>
           <ThemeText>Hello</ThemeText>
         </Pressable>
       </Link>
-      <WakeUpCard/>
     </View>
   );
 }

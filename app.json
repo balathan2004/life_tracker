@@ -2,6 +2,7 @@
   "expo": {
     "name": "life_tracker",
     "slug": "life_tracker",
+    "owner":"lightappdev",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +17,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true
+      "package": "com.lightappdev.life_tracker",
+      "edgeToEdgeEnabled": true,
+      "plugins": ["@react-native-google-signin/google-signin","firebase/auth/react-native"],
+       "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -33,7 +37,8 @@
           "resizeMode": "contain",
           "backgroundColor": "#ffffff"
         }
-      ]
+      ],
+      "expo-web-browser"
     ],
     "experiments": {
       "typedRoutes": true

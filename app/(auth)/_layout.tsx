@@ -1,25 +1,23 @@
 import Entypo from "@expo/vector-icons/Entypo";
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import { Tabs } from "expo-router";
 
-export default function Layout() {
+export default function AuthLayout() {
   return (
     <Tabs>
       <Tabs.Screen
         name="index"
         options={{
-          title: "Home",
+          title: "Login",
           headerShown: false,
           tabBarIcon: () => <Entypo name="home" size={24} color="white" />,
         }}
       ></Tabs.Screen>
-
-<Tabs.Screen
-        name="account"
+      <Tabs.Screen
+        name="register"
         options={{
-          title: "accout",
+          title: "Register",
           headerShown: false,
-          tabBarIcon: () => <MaterialCommunityIcons name="account" size={24} color="white" /> ,
+          tabBarIcon: () => <Entypo name="home" size={24} color="white" />,
         }}
       ></Tabs.Screen>
     </Tabs>
