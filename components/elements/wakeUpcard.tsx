@@ -1,46 +1,57 @@
 import { useState } from "react";
-import { Button, View } from "react-native";
-import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import { ThemeText } from "../ui/TextElements";
+import { View } from "react-native";
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+import { useDailyLogContext } from "../context/dailyLogContext";
+import { CenterText } from "../ui/TextElements";
+import { PrimaryButton, WhiteButton } from "../ui/buttons";
 export default function WakeUpCard() {
-  const [time, setTime] = useState(new Date()); // default to current date & time
+  const [time, setTime] = useState<Date | null>(null); // default to current date & time
   const [showPicker, setShowPicker] = useState(false);
+  const { setDailyLog } = useDailyLogContext();
 
   const onChange = (seletedTime: any) => {
-    console.log( seletedTime);
     setTime(seletedTime);
     setShowPicker(false);
   };
 
+  const handleCurrentTime = () => {
+    setTime(new Date());
+  };
+
+  const handleSubmit = () => {
+    if (time) {
+      setDailyLog((prev) => ({ ...prev, wakeUpTime: time.getTime() }));
+    }
+  };
+
   return (
     <View>
-      <ThemeText>Hi Login</ThemeText>
-      <Button title="login now"></Button>
+      <CenterText>You Didnt add wake up Time</CenterText>
+
       <View>
-        <ThemeText>add previous time</ThemeText>
+        <CenterText>
+          Time is {time ? time.toLocaleString() : "not selected"}
+        </CenterText>
 
-        <ThemeText>time is {time.getTime()}</ThemeText>
+        <WhiteButton onPress={handleCurrentTime}>Use Current Time</WhiteButton>
 
-        <Button
-          title="Set Wake-up Time"
-          onPress={() => setShowPicker((prev) => !prev)}
-        />
+        <WhiteButton onPress={() => setShowPicker((prev) => !prev)}>
+          Set Wake-up Time
+        </WhiteButton>
 
         {showPicker && (
-         <DateTimePickerModal
-         isVisible={showPicker}
-         mode="datetime"
-         onConfirm={onChange}
-         onCancel={()=>{}}
-         is24Hour={false} // change to true if needed
-       />
+          <DateTimePickerModal
+            isVisible={showPicker}
+            mode="datetime"
+            onConfirm={onChange}
+            onCancel={() => {}}
+            is24Hour={false} // change to true if needed
+          />
         )}
+        <PrimaryButton disabled={!time} onPress={handleSubmit}>
+          Submit
+        </PrimaryButton>
       </View>
     </View>
   );
 }
-
-
-
-
-

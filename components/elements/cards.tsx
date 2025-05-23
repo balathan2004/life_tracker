@@ -1,9 +1,9 @@
 import { styles } from "@/styles/auth.css";
 import {
-    NativeSyntheticEvent,
-    TextInput,
-    TextInputChangeEventData,
-    View,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
 } from "react-native";
 import { useDailyLogContext } from "../context/dailyLogContext";
 import { ThemeText } from "../ui/TextElements";
@@ -37,7 +37,7 @@ export function TextInputCard() {
         ></TextInput>
       </View>
       <View>
-        <ThemeText>something productive</ThemeText>
+        <ThemeText>Something Productive</ThemeText>
         <TextInput
           style={styles.input}
           multiline
@@ -45,7 +45,7 @@ export function TextInputCard() {
         ></TextInput>
       </View>
       <View>
-        <ThemeText>travel</ThemeText>
+        <ThemeText>Travel</ThemeText>
         <TextInput
           style={styles.input}
           onChange={(e) => handleInput(e, "travel")}

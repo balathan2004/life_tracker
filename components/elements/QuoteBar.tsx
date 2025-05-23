@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { CenterText, ThemeText } from "../ui/TextElements";
+import { CenterText } from "../ui/TextElements";
 import { fetchData } from "../utils/fetching";
 export default function QuoteBar() {
   const [quote, setQuote] = useState("");
@@ -19,8 +19,7 @@ export default function QuoteBar() {
 
   return (
     <View>
-      <CenterText>{"welcome back light"}</CenterText>
-      <ThemeText>{quote}</ThemeText>
+      <CenterText>{quote}</CenterText>
     </View>
   );
 }
