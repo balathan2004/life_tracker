@@ -1,5 +1,12 @@
 import React, { ReactNode, useContext, useState } from "react";
 
+
+
+interface Props {
+  children: ReactNode;
+}
+
+
 interface ReplyContextInterface {
   reply: string;
   setReply: React.Dispatch<React.SetStateAction<string>>;
@@ -10,7 +17,7 @@ const ReplyContext = React.createContext<ReplyContextInterface>({
   setReply: () => {},
 });
 
-const ReplyHolder = (children: ReactNode) => {
+const ReplyHolder = ({children}: Props) => {
   const [reply, setReply] = useState("");
 
   return (

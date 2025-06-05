@@ -1,6 +1,13 @@
 import React, { ReactNode, useContext, useState } from "react";
 import { UserDataInterface } from "../interfaces";
 
+
+
+interface Props {
+  children: ReactNode;
+}
+
+
 interface UserContextInterface {
   userCred: null | UserDataInterface;
   setUserCred: React.Dispatch<React.SetStateAction<UserDataInterface | null>>;
@@ -11,7 +18,7 @@ const UserContext = React.createContext<UserContextInterface>({
   setUserCred: () => {},
 });
 
-const UserHolder = (children: ReactNode) => {
+const UserHolder = ({children}: Props) => {
   const [userCred, setUserCred] = useState<null | UserDataInterface>(null);
 
   return (

@@ -1,19 +1,17 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-interface Props {
-  key: string;
+type GetProps = "userCred" | "dailyLog";
+
+interface StoreProps {
+  key: GetProps;
   value: object;
 }
 
-interface GetProps {
-  key: string;
-}
-
-export const storeData = async ({ key, value }: Props) => {
+export const storeData = async ({ key, value }: StoreProps) => {
   const json = await AsyncStorage.setItem(key, JSON.stringify(value));
 };
 
-export const getData = async ({ key }: GetProps) => {
+export const getData = async (key: GetProps) => {
   const json = await AsyncStorage.getItem(key);
 
   if (!json) return;

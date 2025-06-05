@@ -19,7 +19,9 @@ export default function QuoteBar() {
 
   return (
     <View>
-      <CenterText>{quote}</CenterText>
+      <CenterText style={{ fontSize: 16, marginVertical: 10 }}>
+        {quote}
+      </CenterText>
     </View>
   );
 }

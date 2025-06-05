@@ -1,10 +1,10 @@
 import { useTheme } from "@react-navigation/native";
 import { ReactNode } from "react";
-import { Text } from "react-native";
+import { StyleProp, Text, TextStyle } from "react-native";
 
 interface Props {
   children: ReactNode;
-  style?: any;
+  style?: StyleProp<TextStyle>;
 }
 
 export function ThemeText({ children, style }: Props) {

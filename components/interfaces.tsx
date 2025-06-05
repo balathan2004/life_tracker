@@ -1,3 +1,5 @@
+import moment from "moment";
+
 export interface ResponseConfig {
   status: 200 | 300;
   message: string;
@@ -13,15 +15,16 @@ export interface AuthResponseConfig extends ResponseConfig {
 
 export interface UserDataInterface {
   display_name: string;
-  profile_url: string;
   uid: string;
   created_at: number;
 }
 
+export type foods = "breakfast" | "lunch" | "dinner" | "snacks";
+
 export interface dailyLogInterface {
   date: string; // e.g. "2025-05-22"
   wakeUpTime: number;
-  bedTime: number;
+  sleepTime: number;
 
   meals: {
     breakfast: string;
@@ -36,23 +39,25 @@ export interface dailyLogInterface {
     weight: number;
   };
 
-  screenTimeMinutes?: number;
-  somethingProductive?: string;
+  screenTimeMinutes: number;
+  somethingProductive: string;
   isBathTaken: boolean;
-  travel?: string;
-  notes?: string;
+  travel: string;
+  notes: string;
+  mood?: "great" | "good" | "okay" | "low" | "bad";
+
 }
 
 export const initDailyLog = () => {
   const data: dailyLogInterface = {
-    date: "",
-    wakeUpTime: new Date().getTime(),
-    bedTime: 0,
+    date: moment(new Date().getTime()).format("DD-MM-yyyy"),
+    wakeUpTime: 0,
+    sleepTime: 0,
     meals: {
       breakfast: "",
       lunch: "",
-      dinner: "",
       snacks: "",
+      dinner: "",
     },
     workout: "",
     bodyMeasurements: {
@@ -64,6 +69,7 @@ export const initDailyLog = () => {
     isBathTaken: false,
     travel: "",
     notes: "",
+    mood:"okay"
   };
   return data;
 };

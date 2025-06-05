@@ -1,9 +1,15 @@
+import { useLoadingContext } from "@/components/context/loadingContext";
+import { useUserContext } from "@/components/context/userContext";
+import { AuthResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
+import { storeData } from "@/components/utils/data_store";
+import { SendData } from "@/components/utils/fetching";
+import { domain_url } from "@/env";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useCallback, useState } from "react";
 import {
   NativeSyntheticEvent,
@@ -14,6 +20,12 @@ import {
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
+
+  const { setUserCred } = useUserContext();
+
+  const { loading, setLoading } = useLoadingContext();
+
+  const [message, setMessage] = useState("");
 
   const { colors } = useTheme();
 
@@ -26,7 +38,24 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
-    console.log(userData);
+    if (!userData.email || !userData.password) {
+      return;
+    }
+    setLoading(true);
+
+    const res = (await SendData({
+      route: `${domain_url}/auth/login`,
+      data: { ...userData },
+    })) as AuthResponseConfig;
+
+    console.log(res);
+    setMessage(res.message)
+    if (res && res.status == 200 && res.credentials) {
+      await storeData({ key: "userCred", value: res.credentials });
+      setUserCred(res.credentials);
+      router.push('/(tabs)')
+    }
+  
   };
 
   useFocusEffect(
@@ -39,6 +68,8 @@ export default function Login() {
     <View style={globalStyles.safearea}>
       <View style={styles.container}>
         <CenterText style={{ fontSize: 20 }}>Login</CenterText>
+        <CenterText style={{ fontSize: 18 }}>{message}</CenterText>
+
         <View>
           <ThemeText style={{ marginVertical: 5 }}>Email</ThemeText>
           <TextInput
@@ -59,7 +90,9 @@ export default function Login() {
         <CenterText style={{ marginVertical: 10 }}>
           <Link href={"/forget_password"}> Forget Password</Link>
         </CenterText>
-        <PrimaryButton onPress={handleSubmit}>{"Login"}</PrimaryButton>
+        <PrimaryButton disabled={loading} onPress={handleSubmit}>
+          {"Login"}
+        </PrimaryButton>
       </View>
     </View>
   );

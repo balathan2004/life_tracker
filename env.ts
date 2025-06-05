@@ -1,0 +1,3 @@
+//export const domain_url="http://localhost:3000"
+
+export const domain_url="https://life-tracker-server-umber.vercel.app"

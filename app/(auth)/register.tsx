@@ -1,18 +1,29 @@
+import { useLoadingContext } from "@/components/context/loadingContext";
+import { useUserContext } from "@/components/context/userContext";
+import { AuthResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
+import { storeData } from "@/components/utils/data_store";
+import { SendData } from "@/components/utils/fetching";
+import { domain_url } from "@/env";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect } from "@react-navigation/native";
+import { router } from "expo-router";
 import { useCallback, useState } from "react";
 import {
-    NativeSyntheticEvent,
-    TextInput,
-    TextInputChangeEventData,
-    View,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
 } from "react-native";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
+
+  const { loading, setLoading } = useLoadingContext();
+  const { setUserCred } = useUserContext();
+  const [message, setMessage] = useState("hello");
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -23,7 +34,24 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
+    if (!userData.email || !userData.password) {
+      return;
+    }
+    setLoading(true);
     console.log(userData);
+    const res = (await SendData({
+      route: `${domain_url}/auth/register`,
+      data: { ...userData },
+    })) as AuthResponseConfig;
+
+    console.log(res);
+    setMessage(res.message);
+    if (res && res.status == 200 && res.credentials) {
+      await storeData({ key: "userCred", value: res.credentials });
+      setUserCred(res.credentials);
+      router.push("/(tabs)");
+    }
+
   };
 
   useFocusEffect(
@@ -54,7 +82,9 @@ export default function Login() {
           ></TextInput>
         </View>
 
-        <PrimaryButton onPress={handleSubmit}>{"Register"}</PrimaryButton>
+        <PrimaryButton disabled={loading} onPress={handleSubmit}>
+          {"Register"}
+        </PrimaryButton>
       </View>
     </View>
   );
