@@ -45,7 +45,7 @@ export default function MoodCard() {
           }}
         >
           <List.Accordion
-            title={`Hows Your Mood ${dailyLog.workout}`}
+            title={`Hows Your Mood - ${dailyLog.mood}`}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >

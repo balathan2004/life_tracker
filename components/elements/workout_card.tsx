@@ -39,7 +39,7 @@ export default function WorkoutCard() {
         >
          
           <List.Accordion
-            title={`Workout ${dailyLog.workout}`}
+            title={`Workout - ${dailyLog.workout}`}
             expanded={expanded}
 
             onPress={() => setExpanded(!expanded)}
