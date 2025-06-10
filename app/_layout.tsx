@@ -2,6 +2,7 @@ import DailyLogHolder from "@/components/context/dailyLogContext";
 import LoadingHolder from "@/components/context/loadingContext";
 import ReplyHolder from "@/components/context/replyContext";
 import UserHolder from "@/components/context/userContext";
+import { SnackbarReply } from "@/components/elements/snackBarPopup";
 import { darkTheme } from "@/components/ui/themes";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
@@ -26,7 +27,9 @@ export default function RootLayout() {
         <LoadingHolder>
           <ReplyHolder>
             <UserHolder>
+               <SnackbarReply />
               <Stack>
+               
                 <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
                 <Stack.Screen name="(auth)" options={{ headerShown: false }} />
 

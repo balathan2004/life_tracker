@@ -9,7 +9,7 @@ import { List } from "react-native-paper";
 import { WhiteButton } from "../ui/buttons";
 
 interface TimeCardProps {
-  label: string;
+  label: "Wake Up time"|"Sleep Time";
   fieldKey: "wakeUpTime" | "sleepTime"; // extend as needed
 }
 
@@ -42,37 +42,40 @@ export default function TimeCard({ label, fieldKey }: TimeCardProps) {
   }, [dailyLog]);
 
   return (
-    <View>
+    <View style={globalStyles.wakeupCardAccordion}>
       {!dailyLog[fieldKey] ? (
-        <View style={globalStyles.wakeupCard}>
-          <CenterText>You Didn't add {label} Time</CenterText>
+        <List.Section>
+          <List.Accordion
+            title={` ${label}  is  not added `}
+            expanded={expanded}
+            onPress={() => setExpanded(!expanded)}
+       
+          >
+            <View style={globalStyles.wakeupCard}>
+              <CenterText>Set {label}</CenterText>
 
-          <View>
-            <CenterText>
-              {time
-                ? `selected time is ${time.toLocaleTimeString()}`
-                : "time not selected"}
-            </CenterText>
+              <View>
+                <WhiteButton onPress={handleCurrentTime}>
+                  Use Current Time
+                </WhiteButton>
 
-            <WhiteButton onPress={handleCurrentTime}>
-              Use Current Time
-            </WhiteButton>
+                <WhiteButton onPress={() => setShowPicker((prev) => !prev)}>
+                  Set {label} Time
+                </WhiteButton>
 
-            <WhiteButton onPress={() => setShowPicker((prev) => !prev)}>
-              Set {label} Time
-            </WhiteButton>
-
-            {showPicker && (
-              <DateTimePickerModal
-                isVisible={showPicker}
-                mode="datetime"
-                onConfirm={onChange}
-                onCancel={() => {}}
-                is24Hour={false} // change to true if needed
-              />
-            )}
-          </View>
-        </View>
+                {showPicker && (
+                  <DateTimePickerModal
+                    isVisible={showPicker}
+                    mode="datetime"
+                    onConfirm={onChange}
+                    onCancel={() => {}}
+                    is24Hour={false} // change to true if needed
+                  />
+                )}
+              </View>
+            </View>
+          </List.Accordion>
+        </List.Section>
       ) : (
         <View style={globalStyles.wakeupCardAccordion}>
           <List.Section>
@@ -82,6 +85,7 @@ export default function TimeCard({ label, fieldKey }: TimeCardProps) {
               ).toLocaleTimeString()}`}
               expanded={expanded}
               onPress={() => setExpanded(!expanded)}
+     
             >
               <View>
                 <WhiteButton onPress={handleCurrentTime}>

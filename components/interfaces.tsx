@@ -19,6 +19,12 @@ export interface UserDataInterface {
   created_at: number;
 }
 
+export interface allDocResponseConfig {
+  docs: {
+    [date: string]: dailyLogInterface;
+  }[];
+}
+
 export type foods = "breakfast" | "lunch" | "dinner" | "snacks";
 
 export interface dailyLogInterface {
@@ -45,7 +51,6 @@ export interface dailyLogInterface {
   travel: string;
   notes: string;
   mood?: "great" | "good" | "okay" | "low" | "bad";
-
 }
 
 export const initDailyLog = () => {
@@ -69,7 +74,7 @@ export const initDailyLog = () => {
     isBathTaken: false,
     travel: "",
     notes: "",
-    mood:"okay"
+    mood: "okay",
   };
   return data;
 };

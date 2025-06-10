@@ -1,4 +1,5 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
+import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import { AuthResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
@@ -22,6 +23,8 @@ export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
 
   const { setUserCred } = useUserContext();
+
+  const {setReply}=useReplyContext()
 
   const { loading, setLoading } = useLoadingContext();
 
@@ -50,6 +53,7 @@ export default function Login() {
 
     console.log(res);
     setMessage(res.message)
+    setReply(res.message)
     if (res && res.status == 200 && res.credentials) {
       await storeData({ key: "userCred", value: res.credentials });
       setUserCred(res.credentials);

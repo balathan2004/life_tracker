@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { List, RadioButton } from "react-native-paper";
 import { useDailyLogContext } from "../context/dailyLogContext";
 import { dailyLogInterface } from "../interfaces";
@@ -22,11 +22,9 @@ export default function MoodCard() {
   ];
 
   const handleSubmit = (value: mood) => {
-    if (!mood) {
-      return;
-    }
+    if (!value || !dailyLog)return;
     setMood(value);
-    setDailyLog((prev) => ({ ...prev, mood:value }));
+    setDailyLog((prev) => ({ ...prev, mood: value }));
   };
 
   useEffect(() => {
@@ -45,7 +43,7 @@ export default function MoodCard() {
           }}
         >
           <List.Accordion
-            title={`Hows Your Mood - ${dailyLog.mood}`}
+            title={`Hows Your Mood - ${mood}`}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
           >
@@ -56,10 +54,12 @@ export default function MoodCard() {
                 value={mood || "okay"}
               >
                 {moods.map(({ label, value, color }) => (
-                  <View key={value} style={styles.radio_item}>
-                    <RadioButton value={value} color={color} />
-                    <ThemeText>{label}</ThemeText>
-                  </View>
+                  <TouchableOpacity key={label} onPress={() => setMood(value as mood)}>
+                    <View style={styles.radio_item}>
+                      <RadioButton value={value} color={color} />
+                      <ThemeText>{label}</ThemeText>
+                    </View>
+                  </TouchableOpacity>
                 ))}
               </RadioButton.Group>
             </View>

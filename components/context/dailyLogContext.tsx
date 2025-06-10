@@ -1,6 +1,6 @@
 import React, { ReactNode, useContext, useEffect, useState } from "react";
 import { dailyLogInterface, initDailyLog } from "../interfaces";
-import { storeData } from "../utils/data_store";
+import { getData, storeData } from "../utils/data_store";
 type dailyLogCredType = dailyLogInterface;
 
 interface Props {
@@ -20,9 +20,24 @@ const DailyLogContext = React.createContext<DailyLogContextInterface>({
 const DailyLogHolder = ({ children }: Props) => {
   const [dailyLog, setDailyLog] = useState<dailyLogCredType>(initDailyLog());
 
+  const [loaded, setLoaded] = useState(false);
+
   useEffect(() => {
-    storeData({ key: "dailyLog", value: dailyLog });
-  }, [dailyLog]);
+    const init = async () => {
+      const stored = (await getData("dailyLog")) as dailyLogCredType | null;
+      if (stored) {
+        setDailyLog(stored);
+      }
+      setLoaded(true);
+    };
+    init();
+  }, []);
+
+  useEffect(() => {
+    if (loaded) {
+      storeData({ key: "dailyLog", value: dailyLog });
+    }
+  }, [dailyLog, loaded]);
 
   return (
     <DailyLogContext.Provider value={{ dailyLog, setDailyLog }}>

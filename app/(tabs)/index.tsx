@@ -22,7 +22,7 @@ export default function Home() {
   const { userCred } = useUserContext();
 
   const handleSubmit = async () => {
-    if (dailyLog.wakeUpTime && dailyLog.date && userCred) {
+    if (dailyLog?.wakeUpTime && dailyLog.date && userCred) {
       console.log(dailyLog);
       console.log(userCred);
     }
@@ -34,7 +34,7 @@ export default function Home() {
   };
 
   const dayCompare = () => {
-    const date = dailyLog.date;
+    const date = dailyLog?.date;
     const savedDate = moment(date, "DD-MM-YYYY").startOf("day");
     const today = moment().startOf("day");
 
@@ -55,11 +55,11 @@ export default function Home() {
       style={globalStyles.safearea}
     >
       <CenterText style={{ fontSize: 18, marginVertical: 10 }}>
-        {dailyLog.date}
+        {dailyLog?.date}
       </CenterText>
       <QuoteBar />
-      <TimeCard label="Wake Up" fieldKey="wakeUpTime" />
-      <TimeCard label="Sleep" fieldKey="sleepTime" />
+      <TimeCard label="Wake Up time" fieldKey="wakeUpTime" />
+      <TimeCard label="Sleep Time" fieldKey="sleepTime" />
 
       <View style={globalStyles.card}>
         <Link href="/(daily_activity)/food_health">

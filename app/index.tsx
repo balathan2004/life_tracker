@@ -1,5 +1,6 @@
+import { useDailyLogContext } from "@/components/context/dailyLogContext";
 import { useUserContext } from "@/components/context/userContext";
-import { UserDataInterface } from "@/components/interfaces";
+import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
 import { ThemeText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
 import { globalStyles } from "@/styles/global.css";
@@ -9,11 +10,14 @@ import { View } from "react-native";
 
 export default function Home() {
   const { userCred, setUserCred } = useUserContext();
+  const { setDailyLog } = useDailyLogContext();
 
   const retrieveCred = async () => {
     if (!userCred) {
       const userData =
         ((await getData("userCred")) as UserDataInterface) || null;
+
+      const dailyLog = (await getData("dailyLog")) as dailyLogInterface;
 
       if (!userData) {
         router.push("/(auth)");
@@ -21,6 +25,7 @@ export default function Home() {
       }
 
       setUserCred(userData);
+      setDailyLog(dailyLog);
       router.push("/(tabs)");
     }
   };
