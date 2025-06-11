@@ -31,6 +31,7 @@ export default function Home() {
       route: `${domain_url}/api/update_doc`,
       data: { uid: userCred?.uid, data: dailyLog },
     })) as ResponseConfig;
+    console.log(dailyLog,userCred)
   };
 
   const dayCompare = () => {
@@ -44,8 +45,12 @@ export default function Home() {
     return false;
   };
 
-  const handleDateChange = async() => {
-    await handleSubmit()
+  const handleDateChange = async () => {
+    await handleSubmit();
+    setDailyLog(initDailyLog());
+  };
+
+  const createNewDoc = () => {
     setDailyLog(initDailyLog());
   };
 
@@ -83,9 +88,12 @@ export default function Home() {
 
       <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
       {dayCompare() ? (
-        <PrimaryButton onPress={handleDateChange}>
-          Save and Create New Doc
-        </PrimaryButton>
+        <View>
+          <PrimaryButton onPress={handleDateChange}>
+            Save and Create New Doc
+          </PrimaryButton>
+          <PrimaryButton onPress={createNewDoc}>Create New Doc</PrimaryButton>
+        </View>
       ) : null}
     </ScrollView>
   );

@@ -24,7 +24,7 @@ export default function Login() {
 
   const { loading, setLoading } = useLoadingContext();
   const { setUserCred } = useUserContext();
-  const [message, setMessage] = useState("hello");
+  const [message, setMessage] = useState("");
   const { setReply } = useReplyContext();
 
   const handleInput = (

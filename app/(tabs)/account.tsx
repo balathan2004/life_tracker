@@ -1,10 +1,12 @@
 import { useUserContext } from "@/components/context/userContext";
 import DayReport from "@/components/elements/dayReport";
-import { SnackbarReply } from "@/components/elements/snackBarPopup";
 import {
   allDocResponseConfig,
   dailyLogInterface,
 } from "@/components/interfaces";
+import { WhiteButton } from "@/components/ui/buttons";
+import { CenterText } from "@/components/ui/TextElements";
+import { getData } from "@/components/utils/data_store";
 import { fetchData } from "@/components/utils/fetching";
 import { domain_url } from "@/env";
 import { globalStyles } from "@/styles/global.css";
@@ -13,6 +15,8 @@ import { View } from "react-native";
 
 export default function Home() {
   const { userCred } = useUserContext();
+
+  const [text, setText] = useState("");
 
   const [docs, setDocs] = useState<dailyLogInterface[]>([]);
 
@@ -28,12 +32,21 @@ export default function Home() {
     }
   };
 
+  const handle = async () => {
+    const data = await getData("userCred");
+    setText(JSON.stringify(data) || "not value");
+  };
+
   return (
     <View style={globalStyles.safearea}>
       {docs.map((doc) => (
         <DayReport key={doc.wakeUpTime} data={doc} />
       ))}
-      <SnackbarReply />
+      <View>
+        <CenterText>usercred {JSON.stringify(userCred)}</CenterText>
+        <CenterText>{JSON.stringify(text)}</CenterText>
+        <WhiteButton onPress={handle}>Click</WhiteButton>
+      </View>
     </View>
   );
 }

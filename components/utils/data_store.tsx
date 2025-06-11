@@ -1,4 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { dailyLogInterface, UserDataInterface } from "../interfaces";
 
 type GetProps = "userCred" | "dailyLog";
 
@@ -14,6 +15,6 @@ export const storeData = async ({ key, value }: StoreProps) => {
 export const getData = async (key: GetProps) => {
   const json = await AsyncStorage.getItem(key);
 
-  if (!json) return;
-  return JSON.parse(json);
+  if (!json) return null;
+  return JSON.parse(json) as UserDataInterface | dailyLogInterface;
 };
