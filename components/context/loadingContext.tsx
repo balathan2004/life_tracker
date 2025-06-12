@@ -1,4 +1,5 @@
-import React, { ReactNode, useContext, useState } from "react";
+import React, { ReactNode, useContext, useEffect, useState } from "react";
+import { LoadingComponent } from "../elements/loadingComponent";
 
 interface Props {
   children: ReactNode;
@@ -17,8 +18,20 @@ const LoadingContext = React.createContext<LoadingContextInterface>({
 const LoadingHolder = ({ children }: Props) => {
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    if (loading) {
+      const timer = setTimeout(() => {
+        setLoading(false);
+      }, 5000); 
+
+      // Cleanup the timeout if component unmounts
+      return () => clearTimeout(timer);
+    }
+  }, [loading]);
+
   return (
     <LoadingContext.Provider value={{ loading, setLoading }}>
+      <LoadingComponent />
       {children}
     </LoadingContext.Provider>
   );

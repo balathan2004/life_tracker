@@ -1,4 +1,5 @@
 import { useDailyLogContext } from "@/components/context/dailyLogContext";
+import { useReplyContext } from "@/components/context/replyContext";
 import { ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { cardStyles } from "@/styles/cards.css";
@@ -13,6 +14,7 @@ import {
 
 export default function Home() {
   const { dailyLog, setDailyLog } = useDailyLogContext();
+  const { setReply } = useReplyContext();
   const [data, setData] = useState({
     notes: "",
     somethingProductive: "",
@@ -30,6 +32,7 @@ export default function Home() {
 
   const handleSubmit = () => {
     setDailyLog((prev) => ({ ...prev, ...data }));
+    setReply("saved");
   };
 
   useEffect(() => {

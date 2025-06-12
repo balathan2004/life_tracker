@@ -5,7 +5,7 @@ import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
 import { globalStyles } from "@/styles/global.css";
 import { router } from "expo-router";
-import React from "react";
+import React, { useEffect } from "react";
 import { Image, View } from "react-native";
 const image = require("../assets/images/life-tracker.png");
 
@@ -28,9 +28,9 @@ export default function Home() {
     router.push("/(tabs)");
   };
 
-  // useEffect(() => {
-  //   retrieveCred();
-  // }, []);
+  useEffect(() => {
+    retrieveCred();
+  }, []);
 
   return (
     <View style={globalStyles.safearea}>

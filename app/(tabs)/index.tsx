@@ -1,4 +1,5 @@
 import { useDailyLogContext } from "@/components/context/dailyLogContext";
+import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import FoodIconsCard, {
   JournalCard,
@@ -20,18 +21,19 @@ import { ScrollView, View } from "react-native";
 export default function Home() {
   const { dailyLog, setDailyLog } = useDailyLogContext();
   const { userCred } = useUserContext();
+  const { setReply } = useReplyContext();
 
   const handleSubmit = async () => {
-    if (dailyLog?.wakeUpTime && dailyLog.date && userCred) {
-      console.log(dailyLog);
-      console.log(userCred);
+    if (!userCred || !dailyLog) {
+      return;
     }
 
     const res = (await SendData({
       route: `${domain_url}/api/update_doc`,
       data: { uid: userCred?.uid, data: dailyLog },
     })) as ResponseConfig;
-    console.log(dailyLog,userCred)
+
+    setReply(res.message);
   };
 
   const dayCompare = () => {

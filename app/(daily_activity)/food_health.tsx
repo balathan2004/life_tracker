@@ -1,4 +1,5 @@
 import { useDailyLogContext } from "@/components/context/dailyLogContext";
+import { useReplyContext } from "@/components/context/replyContext";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { cardStyles } from "@/styles/cards.css";
@@ -21,6 +22,7 @@ type Meals = {
 
 export default function Home() {
   const { dailyLog, setDailyLog } = useDailyLogContext();
+  const { setReply } = useReplyContext();
 
   const [meals, setMeals] = useState({
     breakfast: "",
@@ -35,6 +37,7 @@ export default function Home() {
     ) as Meals;
 
     setDailyLog((prev) => ({ ...prev, meals: trimmedValue }));
+    setReply("saved");
   };
 
   const handleInput = (
