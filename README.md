@@ -1,50 +1,53 @@
-# Welcome to your Expo app 👋
+# 🧘 Life Tracker
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Life Tracker is your personal companion for building better habits, tracking daily activities, and reflecting on your lifestyle — one day at a time.  
 
-## Get started
+Built for simplicity and consistency, it helps you stay aware of your routine and progress in a mindful way.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Features
 
-2. Start the app
+- **Track Your Day** – Log your wake/sleep times, meals, workouts, and more.
+- **Stay Healthy** – Record body measurements and monitor your routine.
+- **Productivity Focused** – Keep notes on what you did that's productive.
+- **Daily Notes** – Jot down quick thoughts or reflections.
+- **Private & Secure** – All your logs are stored securely in the cloud.
 
-   ```bash
-   npx expo start
-   ```
+---
 
-In the output, you'll find options to open the app in a
+## 📱 How It Works
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+1. **Open the App** and log in securely.
+2. **Fill Out Your Day** – Log when you woke up, what you ate, your exercise, and other key details.
+3. **Review Your Progress** – Go back and view previous logs to reflect and improve.
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+---
 
-## Get a fresh project
+## 🧰 Tech Stack (Under the Hood)
 
-When you're ready, run:
+- **React Native (Expo)** – Mobile App  
+- **Express.js** – Backend Server  
+- **Firebase** – Authentication & Database  
+- **TypeScript** – Clean and maintainable code
 
-```bash
-npm run reset-project
-```
+> You don’t need to worry about the tech. It just works.
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+---
 
-## Learn more
+## 👤 About
 
-To learn more about developing your project with Expo, look at the following resources:
+- **Developer:** Light  
+- **LinkedIn:** [@balathan2004](https://www.linkedin.com/in/balathan2004/)  
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+---
 
-## Join the community
+## 🪪 License
 
-Join our community of developers creating universal apps.
+This project is licensed under the **MIT License**.  
+Feel free to use, modify, and build upon it.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+---
+
+> “The key to change is to track where you’ve been. Life Tracker helps you see the path.”
+
