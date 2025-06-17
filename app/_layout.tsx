@@ -38,9 +38,10 @@ export default function RootLayout() {
 
                 <Stack.Screen
                   name="(daily_activity)"
-                  options={{ headerShown: false }}
+                  options={{ headerShown: true }}
                 />
 
+                <Stack.Screen name="(logs)" options={{ headerShown: false }} />
                 <Stack.Screen name="+not-found" />
               </Stack>
             </UserHolder>

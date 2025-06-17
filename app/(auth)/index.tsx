@@ -77,6 +77,7 @@ export default function Login() {
         <View>
           <ThemeText style={{ marginVertical: 5 }}>Email</ThemeText>
           <TextInput
+             autoCapitalize="none"
             onChange={(e) => handleInput(e, "email")}
             value={userData.email}
             style={styles.input}
@@ -86,6 +87,7 @@ export default function Login() {
         <View>
           <ThemeText style={{ marginVertical: 5 }}>Password</ThemeText>
           <TextInput
+          autoCapitalize="none"
             onChange={(e) => handleInput(e, "password")}
             value={userData.password}
             style={styles.input}

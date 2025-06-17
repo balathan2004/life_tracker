@@ -7,24 +7,27 @@ import { ThemeText } from "../ui/TextElements";
 
 type mood = dailyLogInterface["mood"];
 
+ export const moods = [
+    { label: "\u2728", value: "great", color: "#4CAF50" },
+    { label: "\u{1F60A}", value: "good", color: "#8BC34A" },
+    { label: "\u{1F610}", value: "okay", color: "#FFC107" },
+    { label: "\u{1F61E}", value: "low", color: "#FF9800" },
+    { label: "\u{1F623}", value: "bad", color: "#F44336" },
+  ];
+
+
+
 export default function MoodCard() {
   const [expanded, setExpanded] = useState(false);
 
   const { dailyLog, setDailyLog } = useDailyLogContext();
-  const [mood, setMood] = useState<mood | null>(null);
+  const [mood, setMood] = useState<mood>("okay");
 
-  const moods = [
-    { label: "Great ✨", value: "great", color: "#4CAF50" },
-    { label: "Good 😊", value: "good", color: "#8BC34A" },
-    { label: "Okay 😐", value: "okay", color: "#FFC107" },
-    { label: "Low 😞", value: "low", color: "#FF9800" },
-    { label: "Bad 😣", value: "bad", color: "#F44336" },
-  ];
-
+ 
   const handleSubmit = (value: mood) => {
-    if (!value || !dailyLog)return;
-    setMood(value);
+    if (!value || !dailyLog) return;
     setDailyLog((prev) => ({ ...prev, mood: value }));
+    setMood(value);
   };
 
   useEffect(() => {
@@ -51,13 +54,18 @@ export default function MoodCard() {
               <ThemeText style={{ fontSize: 18 }}>Set Your Mood</ThemeText>
               <RadioButton.Group
                 onValueChange={(value) => handleSubmit(value as mood)}
-                value={mood || "okay"}
+                value={mood}
               >
                 {moods.map(({ label, value, color }) => (
-                  <TouchableOpacity key={label} onPress={() => setMood(value as mood)}>
+                  <TouchableOpacity
+                    key={label}
+                    onPress={() => setMood(value as mood)}
+                  >
                     <View style={styles.radio_item}>
                       <RadioButton value={value} color={color} />
-                      <ThemeText>{label}</ThemeText>
+                      <ThemeText style={{ textTransform: "capitalize" }}>
+                        {label + " " + value}
+                      </ThemeText>
                     </View>
                   </TouchableOpacity>
                 ))}
