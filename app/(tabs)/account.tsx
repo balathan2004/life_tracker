@@ -1,11 +1,11 @@
+import { useLoadingContext } from "@/components/context/loadingContext";
 import { useUserContext } from "@/components/context/userContext";
 import DayReport from "@/components/elements/dayReport";
 import {
   allDocResponseConfig,
   dailyLogInterface,
 } from "@/components/interfaces";
-import { CenterText } from "@/components/ui/TextElements";
-import { getData } from "@/components/utils/data_store";
+import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { fetchData } from "@/components/utils/fetching";
 import { domain_url } from "@/env";
 import { globalStyles } from "@/styles/global.css";
@@ -16,12 +16,11 @@ import { FlatList, View } from "react-native";
 
 export default function Home() {
   const { userCred } = useUserContext();
-
-  const [text, setText] = useState("");
-
   const [docs, setDocs] = useState<dailyLogInterface[]>([]);
+  const { loading, setLoading } = useLoadingContext();
 
   const fetchDocs = async () => {
+    setLoading(true);
     const response = (await fetchData(
       `${domain_url}/api/get_docs?userId=${userCred?.uid}`
     )) as allDocResponseConfig;
@@ -33,9 +32,9 @@ export default function Home() {
           return dateB.valueOf() - dateA.valueOf(); // latest first
         }
       );
-      console.log(values);
       setDocs(values);
     }
+    setLoading(false);
   };
   useFocusEffect(
     useCallback(() => {
@@ -43,11 +42,6 @@ export default function Home() {
       fetchDocs(); // or any logic you want
     }, [])
   );
-
-  const handle = async () => {
-    const data = await getData("userCred");
-    setText(JSON.stringify(data) || "not value");
-  };
 
   const renderItem = ({ item }: { item: dailyLogInterface }) => {
     return (
@@ -59,14 +53,19 @@ export default function Home() {
 
   return (
     <View style={globalStyles.safearea}>
-      <View>
-        <CenterText>Your Logs</CenterText>
-        <FlatList
-          data={docs}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.wakeUpTime.toString()}
-        ></FlatList>
-      </View>
+      {loading ? (
+        <ThemeText>Loading</ThemeText>
+      ) : (
+        <View>
+          <CenterText>Your Logs</CenterText>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={docs}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.wakeUpTime.toString()}
+          ></FlatList>
+        </View>
+      )}
     </View>
   );
 }

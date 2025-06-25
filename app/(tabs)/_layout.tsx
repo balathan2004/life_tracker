@@ -28,7 +28,7 @@ export default function Layout() {
       <Tabs.Screen
         name="account"
         options={{
-          title: "account",
+          title: "Account",
           headerShown: false,
           tabBarIcon: () => (
             <MaterialCommunityIcons name="account" size={24} color="white" />

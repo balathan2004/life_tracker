@@ -15,10 +15,7 @@ export const SnackbarReply = () => {
     let timer: number;
 
     if (reply) {
-      timer = setTimeout(() => {
-        // Your code that runs after 10000ms
-        console.log("This ran after 10 seconds because reply was true");
-      }, 23000);
+      timer = setTimeout(() => {}, 4000);
     }
 
     return () => {
@@ -36,10 +33,10 @@ export const SnackbarReply = () => {
           onPress: dismissSnackbar,
         }}
         wrapperStyle={{ top: 0 }}
-        duration={7000}
+        duration={4000}
         style={styles.snackbar}
       >
-        <ThemeText>{reply}</ThemeText>
+        <ThemeText style={{ textTransform: "capitalize" }}>{reply}</ThemeText>
       </Snackbar>
     </View>
   );

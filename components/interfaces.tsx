@@ -41,8 +41,8 @@ export interface dailyLogInterface {
 
   workout?: string;
   bodyMeasurements?: {
-    height: number;
-    weight: number;
+    height: string;
+    weight: string;
   };
 
   screenTimeMinutes: number;
@@ -66,8 +66,8 @@ export const initDailyLog = () => {
     },
     workout: "",
     bodyMeasurements: {
-      height: 0,
-      weight: 0,
+      height: "",
+      weight: "",
     },
     screenTimeMinutes: 0,
     somethingProductive: "",

@@ -9,8 +9,14 @@ export default function ActivityLayout() {
         headerTitleAlign: "center",
       }}
     >
-      <Stack.Screen name="activity_notes"></Stack.Screen>
-      <Stack.Screen name="food_health"></Stack.Screen>
+      <Stack.Screen
+        name="notes"
+        options={{ headerTitle: "Journal" }}
+      ></Stack.Screen>
+      <Stack.Screen
+        name="food_health"
+        options={{ headerTitle: "Meals" }}
+      ></Stack.Screen>
     </Stack>
   );
 }

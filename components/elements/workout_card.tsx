@@ -1,5 +1,5 @@
 import { cardStyles } from "@/styles/cards.css";
-import * as React from "react";
+import React, { useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
   TextInput,
@@ -12,10 +12,9 @@ import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export default function WorkoutCard() {
-  const [expanded, setExpanded] = React.useState(false);
-
+  const [expanded, setExpanded] = useState(false);
   const { dailyLog, setDailyLog } = useDailyLogContext();
-  const [workout, setWorkout] = React.useState("");
+  const [workout, setWorkout] = useState("");
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>
@@ -28,6 +27,10 @@ export default function WorkoutCard() {
     setDailyLog((prev) => ({ ...prev, workout }));
   };
 
+  useEffect(() => {
+    setWorkout(dailyLog.workout || "");
+  }, [dailyLog]);
+
   return (
     <View>
       <List.Section>
@@ -37,14 +40,12 @@ export default function WorkoutCard() {
             overflow: "hidden",
           }}
         >
-         
           <List.Accordion
             title={`Workout - ${dailyLog.workout}`}
             expanded={expanded}
-
             onPress={() => setExpanded(!expanded)}
           >
-            <View> 
+            <View>
               <ThemeText style={{ fontSize: 18 }}>Add Workout</ThemeText>
               <TextInput
                 style={cardStyles.input}

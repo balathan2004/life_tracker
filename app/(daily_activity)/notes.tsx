@@ -1,6 +1,6 @@
 import { useDailyLogContext } from "@/components/context/dailyLogContext";
 import { useReplyContext } from "@/components/context/replyContext";
-import { ThemeText } from "@/components/ui/TextElements";
+import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
@@ -19,6 +19,8 @@ export default function Home() {
     notes: "",
     somethingProductive: "",
     travel: "",
+    height: "",
+    weight: "",
   });
 
   const handleInput = (
@@ -31,15 +33,23 @@ export default function Home() {
   };
 
   const handleSubmit = () => {
-    setDailyLog((prev) => ({ ...prev, ...data }));
+    const { height, weight, ...left } = data;
+    setDailyLog((prev) => ({
+      ...prev,
+      ...left,
+      bodyMeasurements: { height, weight },
+    }));
     setReply("saved");
   };
 
   useEffect(() => {
     if (dailyLog) {
       setData((prev) => {
-        const { notes, somethingProductive, travel } = dailyLog;
-        return { ...prev, notes, somethingProductive, travel };
+        const { notes, somethingProductive, travel, bodyMeasurements } =
+          dailyLog;
+        const height = bodyMeasurements?.height ?? "";
+        const weight = bodyMeasurements?.weight ?? "";
+        return { ...prev, notes, somethingProductive, travel, height, weight };
       });
     }
   }, [dailyLog]);
@@ -76,6 +86,30 @@ export default function Home() {
             placeholder="Any Travel"
           ></TextInput>
         </View>
+
+        <View style={cardStyles.secondCard}>
+          <CenterText>Body Measurements</CenterText>
+
+          <View>
+            <ThemeText style={{ fontSize: 18 }}>Height</ThemeText>
+            <TextInput
+              style={cardStyles.input}
+              value={data.height}
+              onChange={(e) => handleInput(e, "height")}
+              placeholder="Height"
+            ></TextInput>
+          </View>
+          <View>
+            <ThemeText style={{ fontSize: 18 }}>Weight</ThemeText>
+            <TextInput
+              style={cardStyles.input}
+              value={data.weight}
+              onChange={(e) => handleInput(e, "weight")}
+              placeholder="Weight"
+            ></TextInput>
+          </View>
+        </View>
+
         <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
       </View>
     </View>

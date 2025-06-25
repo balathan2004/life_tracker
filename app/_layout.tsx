@@ -38,7 +38,7 @@ export default function RootLayout() {
 
                 <Stack.Screen
                   name="(daily_activity)"
-                  options={{ headerShown: true }}
+                  options={{ headerShown: false }}
                 />
 
                 <Stack.Screen name="(logs)" options={{ headerShown: false }} />

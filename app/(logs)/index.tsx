@@ -6,9 +6,14 @@ import { CenterText } from "@/components/ui/TextElements";
 import { fetchData } from "@/components/utils/fetching";
 import { domain_url } from "@/env";
 import { router, useLocalSearchParams, useNavigation } from "expo-router";
+import moment from "moment";
 import React, { useEffect } from "react";
 import { Alert, View } from "react-native";
 import JSONTree from "react-native-json-tree";
+
+const formatDate = (date: string) => {
+  return moment(date, "DD-MM-YYYY").format("DD MMMM YYYY");
+};
 
 export default function LogDetail() {
   // all query‑string params arrive here as strings
@@ -21,7 +26,7 @@ export default function LogDetail() {
 
   useEffect(() => {
     if (log?.date) {
-      navigation.setOptions({ title: `date ${log.date}` });
+      navigation.setOptions({ title: `${formatDate(log.date)} Log` });
     }
   }, [log.date]);
 
@@ -59,6 +64,27 @@ export default function LogDetail() {
     }
   };
 
+  const customGetItemString = (
+    _type: any,
+    _data: any,
+    itemType: React.ReactNode,
+    itemString: string | number | undefined
+  ): React.ReactNode => {
+    // If itemString contains "keys" or "items" (for arrays), return an empty string
+    // Otherwise, return the original itemType and itemString
+    if (
+      typeof itemString === "string" &&
+      (itemString.includes("keys") || itemString.includes("items"))
+    ) {
+      return ""; //itemType; // Only return the type (e.g., "Object", "Array") without the count
+    }
+    return (
+      <>
+        {itemType} {itemString}
+      </>
+    );
+  }; // to hide no of keys in Object the default in modules
+
   return (
     <>
       <View style={{ padding: 16 }}>
@@ -66,7 +92,12 @@ export default function LogDetail() {
           Daily Log
         </CenterText>
 
-        <JSONTree data={{ ...log }} shouldExpandNode={() => true} />
+        <JSONTree
+          data={{ ...log }}
+          shouldExpandNode={() => true}
+          hideRoot={true}
+          getItemString={customGetItemString}
+        />
         <WhiteButton onPress={showConfirmation}>Delete Log</WhiteButton>
       </View>
     </>

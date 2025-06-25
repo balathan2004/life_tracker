@@ -19,13 +19,13 @@ export default function Home() {
     const dailyLog = (await getData("dailyLog")) as dailyLogInterface;
 
     if (!userData) {
-      router.push("/(auth)");
+      router.replace("/(auth)");
       return;
     }
 
     setUserCred(userData);
     setDailyLog(dailyLog);
-    router.push("/(tabs)");
+    router.replace("/(tabs)");
   };
 
   useEffect(() => {
