@@ -7,15 +7,13 @@ import { ThemeText } from "../ui/TextElements";
 
 type mood = dailyLogInterface["mood"];
 
- export const moods = [
-    { label: "\u2728", value: "great", color: "#4CAF50" },
-    { label: "\u{1F60A}", value: "good", color: "#8BC34A" },
-    { label: "\u{1F610}", value: "okay", color: "#FFC107" },
-    { label: "\u{1F61E}", value: "low", color: "#FF9800" },
-    { label: "\u{1F623}", value: "bad", color: "#F44336" },
-  ];
-
-
+export const moods = [
+  { label: "\u2728", value: "great", color: "#4CAF50" },
+  { label: "\u{1F60A}", value: "good", color: "#8BC34A" },
+  { label: "\u{1F610}", value: "okay", color: "#FFC107" },
+  { label: "\u{1F61E}", value: "low", color: "#FF9800" },
+  { label: "\u{1F623}", value: "bad", color: "#F44336" },
+];
 
 export default function MoodCard() {
   const [expanded, setExpanded] = useState(false);
@@ -23,7 +21,6 @@ export default function MoodCard() {
   const { dailyLog, setDailyLog } = useDailyLogContext();
   const [mood, setMood] = useState<mood>("okay");
 
- 
   const handleSubmit = (value: mood) => {
     if (!value || !dailyLog) return;
     setDailyLog((prev) => ({ ...prev, mood: value }));
@@ -52,24 +49,25 @@ export default function MoodCard() {
           >
             <View>
               <ThemeText style={{ fontSize: 18 }}>Set Your Mood</ThemeText>
-              <RadioButton.Group
-                onValueChange={(value) => handleSubmit(value as mood)}
-                value={mood}
-              >
-                {moods.map(({ label, value, color }) => (
-                  <TouchableOpacity
-                    key={label}
-                    onPress={() => setMood(value as mood)}
-                  >
-                    <View style={styles.radio_item}>
-                      <RadioButton value={value} color={color} />
-                      <ThemeText style={{ textTransform: "capitalize" }}>
-                        {label + " " + value}
-                      </ThemeText>
-                    </View>
-                  </TouchableOpacity>
-                ))}
-              </RadioButton.Group>
+
+              {moods.map(({ label, value, color }) => (
+                <TouchableOpacity
+                  key={label}
+                  onPress={() => handleSubmit(value as mood)}
+                >
+                  <View style={styles.radio_item}>
+                    <RadioButton
+                      value={value}
+                      status={mood === value ? "checked" : "unchecked"}
+                      color={color}
+                      onPress={() => handleSubmit(value as mood)} // optional, for redundancy
+                    />
+                    <ThemeText style={{ textTransform: "capitalize" }}>
+                      {label + " " + value}
+                    </ThemeText>
+                  </View>
+                </TouchableOpacity>
+              ))}
             </View>
           </List.Accordion>
         </View>
