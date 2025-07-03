@@ -4,6 +4,8 @@ import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
+
 import { useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
@@ -55,8 +57,14 @@ export default function Home() {
   }, [dailyLog]);
 
   return (
-    <View style={globalStyles.safearea}>
-      <View style={cardStyles.card}>
+    <KeyboardAwareScrollView
+      style={globalStyles.safearea}
+      contentContainerStyle={globalStyles.safearea}
+      enableOnAndroid={true}
+      extraScrollHeight={50} // pushes the focused input into view
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={globalStyles.card}>
         <View>
           <ThemeText style={{ fontSize: 18 }}>Any Notes</ThemeText>
           <TextInput
@@ -109,9 +117,8 @@ export default function Home() {
             ></TextInput>
           </View>
         </View>
-
-        <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
       </View>
-    </View>
+      <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
+    </KeyboardAwareScrollView>
   );
 }

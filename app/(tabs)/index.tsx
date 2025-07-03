@@ -68,7 +68,7 @@ export default function Home() {
       <TimeCard label="Wake Up time" fieldKey="wakeUpTime" />
       <TimeCard label="Sleep Time" fieldKey="sleepTime" />
 
-      <View style={globalStyles.card}>
+      <View >
         <Link href="/(daily_activity)/food_health">
           <FoodIconsCard />
         </Link>

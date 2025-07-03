@@ -5,19 +5,19 @@ import {
   allDocResponseConfig,
   dailyLogInterface,
 } from "@/components/interfaces";
-import { CenterText, ThemeText } from "@/components/ui/TextElements";
+import { CenterText } from "@/components/ui/TextElements";
 import { fetchData } from "@/components/utils/fetching";
 import { domain_url } from "@/env";
 import { globalStyles } from "@/styles/global.css";
-import { useFocusEffect } from "expo-router";
 import moment from "moment";
-import { useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 
 export default function Home() {
   const { userCred } = useUserContext();
   const [docs, setDocs] = useState<dailyLogInterface[]>([]);
   const { loading, setLoading } = useLoadingContext();
+  const [refreshing, setRefreshing] = useState(false);
 
   const fetchDocs = async () => {
     setLoading(true);
@@ -36,12 +36,22 @@ export default function Home() {
     }
     setLoading(false);
   };
-  useFocusEffect(
-    useCallback(() => {
-      // This runs every time the screen is focused (opened or came back to)
-      fetchDocs(); // or any logic you want
-    }, [])
-  );
+
+  useEffect(()=>{
+    fetchDocs()
+  },[])
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     // This runs every time the screen is focused (opened or came back to)
+  //     fetchDocs(); // or any logic you want
+  //   }, [])
+  // );
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchDocs();
+    setRefreshing(false);
+  };
 
   const renderItem = ({ item }: { item: dailyLogInterface }) => {
     return (
@@ -54,7 +64,7 @@ export default function Home() {
   return (
     <View style={globalStyles.safearea}>
       {loading ? (
-        <ThemeText>Loading</ThemeText>
+        <CenterText>Loading</CenterText>
       ) : (
         <View>
           <CenterText>Your Logs</CenterText>
@@ -62,6 +72,8 @@ export default function Home() {
             showsVerticalScrollIndicator={false}
             data={docs}
             renderItem={renderItem}
+            onRefresh={onRefresh}
+            refreshing={refreshing}
             keyExtractor={(item) => item.wakeUpTime.toString()}
           ></FlatList>
         </View>
