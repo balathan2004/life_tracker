@@ -13,12 +13,11 @@ export const cardStyles = StyleSheet.create({
     marginVertical: 10,
     height: 45,
     fontSize: 18,
-    paddingHorizontal:5,
+    paddingHorizontal: 5,
     borderRadius: 4,
   },
 
-  secondCard:{
-    marginVertical:20
-  }
-
+  secondCard: {
+    marginTop: 0,
+  },
 });

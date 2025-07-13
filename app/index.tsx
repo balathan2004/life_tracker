@@ -1,17 +1,21 @@
-import { useDailyLogContext } from "@/components/context/dailyLogContext";
 import { useUserContext } from "@/components/context/userContext";
 import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
+import { useSetDailyLog } from "@/features/dispatchActions";
 import { globalStyles } from "@/styles/global.css";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, View } from "react-native";
+import { useDispatch } from "react-redux";
 const image = require("../assets/images/life-tracker.png");
-
 export default function Home() {
+
+  
   const { userCred, setUserCred } = useUserContext();
-  const { setDailyLog } = useDailyLogContext();
+  const dispatch=useDispatch()
+
+
 
   const retrieveCred = async () => {
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
@@ -24,7 +28,7 @@ export default function Home() {
     }
 
     setUserCred(userData);
-    setDailyLog(dailyLog);
+    useSetDailyLog(dispatch,dailyLog)
     router.replace("/(tabs)");
   };
 

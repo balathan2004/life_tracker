@@ -1,12 +1,14 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StyleSheet, View } from "react-native";
-import { useDailyLogContext } from "../context/dailyLogContext";
+
+import { useDailyLog } from "@/features/dispatchActions";
+import { useSelector } from "react-redux";
 import { dailyLogInterface, foods } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 
 export default function FoodIconsCard() {
-  const { dailyLog } = useDailyLogContext();
+  const  dailyLog  = useDailyLog(useSelector)
 
   return (
     <View style={styles.container}>
@@ -20,7 +22,7 @@ export default function FoodIconsCard() {
 }
 
 export function JournalCard() {
-  const { dailyLog } = useDailyLogContext();
+  const  dailyLog  = useDailyLog(useSelector)
 
   const keysToExtract: (keyof dailyLogInterface)[] = [
     "somethingProductive",

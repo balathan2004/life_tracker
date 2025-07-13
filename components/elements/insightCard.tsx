@@ -1,17 +1,19 @@
+import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import { styles } from "@/styles/auth.css";
 import { useEffect, useState } from "react";
 import {
-    NativeSyntheticEvent,
-    TextInput,
-    TextInputChangeEventData,
-    View,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
 } from "react-native";
-import { useDailyLogContext } from "../context/dailyLogContext";
+import { useDispatch, useSelector } from "react-redux";
 import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export function TextInputCard() {
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+const dailyLog=useDailyLog(useSelector)
+const dispatch=useDispatch()
   const [data, setData] = useState({
     notes: "",
     somethingProductive: "",
@@ -30,7 +32,7 @@ export function TextInputCard() {
   };
 
   const handleSubmit = () => {
-    setDailyLog((prev) => ({ ...prev, ...data }));
+useUpdateDailyLog(dispatch,{...data})
   };
 
   useEffect(() => {

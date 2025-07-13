@@ -1,14 +1,15 @@
-import DailyLogHolder from "@/components/context/dailyLogContext";
 import LoadingHolder from "@/components/context/loadingContext";
 import ReplyHolder from "@/components/context/replyContext";
 import UserHolder from "@/components/context/userContext";
 import { SnackbarReply } from "@/components/elements/snackBarPopup";
 import { darkTheme } from "@/components/ui/themes";
+import { store } from "@/features/store";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 import "react-native-reanimated";
+import { Provider } from "react-redux";
 
 export default function RootLayout() {
   const [loaded] = useFonts({
@@ -22,7 +23,9 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={darkTheme}>
-      <DailyLogHolder>
+
+      <Provider store={store}>
+   
         <LoadingHolder>
           <ReplyHolder>
             <UserHolder>
@@ -47,8 +50,9 @@ export default function RootLayout() {
             </UserHolder>
           </ReplyHolder>
         </LoadingHolder>
-      </DailyLogHolder>
+
       <StatusBar style="auto" />
+      </Provider>
     </ThemeProvider>
   );
 }

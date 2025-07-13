@@ -1,4 +1,3 @@
-import { useDailyLogContext } from "@/components/context/dailyLogContext";
 import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import FoodIconsCard, {
@@ -8,18 +7,24 @@ import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/wakeUpcard";
 import WorkoutCard from "@/components/elements/workout_card";
-import { initDailyLog, ResponseConfig } from "@/components/interfaces";
+import { ResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { SendData } from "@/components/utils/fetching";
 import { domain_url } from "@/env";
+
+import { useDailyLog, useResetDailyLog } from "@/features/dispatchActions";
 import { globalStyles } from "@/styles/global.css";
 import { Link } from "expo-router";
 import moment from "moment";
 import { ScrollView, View } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+
 
 export default function Home() {
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+
+  const dailyLog=useDailyLog(useSelector)
+  const dispatch=useDispatch()
   const { userCred } = useUserContext();
   const { setReply } = useReplyContext();
 
@@ -49,11 +54,11 @@ export default function Home() {
 
   const handleDateChange = async () => {
     await handleSubmit();
-    setDailyLog(initDailyLog());
+    useResetDailyLog(dispatch);
   };
 
   const createNewDoc = () => {
-    setDailyLog(initDailyLog());
+    useResetDailyLog(dispatch);
   };
 
   return (

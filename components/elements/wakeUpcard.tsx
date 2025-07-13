@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import { useDailyLogContext } from "../context/dailyLogContext";
 import { CenterText } from "../ui/TextElements";
 
+import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import { globalStyles } from "@/styles/global.css";
 import { List } from "react-native-paper";
+import { useDispatch, useSelector } from "react-redux";
 import { WhiteButton } from "../ui/buttons";
-
 interface TimeCardProps {
   label: "Wake Up time"|"Sleep Time";
   fieldKey: "wakeUpTime" | "sleepTime"; // extend as needed
@@ -16,12 +16,15 @@ interface TimeCardProps {
 export default function TimeCard({ label, fieldKey }: TimeCardProps) {
   const [time, setTime] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+const dailyLog=useDailyLog(useSelector)
+const dispatch=useDispatch()
+
   const [expanded, setExpanded] = useState(false);
 
   const onChange = (seletedTime: any) => {
     if (seletedTime) {
-      setDailyLog((prev) => ({ ...prev, [fieldKey]: seletedTime.getTime() }));
+      useUpdateDailyLog(dispatch,{[fieldKey]: seletedTime.getTime() })
+     
     }
     setTime(seletedTime);
     setShowPicker(false);
@@ -30,7 +33,7 @@ export default function TimeCard({ label, fieldKey }: TimeCardProps) {
   const handleCurrentTime = () => {
     const newTime = new Date();
     if (newTime) {
-      setDailyLog((prev) => ({ ...prev, [fieldKey]: newTime.getTime() }));
+      useUpdateDailyLog(dispatch,{[fieldKey]: newTime.getTime()})
     }
     setTime(newTime);
   };

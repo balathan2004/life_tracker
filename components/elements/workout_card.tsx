@@ -1,3 +1,4 @@
+import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import { cardStyles } from "@/styles/cards.css";
 import React, { useEffect, useState } from "react";
 import {
@@ -7,13 +8,15 @@ import {
   View,
 } from "react-native";
 import { List } from "react-native-paper";
-import { useDailyLogContext } from "../context/dailyLogContext";
+import { useDispatch, useSelector } from "react-redux";
 import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export default function WorkoutCard() {
   const [expanded, setExpanded] = useState(false);
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+const dispatch=useDispatch()
+const dailyLog=useDailyLog(useSelector)
+
   const [workout, setWorkout] = useState("");
 
   const handleInput = (
@@ -24,8 +27,7 @@ export default function WorkoutCard() {
   };
 
   const handleSubmit = () => {
-    setDailyLog((prev) => ({ ...prev, workout }));
-  };
+useUpdateDailyLog(dispatch,{workout})  };
 
   useEffect(() => {
     setWorkout(dailyLog.workout || "");

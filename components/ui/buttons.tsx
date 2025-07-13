@@ -21,7 +21,7 @@ export function PrimaryButton({ children, ...props }: Props) {
           styles.pressable,
           {
             backgroundColor: isDisabled ? "gray" : "skyblue",
-            height: 45,
+            height: 40,
             borderRadius: 8,
           },
         ]}

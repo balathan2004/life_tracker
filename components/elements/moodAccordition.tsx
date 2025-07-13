@@ -1,7 +1,8 @@
+import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { List, RadioButton } from "react-native-paper";
-import { useDailyLogContext } from "../context/dailyLogContext";
+import { useDispatch, useSelector } from "react-redux";
 import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 
@@ -17,13 +18,15 @@ export const moods = [
 
 export default function MoodCard() {
   const [expanded, setExpanded] = useState(false);
-
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+  const dispatch=useDispatch()
+  const dailyLog=useDailyLog(useSelector)
+  
+  
   const [mood, setMood] = useState<mood>("okay");
 
   const handleSubmit = (value: mood) => {
     if (!value || !dailyLog) return;
-    setDailyLog((prev) => ({ ...prev, mood: value }));
+    useUpdateDailyLog(dispatch,{mood: value })
     setMood(value);
   };
 

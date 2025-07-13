@@ -9,7 +9,7 @@ export default function Layout() {
 
   useEffect(() => {
     if (!userCred) {
-      console.log(userCred)
+      console.log(userCred);
       router.replace("/(auth)");
     }
   }, []);
@@ -35,6 +35,7 @@ export default function Layout() {
           ),
         }}
       ></Tabs.Screen>
+      
     </Tabs>
   );
 }

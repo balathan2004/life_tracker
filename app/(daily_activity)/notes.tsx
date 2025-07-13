@@ -1,7 +1,7 @@
-import { useDailyLogContext } from "@/components/context/dailyLogContext";
 import { useReplyContext } from "@/components/context/replyContext";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
+import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
@@ -13,9 +13,10 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const { dailyLog, setDailyLog } = useDailyLogContext();
+  const dailyLog=useDailyLog(useSelector)
   const { setReply } = useReplyContext();
   const [data, setData] = useState({
     notes: "",
@@ -24,6 +25,7 @@ export default function Home() {
     height: "",
     weight: "",
   });
+  const dispatch=useDispatch()
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -36,11 +38,10 @@ export default function Home() {
 
   const handleSubmit = () => {
     const { height, weight, ...left } = data;
-    setDailyLog((prev) => ({
-      ...prev,
-      ...left,
-      bodyMeasurements: { height, weight },
-    }));
+    useUpdateDailyLog(dispatch,{
+       bodyMeasurements: { height, weight },
+    })
+   
     setReply("saved");
   };
 
@@ -59,10 +60,11 @@ export default function Home() {
   return (
     <KeyboardAwareScrollView
       style={globalStyles.safearea}
-      contentContainerStyle={globalStyles.safearea}
+   
       enableOnAndroid={true}
-      extraScrollHeight={50} // pushes the focused input into view
+      extraScrollHeight={100} // pushes the focused input into view
       keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
     >
       <View style={globalStyles.card}>
         <View>
