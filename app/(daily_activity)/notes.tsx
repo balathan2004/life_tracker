@@ -39,6 +39,7 @@ export default function Home() {
   const handleSubmit = () => {
     const { height, weight, ...left } = data;
     useUpdateDailyLog(dispatch,{
+      ...left,
        bodyMeasurements: { height, weight },
     })
    
