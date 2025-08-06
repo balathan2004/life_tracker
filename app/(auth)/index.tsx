@@ -1,5 +1,4 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
-import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
@@ -16,15 +15,14 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
 
   const { setUserCred } = useUserContext();
 
-  const {setReply}=useReplyContext()
-
-  const [login,{isLoading}]=useLoginMutation()
+  const [login, { isLoading }] = useLoginMutation();
 
   const { loading, setLoading } = useLoadingContext();
 
@@ -32,9 +30,9 @@ export default function Login() {
 
   const { colors } = useTheme();
 
-  useEffect(()=>{
-    setLoading(isLoading)
-  },[isLoading])
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -48,18 +46,20 @@ export default function Login() {
     if (!userData.email || !userData.password) {
       return;
     }
-    
 
-    const res=(await login(userData).unwrap())
+    const res = await login(userData).unwrap();
 
-    setMessage(res.message)
-    setReply(res.message)
+    setMessage(res.message);
+    Toast.show({
+      type: "success",
+      text1: res.message,
+    });
+
     if (res && res.status == 200 && res.credentials) {
       await storeData({ key: "userCred", value: res.credentials });
       setUserCred(res.credentials);
-      router.push('/(tabs)')
+      router.push("/(tabs)");
     }
-  
   };
 
   useFocusEffect(
@@ -77,7 +77,7 @@ export default function Login() {
         <View>
           <ThemeText style={{ marginVertical: 5 }}>Email</ThemeText>
           <TextInput
-             autoCapitalize="none"
+            autoCapitalize="none"
             onChange={(e) => handleInput(e, "email")}
             value={userData.email}
             style={styles.input}
@@ -87,7 +87,7 @@ export default function Login() {
         <View>
           <ThemeText style={{ marginVertical: 5 }}>Password</ThemeText>
           <TextInput
-          autoCapitalize="none"
+            autoCapitalize="none"
             onChange={(e) => handleInput(e, "password")}
             value={userData.password}
             style={styles.input}

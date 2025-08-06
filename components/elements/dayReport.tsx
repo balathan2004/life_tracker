@@ -39,8 +39,8 @@ export default function DayReport({ data }: props) {
       <View style={styles.right}>
         <ThemeText>{formatDate(data.date)}</ThemeText>
         <ThemeText>
-          {moment(data.wakeUpTime).format("hh :mm A")} -{" "}
-          {moment(data.sleepTime).format("hh :mm A")}
+          {data.wakeUpTime?moment(data.wakeUpTime).format("hh :mm A"):"Time Not Saved"} -{" "}
+          {data.sleepTime?moment(data.sleepTime).format("hh :mm A"):"Time Not Saved"}
         </ThemeText>
 
         <ThemeText>{data.somethingProductive}</ThemeText>

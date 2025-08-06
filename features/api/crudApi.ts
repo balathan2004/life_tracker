@@ -13,7 +13,7 @@ export const crudApi = baseApi.injectEndpoints({
     }),
 
      getAllDocs:builder.query<allDocResponseConfig,{uid:string}>({
-      query: (uid) => ({
+      query: ({uid}) => ({
         url: `api/get_docs?userId=${uid}`,
 
 

@@ -7,9 +7,11 @@ import {
 import { CenterText } from "@/components/ui/TextElements";
 import { useLazyGetAllDocsQuery } from "@/features/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
+import { useFocusEffect } from "expo-router";
 import moment from "moment";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 export default function Home() {
   const { userCred } = useUserContext();
@@ -26,7 +28,6 @@ export default function Home() {
  
     const response =await getAllDocs({uid:userCred.uid}).unwrap()
 
-    console.log(response)
  
     if (response && response.status==200) {
       const values: dailyLogInterface[] = Object.values(response.docs).sort(
@@ -43,18 +44,22 @@ export default function Home() {
 
   useEffect(()=>{
     fetchDocs()
+    Toast.show({
+      type:"success"
+      ,text1:"hello wolrd"
+    })
   },[])
 
   useEffect(()=>{
     setLoading(isLoading)
   },[isLoading])
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     // This runs every time the screen is focused (opened or came back to)
-  //     fetchDocs(); // or any logic you want
-  //   }, [])
-  // );
+  useFocusEffect(
+    useCallback(() => {
+      // This runs every time the screen is focused (opened or came back to)
+      fetchDocs(); // or any logic you want
+    }, [])
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -72,6 +77,9 @@ export default function Home() {
 
   return (
     <View style={globalStyles.safearea}>
+    <View>
+      <CenterText>{userCred?.display_name}</CenterText>
+    </View>
       {loading ? (
         <CenterText>Loading</CenterText>
       ) : (

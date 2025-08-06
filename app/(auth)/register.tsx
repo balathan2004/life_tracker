@@ -1,5 +1,4 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
-import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
@@ -16,6 +15,7 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
@@ -23,7 +23,7 @@ export default function Login() {
   const { loading, setLoading } = useLoadingContext();
   const { setUserCred } = useUserContext();
   const [message, setMessage] = useState("");
-  const { setReply } = useReplyContext();
+
     const [register,{isLoading}]=useRegisterMutation()
 
   const handleInput = (
@@ -42,7 +42,10 @@ export default function Login() {
       const res=(await register(userData).unwrap())
 
     setMessage(res.message);
-    setReply(res.message);
+     Toast.show({
+          type:"success",
+          text1:res.message
+        })
     if (res && res.status == 200 && res.credentials) {
       await storeData({ key: "userCred", value: res.credentials });
       setUserCred(res.credentials);

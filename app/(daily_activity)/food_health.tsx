@@ -1,4 +1,3 @@
-import { useReplyContext } from "@/components/context/replyContext";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
@@ -12,6 +11,7 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
+import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 
 type Meals = {
@@ -25,7 +25,7 @@ export default function Home() {
   const dailyLog=useDailyLog(useSelector)
   const dispatch=useDispatch()
  
-  const { setReply } = useReplyContext();
+
 
   const [meals, setMeals] = useState({
     breakfast: "",
@@ -40,8 +40,10 @@ export default function Home() {
     ) as Meals;
 
     useUpdateDailyLog(dispatch,{  meals:trimmedValue})
-  
-    setReply("saved");
+   Toast.show({
+        type:"success",
+        text1:"Updated"
+      })
   };
 
   const handleInput = (

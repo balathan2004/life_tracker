@@ -1,4 +1,3 @@
-import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import { dailyLogInterface, ResponseConfig } from "@/components/interfaces";
 import { WhiteButton } from "@/components/ui/buttons";
@@ -10,6 +9,7 @@ import moment from "moment";
 import React, { useEffect } from "react";
 import { Alert, View } from "react-native";
 import JSONTree from "react-native-json-tree";
+import Toast from "react-native-toast-message";
 
 const formatDate = (date: string) => {
   return moment(date, "DD-MM-YYYY").format("DD MMMM YYYY");
@@ -19,7 +19,7 @@ export default function LogDetail() {
   // all query‑string params arrive here as strings
   const { doc } = useLocalSearchParams<{ doc: string }>();
   const navigation = useNavigation();
-  const { setReply } = useReplyContext();
+
   const { userCred } = useUserContext();
   // convert the JSON string back into your object
   const log: dailyLogInterface = JSON.parse(doc);
@@ -58,7 +58,10 @@ export default function LogDetail() {
       `${domain_url}/api/delete_doc?user_id=${userCred.uid}&doc_id=${log.date}`
     )) as ResponseConfig;
 
-    setReply(response.message);
+     Toast.show({
+          type:"success",
+          text1:response.message
+        })
     if (response.status == 200) {
       router.back();
     }

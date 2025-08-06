@@ -1,4 +1,3 @@
-import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
 import FoodIconsCard, {
   JournalCard,
@@ -16,27 +15,29 @@ import { globalStyles } from "@/styles/global.css";
 import { Link } from "expo-router";
 import moment from "moment";
 import { ScrollView, View } from "react-native";
+import Toast from "react-native-toast-message";
 import { useDispatch, useSelector } from "react-redux";
 
-
 export default function Home() {
-
-  const dailyLog=useDailyLog(useSelector)
-  const dispatch=useDispatch()
+  const dailyLog = useDailyLog(useSelector);
+  const dispatch = useDispatch();
   const { userCred } = useUserContext();
-  const { setReply } = useReplyContext();
 
-  const [updateDoc,{isLoading}]=useUpdateDocMutation()
+  const [updateDoc, { isLoading }] = useUpdateDocMutation();
 
   const handleSubmit = async () => {
     if (!userCred || !dailyLog) {
       return;
     }
 
-
-   const res= await updateDoc({ uid: userCred?.uid, data: dailyLog }).unwrap()
-
-    setReply(res.message);
+    const res = await updateDoc({
+      uid: userCred?.uid,
+      data: dailyLog,
+    }).unwrap();
+    Toast.show({
+      type: "success",
+      text1: res.message,
+    });
   };
 
   const dayCompare = () => {
@@ -71,7 +72,7 @@ export default function Home() {
       <TimeCard label="Wake Up time" fieldKey="wakeUpTime" />
       <TimeCard label="Sleep Time" fieldKey="sleepTime" />
 
-      <View >
+      <View>
         <Link href="/(daily_activity)/food_health">
           <FoodIconsCard />
         </Link>

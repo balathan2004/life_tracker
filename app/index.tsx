@@ -10,12 +10,8 @@ import { Image, View } from "react-native";
 import { useDispatch } from "react-redux";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
-
-  
   const { userCred, setUserCred } = useUserContext();
-  const dispatch=useDispatch()
-
-
+  const dispatch = useDispatch();
 
   const retrieveCred = async () => {
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
@@ -28,7 +24,7 @@ export default function Home() {
     }
 
     setUserCred(userData);
-    useSetDailyLog(dispatch,dailyLog)
+    useSetDailyLog(dispatch, dailyLog);
     router.replace("/(tabs)");
   };
 
