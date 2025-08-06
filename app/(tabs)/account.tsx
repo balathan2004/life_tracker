@@ -2,12 +2,10 @@ import { useLoadingContext } from "@/components/context/loadingContext";
 import { useUserContext } from "@/components/context/userContext";
 import DayReport from "@/components/elements/dayReport";
 import {
-  allDocResponseConfig,
-  dailyLogInterface,
+  dailyLogInterface
 } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
-import { fetchData } from "@/components/utils/fetching";
-import { domain_url } from "@/env";
+import { useLazyGetAllDocsQuery } from "@/features/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
 import moment from "moment";
 import { useEffect, useState } from "react";
@@ -18,13 +16,19 @@ export default function Home() {
   const [docs, setDocs] = useState<dailyLogInterface[]>([]);
   const { loading, setLoading } = useLoadingContext();
   const [refreshing, setRefreshing] = useState(false);
+  const [getAllDocs,{isLoading}]=useLazyGetAllDocsQuery()
 
   const fetchDocs = async () => {
-    setLoading(true);
-    const response = (await fetchData(
-      `${domain_url}/api/get_docs?userId=${userCred?.uid}`
-    )) as allDocResponseConfig;
-    if (response) {
+
+    if(!userCred || !userCred.uid){
+      return
+    }
+ 
+    const response =await getAllDocs({uid:userCred.uid}).unwrap()
+
+    console.log(response)
+ 
+    if (response && response.status==200) {
       const values: dailyLogInterface[] = Object.values(response.docs).sort(
         (a, b) => {
           const dateA = moment(a.date, "DD-MM-YYYY");
@@ -34,12 +38,17 @@ export default function Home() {
       );
       setDocs(values);
     }
-    setLoading(false);
+
   };
 
   useEffect(()=>{
     fetchDocs()
   },[])
+
+  useEffect(()=>{
+    setLoading(isLoading)
+  },[isLoading])
+
   // useFocusEffect(
   //   useCallback(() => {
   //     // This runs every time the screen is focused (opened or came back to)

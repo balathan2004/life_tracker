@@ -1,17 +1,15 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
 import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
-import { AuthResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { storeData } from "@/components/utils/data_store";
-import { SendData } from "@/components/utils/fetching";
-import { domain_url } from "@/env";
+import { useLoginMutation } from "@/features/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { Link, router } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
   TextInput,
@@ -26,11 +24,17 @@ export default function Login() {
 
   const {setReply}=useReplyContext()
 
+  const [login,{isLoading}]=useLoginMutation()
+
   const { loading, setLoading } = useLoadingContext();
 
   const [message, setMessage] = useState("");
 
   const { colors } = useTheme();
+
+  useEffect(()=>{
+    setLoading(isLoading)
+  },[isLoading])
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -44,14 +48,10 @@ export default function Login() {
     if (!userData.email || !userData.password) {
       return;
     }
-    setLoading(true);
+    
 
-    const res = (await SendData({
-      route: `${domain_url}/auth/login`,
-      data: { ...userData },
-    })) as AuthResponseConfig;
+    const res=(await login(userData).unwrap())
 
-    console.log(res);
     setMessage(res.message)
     setReply(res.message)
     if (res && res.status == 200 && res.credentials) {

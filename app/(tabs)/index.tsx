@@ -7,11 +7,9 @@ import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/wakeUpcard";
 import WorkoutCard from "@/components/elements/workout_card";
-import { ResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
-import { SendData } from "@/components/utils/fetching";
-import { domain_url } from "@/env";
+import { useUpdateDocMutation } from "@/features/api/crudApi";
 
 import { useDailyLog, useResetDailyLog } from "@/features/dispatchActions";
 import { globalStyles } from "@/styles/global.css";
@@ -28,15 +26,15 @@ export default function Home() {
   const { userCred } = useUserContext();
   const { setReply } = useReplyContext();
 
+  const [updateDoc,{isLoading}]=useUpdateDocMutation()
+
   const handleSubmit = async () => {
     if (!userCred || !dailyLog) {
       return;
     }
 
-    const res = (await SendData({
-      route: `${domain_url}/api/update_doc`,
-      data: { uid: userCred?.uid, data: dailyLog },
-    })) as ResponseConfig;
+
+   const res= await updateDoc({ uid: userCred?.uid, data: dailyLog }).unwrap()
 
     setReply(res.message);
   };

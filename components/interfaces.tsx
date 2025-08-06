@@ -19,7 +19,7 @@ export interface UserDataInterface {
   created_at: number;
 }
 
-export interface allDocResponseConfig {
+export interface allDocResponseConfig  extends ResponseConfig{
   docs: {
     [date: string]: dailyLogInterface;
   };

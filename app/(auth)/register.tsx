@@ -1,17 +1,15 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
 import { useReplyContext } from "@/components/context/replyContext";
 import { useUserContext } from "@/components/context/userContext";
-import { AuthResponseConfig } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { storeData } from "@/components/utils/data_store";
-import { SendData } from "@/components/utils/fetching";
-import { domain_url } from "@/env";
+import { useRegisterMutation } from "@/features/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
   TextInput,
@@ -26,6 +24,7 @@ export default function Login() {
   const { setUserCred } = useUserContext();
   const [message, setMessage] = useState("");
   const { setReply } = useReplyContext();
+    const [register,{isLoading}]=useRegisterMutation()
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -39,14 +38,9 @@ export default function Login() {
     if (!userData.email || !userData.password) {
       return;
     }
-    setLoading(true);
-    console.log(userData);
-    const res = (await SendData({
-      route: `${domain_url}/auth/register`,
-      data: { ...userData },
-    })) as AuthResponseConfig;
+    
+      const res=(await register(userData).unwrap())
 
-    console.log(res);
     setMessage(res.message);
     setReply(res.message);
     if (res && res.status == 200 && res.credentials) {
@@ -55,6 +49,10 @@ export default function Login() {
       router.push("/(tabs)");
     }
   };
+
+    useEffect(()=>{
+      setLoading(isLoading)
+    },[isLoading])
 
   useFocusEffect(
     useCallback(() => {
