@@ -8,10 +8,12 @@ export default function QuoteBar() {
   useEffect(() => {
     const getQuote = async () => {
       const res = await fetchData(
-        "https://collab-quotes-server.vercel.app/posts/get_one_random"
+        "https://collab-quotes-server.vercel.app/public/get_one_random"
       );
 
-      setQuote(res.quote.quote);
+      console.log(res);
+
+      setQuote(res.quote[0].quote);
     };
 
     getQuote();

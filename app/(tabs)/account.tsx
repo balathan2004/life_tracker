@@ -1,9 +1,7 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
 import { useUserContext } from "@/components/context/userContext";
 import DayReport from "@/components/elements/dayReport";
-import {
-  dailyLogInterface
-} from "@/components/interfaces";
+import { dailyLogInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { useLazyGetAllDocsQuery } from "@/features/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
@@ -11,25 +9,23 @@ import { useFocusEffect } from "expo-router";
 import moment from "moment";
 import { useCallback, useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
-import Toast from "react-native-toast-message";
+
 
 export default function Home() {
   const { userCred } = useUserContext();
   const [docs, setDocs] = useState<dailyLogInterface[]>([]);
   const { loading, setLoading } = useLoadingContext();
   const [refreshing, setRefreshing] = useState(false);
-  const [getAllDocs,{isLoading}]=useLazyGetAllDocsQuery()
+  const [getAllDocs, { isLoading }] = useLazyGetAllDocsQuery();
 
   const fetchDocs = async () => {
-
-    if(!userCred || !userCred.uid){
-      return
+    if (!userCred || !userCred.uid) {
+      return;
     }
- 
-    const response =await getAllDocs({uid:userCred.uid}).unwrap()
 
- 
-    if (response && response.status==200) {
+    const response = await getAllDocs({ uid: userCred.uid }).unwrap();
+
+    if (response && response.status == 200) {
       const values: dailyLogInterface[] = Object.values(response.docs).sort(
         (a, b) => {
           const dateA = moment(a.date, "DD-MM-YYYY");
@@ -39,20 +35,15 @@ export default function Home() {
       );
       setDocs(values);
     }
-
   };
 
-  useEffect(()=>{
-    fetchDocs()
-    Toast.show({
-      type:"success"
-      ,text1:"hello wolrd"
-    })
-  },[])
+  useEffect(() => {
+    fetchDocs();
+  }, []);
 
-  useEffect(()=>{
-    setLoading(isLoading)
-  },[isLoading])
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
 
   useFocusEffect(
     useCallback(() => {
@@ -77,9 +68,9 @@ export default function Home() {
 
   return (
     <View style={globalStyles.safearea}>
-    <View>
-      <CenterText>{userCred?.display_name}</CenterText>
-    </View>
+      <View>
+        <CenterText>{userCred?.display_name}</CenterText>
+      </View>
       {loading ? (
         <CenterText>Loading</CenterText>
       ) : (
