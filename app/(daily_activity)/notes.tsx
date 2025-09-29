@@ -1,22 +1,22 @@
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
 import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
+import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
 import { useEffect, useState } from "react";
 import {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputChangeEventData,
-  View,
+    NativeSyntheticEvent,
+    TextInput,
+    TextInputChangeEventData,
+    View,
 } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 export default function Home() {
-  const dailyLog=useDailyLog(useSelector)
+  const { dailyLog } = useAuth();
 
   const [data, setData] = useState({
     notes: "",
@@ -25,7 +25,7 @@ export default function Home() {
     height: "",
     weight: "",
   });
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -38,16 +38,15 @@ export default function Home() {
 
   const handleSubmit = () => {
     const { height, weight, ...left } = data;
-    useUpdateDailyLog(dispatch,{
+    updateDailyLog({
       ...left,
-       bodyMeasurements: { height, weight },
-    })
-   
-    Toast.show({
-      type:"success",
-      text1:"saved"
-    })
+      bodyMeasurements: { height, weight },
+    });
 
+    Toast.show({
+      type: "success",
+      text1: "saved",
+    });
   };
 
   useEffect(() => {
@@ -65,7 +64,6 @@ export default function Home() {
   return (
     <KeyboardAwareScrollView
       style={globalStyles.safearea}
-   
       enableOnAndroid={true}
       extraScrollHeight={100} // pushes the focused input into view
       keyboardShouldPersistTaps="handled"

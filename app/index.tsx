@@ -1,31 +1,49 @@
-import { useUserContext } from "@/components/context/userContext";
-import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
+import {
+  dailyLogInterface,
+  initDailyLog,
+  UserDataInterface,
+} from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
-import { useSetDailyLog } from "@/features/dispatchActions";
+import { useGetAccessTokenMutation } from "@/redux/api/authApi";
+import { useAuth } from "@/redux/api/authSlice";
 import { globalStyles } from "@/styles/global.css";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, View } from "react-native";
-import { useDispatch } from "react-redux";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
-  const { userCred, setUserCred } = useUserContext();
-  const dispatch = useDispatch();
+  const { setDailyLogAction } = useAuth();
+
+  const [getJwt, { isLoading }] = useGetAccessTokenMutation();
 
   const retrieveCred = async () => {
+    // await AsyncStorage.removeItem("dailyLog");
+    //     await AsyncStorage.removeItem("userCred");
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
+    const jwt = ((await getData("refreshToken")) as string) || null;
+    const dailyLog = ((await getData("dailyLog")) as dailyLogInterface) || null;
 
-    const dailyLog = (await getData("dailyLog")) as dailyLogInterface;
+    if (!dailyLog) {
+      setDailyLogAction(initDailyLog());
+    } else {
+      setDailyLogAction(dailyLog);
+    }
 
-    if (!userData) {
+    if (!userData || !jwt) {
       router.replace("/(auth)");
       return;
     }
 
-    setUserCred(userData);
-    useSetDailyLog(dispatch, dailyLog);
-    router.replace("/(tabs)");
+    await getJwt(jwt).unwrap()
+      .then((res) => {
+        console.log(res);
+        router.replace("/(tabs)");
+      })
+      .catch((err) => {
+        console.log({err});
+        router.replace("/(auth)");
+      });
   };
 
   useEffect(() => {

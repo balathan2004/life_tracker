@@ -1,28 +1,24 @@
+import { useAuth } from "@/redux/api/authSlice";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StyleSheet, View } from "react-native";
-
-import { useDailyLog } from "@/features/dispatchActions";
-import { useSelector } from "react-redux";
-import { dailyLogInterface, foods } from "../interfaces";
+import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 
 export default function FoodIconsCard() {
-  const  dailyLog  = useDailyLog(useSelector)
+  const { dailyLog } = useAuth();
 
   return (
     <View style={styles.container}>
-      {(Object.entries(dailyLog.meals) as [foods, string][]).map(
-        ([key, value]) => (
-          <SingleElement key={key} keyName={key} value={value}></SingleElement>
-        )
-      )}
+      {Object.entries(dailyLog?.meals).map(([key, value]) => (
+        <SingleElement key={key} keyName={key} value={value}></SingleElement>
+      ))}
     </View>
   );
 }
 
 export function JournalCard() {
-  const  dailyLog  = useDailyLog(useSelector)
+  const { dailyLog } = useAuth();
 
   const keysToExtract: (keyof dailyLogInterface)[] = [
     "somethingProductive",
@@ -66,7 +62,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     paddingVertical: 20,
-  
   },
   single_element: {
     backgroundColor: "gray",

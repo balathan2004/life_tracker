@@ -1,18 +1,15 @@
-import { useUserContext } from "@/components/context/userContext";
-import { dailyLogInterface, ResponseConfig } from "@/components/interfaces";
+import { dailyLogInterface } from "@/components/interfaces";
 import { WhiteButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
-import { fetchData } from "@/components/utils/fetching";
-import { domain_url } from "@/env";
-import { router, useLocalSearchParams, useNavigation } from "expo-router";
-import moment from "moment";
+import { useAuth } from "@/redux/api/authSlice";
+import { formatDate } from 'date-fns';
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, View } from "react-native";
 import JSONTree from "react-native-json-tree";
-import Toast from "react-native-toast-message";
 
-const formatDate = (date: string) => {
-  return moment(date, "DD-MM-YYYY").format("DD MMMM YYYY");
+const formatDateNow = (date: string) => {
+  return formatDate(date,'dd mm yyyy')
 };
 
 export default function LogDetail() {
@@ -20,13 +17,13 @@ export default function LogDetail() {
   const { doc } = useLocalSearchParams<{ doc: string }>();
   const navigation = useNavigation();
 
-  const { userCred } = useUserContext();
+  const { userData } = useAuth();
   // convert the JSON string back into your object
   const log: dailyLogInterface = JSON.parse(doc);
 
   useEffect(() => {
     if (log?.date) {
-      navigation.setOptions({ title: `${formatDate(log.date)} Log` });
+      navigation.setOptions({ title: `${formatDateNow(log.date)} Log` });
     }
   }, [log.date]);
 
@@ -50,21 +47,21 @@ export default function LogDetail() {
   };
 
   const handleDelete = async () => {
-    if (!log || !log.date || !userCred) {
-      return;
-    }
+    // if (!log || !log.date || !userData) {
+    //   return;
+    // }
 
-    const response = (await fetchData(
-      `${domain_url}/api/delete_doc?user_id=${userCred.uid}&doc_id=${log.date}`
-    )) as ResponseConfig;
+    // const response = (await fetchData(
+    //   `${domain_url}/api/delete_doc?user_id=${userData.uid}&doc_id=${log.date}`
+    // )) as ResponseConfig;
 
-     Toast.show({
-          type:"success",
-          text1:response.message
-        })
-    if (response.status == 200) {
-      router.back();
-    }
+    //  Toast.show({
+    //       type:"success",
+    //       text1:response.message
+    //     })
+    // if (response.status == 200) {
+    //   router.back();
+    // }
   };
 
   const customGetItemString = (

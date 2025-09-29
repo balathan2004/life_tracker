@@ -3,28 +3,25 @@ import { View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { CenterText } from "../ui/TextElements";
 
-import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
+import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
 import { globalStyles } from "@/styles/global.css";
 import { List } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
 import { WhiteButton } from "../ui/buttons";
 interface TimeCardProps {
-  label: "Wake Up time"|"Sleep Time";
+  label: "Wake Up time" | "Sleep Time";
   fieldKey: "wakeUpTime" | "sleepTime"; // extend as needed
 }
 
 export default function TimeCard({ label, fieldKey }: TimeCardProps) {
   const [time, setTime] = useState<Date | null>(null);
   const [showPicker, setShowPicker] = useState(false);
-const dailyLog=useDailyLog(useSelector)
-const dispatch=useDispatch()
+  const { dailyLog } = useAuth();
 
   const [expanded, setExpanded] = useState(false);
 
   const onChange = (seletedTime: any) => {
     if (seletedTime) {
-      useUpdateDailyLog(dispatch,{[fieldKey]: seletedTime.getTime() })
-     
+      updateDailyLog({ [fieldKey]: seletedTime.getTime() });
     }
     setTime(seletedTime);
     setShowPicker(false);
@@ -33,7 +30,7 @@ const dispatch=useDispatch()
   const handleCurrentTime = () => {
     const newTime = new Date();
     if (newTime) {
-      useUpdateDailyLog(dispatch,{[fieldKey]: newTime.getTime()})
+      updateDailyLog({ [fieldKey]: newTime.getTime() });
     }
     setTime(newTime);
   };
@@ -52,7 +49,6 @@ const dispatch=useDispatch()
             title={` ${label}  is  not added `}
             expanded={expanded}
             onPress={() => setExpanded(!expanded)}
-       
           >
             <View style={globalStyles.wakeupCard}>
               <CenterText>Set {label}</CenterText>
@@ -88,7 +84,6 @@ const dispatch=useDispatch()
               ).toLocaleTimeString()}`}
               expanded={expanded}
               onPress={() => setExpanded(!expanded)}
-     
             >
               <View>
                 <WhiteButton onPress={handleCurrentTime}>

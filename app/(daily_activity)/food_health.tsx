@@ -1,18 +1,18 @@
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
+import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
 import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import React, { useEffect, useState } from "react";
 import {
-  NativeSyntheticEvent,
-  ScrollView,
-  TextInput,
-  TextInputChangeEventData,
-  View,
+    NativeSyntheticEvent,
+    ScrollView,
+    TextInput,
+    TextInputChangeEventData,
+    View,
 } from "react-native";
 import Toast from "react-native-toast-message";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 type Meals = {
   breakfast: string;
@@ -22,7 +22,7 @@ type Meals = {
 };
 
 export default function Home() {
-  const dailyLog=useDailyLog(useSelector)
+  const {dailyLog}=useAuth()
   const dispatch=useDispatch()
  
 
@@ -39,7 +39,7 @@ export default function Home() {
       Object.entries(meals).map(([key, value]) => [key, value.trim()])
     ) as Meals;
 
-    useUpdateDailyLog(dispatch,{  meals:trimmedValue})
+    updateDailyLog({  meals:trimmedValue})
    Toast.show({
         type:"success",
         text1:"Updated"

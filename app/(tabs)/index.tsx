@@ -1,37 +1,30 @@
-import { useUserContext } from "@/components/context/userContext";
-import FoodIconsCard, {
-  JournalCard,
-} from "@/components/elements/foodIconsCard";
+import { JournalCard } from "@/components/elements/foodIconsCard";
 import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/wakeUpcard";
 import WorkoutCard from "@/components/elements/workout_card";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
-import { useUpdateDocMutation } from "@/features/api/crudApi";
-
-import { useDailyLog, useResetDailyLog } from "@/features/dispatchActions";
+import { resetDailyLog, useAuth } from "@/redux/api/authSlice";
+import { useUpdateDocMutation } from "@/redux/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
+import { isBefore, parseISO, startOfDay } from "date-fns";
 import { Link } from "expo-router";
-import moment from "moment";
 import { ScrollView, View } from "react-native";
 import Toast from "react-native-toast-message";
-import { useDispatch, useSelector } from "react-redux";
 
 export default function Home() {
-  const dailyLog = useDailyLog(useSelector);
-  const dispatch = useDispatch();
-  const { userCred } = useUserContext();
+  const { dailyLog, userData } = useAuth();
 
   const [updateDoc, { isLoading }] = useUpdateDocMutation();
 
   const handleSubmit = async () => {
-    if (!userCred || !dailyLog) {
+    if (!userData || !dailyLog) {
       return;
     }
 
     const res = await updateDoc({
-      uid: userCred?.uid,
+      uid: userData?.uid,
       data: dailyLog,
     }).unwrap();
     Toast.show({
@@ -41,23 +34,21 @@ export default function Home() {
   };
 
   const dayCompare = () => {
-    const date = dailyLog?.date;
-    const savedDate = moment(date, "DD-MM-YYYY").startOf("day");
-    const today = moment().startOf("day");
+    if (!dailyLog?.date) return false;
 
-    if (savedDate.isBefore(today)) {
-      return true;
-    }
-    return false;
+    const savedDate = startOfDay(parseISO(dailyLog.date));
+    const today = startOfDay(new Date());
+
+    return isBefore(savedDate, today);
   };
 
   const handleDateChange = async () => {
     await handleSubmit();
-    useResetDailyLog(dispatch);
+    resetDailyLog();
   };
 
   const createNewDoc = () => {
-    useResetDailyLog(dispatch);
+    resetDailyLog();
   };
 
   return (
@@ -72,11 +63,11 @@ export default function Home() {
       <TimeCard label="Wake Up time" fieldKey="wakeUpTime" />
       <TimeCard label="Sleep Time" fieldKey="sleepTime" />
 
-      <View>
+      {/* <View>
         <Link href="/(daily_activity)/food_health">
           <FoodIconsCard />
         </Link>
-      </View>
+      </View> */}
 
       <View>
         <WorkoutCard />

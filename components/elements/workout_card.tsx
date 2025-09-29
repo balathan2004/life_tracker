@@ -1,21 +1,21 @@
-import { useDailyLog, useUpdateDailyLog } from "@/features/dispatchActions";
+import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
 import { cardStyles } from "@/styles/cards.css";
 import React, { useEffect, useState } from "react";
 import {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputChangeEventData,
-  View,
+    NativeSyntheticEvent,
+    TextInput,
+    TextInputChangeEventData,
+    View,
 } from "react-native";
 import { List } from "react-native-paper";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export default function WorkoutCard() {
   const [expanded, setExpanded] = useState(false);
-const dispatch=useDispatch()
-const dailyLog=useDailyLog(useSelector)
+  const dispatch = useDispatch();
+  const { dailyLog } = useAuth();
 
   const [workout, setWorkout] = useState("");
 
@@ -27,7 +27,8 @@ const dailyLog=useDailyLog(useSelector)
   };
 
   const handleSubmit = () => {
-useUpdateDailyLog(dispatch,{workout})  };
+    updateDailyLog({ workout });
+  };
 
   useEffect(() => {
     setWorkout(dailyLog.workout || "");

@@ -1,15 +1,15 @@
-import { useUserContext } from "@/components/context/userContext";
+import { useAuth } from "@/redux/api/authSlice";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import { router, Tabs } from "expo-router";
 import { useEffect } from "react";
 
 export default function Layout() {
-  const { userCred } = useUserContext();
+  const { userData } = useAuth();
 
   useEffect(() => {
-    if (!userCred) {
-      console.log(userCred);
+    if (!userData) {
+      console.log(userData);
       router.replace("/(auth)");
     }
   }, []);
@@ -35,7 +35,6 @@ export default function Layout() {
           ),
         }}
       ></Tabs.Screen>
-      
     </Tabs>
   );
 }

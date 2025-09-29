@@ -1,19 +1,17 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
-import { useUserContext } from "@/components/context/userContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
-import { storeData } from "@/components/utils/data_store";
-import { useRegisterMutation } from "@/features/api/authApi";
+import { useRegisterMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect } from "@react-navigation/native";
 import { router } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import {
-  NativeSyntheticEvent,
-  TextInput,
-  TextInputChangeEventData,
-  View,
+    NativeSyntheticEvent,
+    TextInput,
+    TextInputChangeEventData,
+    View,
 } from "react-native";
 import Toast from "react-native-toast-message";
 
@@ -21,10 +19,10 @@ export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
 
   const { loading, setLoading } = useLoadingContext();
-  const { setUserCred } = useUserContext();
+
   const [message, setMessage] = useState("");
 
-    const [register,{isLoading}]=useRegisterMutation()
+  const [register, { isLoading }] = useRegisterMutation();
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -38,24 +36,22 @@ export default function Login() {
     if (!userData.email || !userData.password) {
       return;
     }
-    
-      const res=(await register(userData).unwrap())
+
+    const res = await register(userData).unwrap();
 
     setMessage(res.message);
-     Toast.show({
-          type:"success",
-          text1:res.message
-        })
-    if (res && res.status == 200 && res.credentials) {
-      await storeData({ key: "userCred", value: res.credentials });
-      setUserCred(res.credentials);
+    Toast.show({
+      type: "success",
+      text1: res.message,
+    });
+    if (res && res.credentials) {
       router.push("/(tabs)");
     }
   };
 
-    useEffect(()=>{
-      setLoading(isLoading)
-    },[isLoading])
+  useEffect(() => {
+    setLoading(isLoading);
+  }, [isLoading]);
 
   useFocusEffect(
     useCallback(() => {

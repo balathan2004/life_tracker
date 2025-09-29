@@ -1,75 +1,39 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
-import { useUserContext } from "@/components/context/userContext";
 import DayReport from "@/components/elements/dayReport";
-import { dailyLogInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
-import { useLazyGetAllDocsQuery } from "@/features/api/crudApi";
+import { useAuth } from "@/redux/api/authSlice";
+import { useGetAllDocsQuery } from "@/redux/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
-import { useFocusEffect } from "expo-router";
-import moment from "moment";
-import { useCallback, useEffect, useState } from "react";
+import { isBefore } from "date-fns";
+import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 
+function areConsecutiveDays(day1: string | null, day2: string | null) {
+  if (!day1 || !day2) return false;
+
+  return isBefore(day1, day2);
+}
 
 export default function Home() {
-  const { userCred } = useUserContext();
-  const [docs, setDocs] = useState<dailyLogInterface[]>([]);
+  const { userData } = useAuth();
   const { loading, setLoading } = useLoadingContext();
   const [refreshing, setRefreshing] = useState(false);
-  const [getAllDocs, { isLoading }] = useLazyGetAllDocsQuery();
-
-  const fetchDocs = async () => {
-    if (!userCred || !userCred.uid) {
-      return;
-    }
-
-    const response = await getAllDocs({ uid: userCred.uid }).unwrap();
-
-    if (response && response.status == 200) {
-      const values: dailyLogInterface[] = Object.values(response.docs).sort(
-        (a, b) => {
-          const dateA = moment(a.date, "DD-MM-YYYY");
-          const dateB = moment(b.date, "DD-MM-YYYY");
-          return dateB.valueOf() - dateA.valueOf(); // latest first
-        }
-      );
-      setDocs(values);
-    }
-  };
-
-  useEffect(() => {
-    fetchDocs();
-  }, []);
+  const { data: { docs } = {}, isLoading, refetch } = useGetAllDocsQuery();
 
   useEffect(() => {
     setLoading(isLoading);
   }, [isLoading]);
 
-  useFocusEffect(
-    useCallback(() => {
-      // This runs every time the screen is focused (opened or came back to)
-      fetchDocs(); // or any logic you want
-    }, [])
-  );
-
   const onRefresh = async () => {
     setRefreshing(true);
-    await fetchDocs();
+    await refetch();
     setRefreshing(false);
-  };
-
-  const renderItem = ({ item }: { item: dailyLogInterface }) => {
-    return (
-      <View>
-        <DayReport data={item} />
-      </View>
-    );
   };
 
   return (
     <View style={globalStyles.safearea}>
       <View>
-        <CenterText>{userCred?.display_name}</CenterText>
+        <CenterText>{userData?.display_name}</CenterText>
       </View>
       {loading ? (
         <CenterText>Loading</CenterText>
@@ -78,11 +42,31 @@ export default function Home() {
           <CenterText>Your Logs</CenterText>
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={docs}
-            renderItem={renderItem}
+            data={Object.values(docs || {})}
+            renderItem={({ item, index }) => {
+              // const currentDate = parse(item.date, "dd-MM-yyyy", new Date());
+              // const nextDayDoc=index <docs.length-1?docs[index+1]:null
+
+              // const nextDayDate = nextDayDoc
+              //   ? parse(nextDayDoc.date, "dd-MM-yyyy", new Date())
+              //   : null;
+
+              // const nextDayWakeupTime =
+              //   nextDayDate && nextDayDoc && isSameDay(addDays(currentDate, 1), nextDayDate)
+              //     ? nextDayDoc.wakeUpTime
+              //     : null;
+
+              return (
+                <DayReport
+                  key={item.date}
+                  data={item}
+                  nextDayWakeupTime={null}
+                />
+              );
+            }}
             onRefresh={onRefresh}
             refreshing={refreshing}
-            keyExtractor={(item) => item.wakeUpTime.toString()}
+            keyExtractor={(item) => item.date}
           ></FlatList>
         </View>
       )}

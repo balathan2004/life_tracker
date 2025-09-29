@@ -1,9 +1,7 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
-import { useUserContext } from "@/components/context/userContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
-import { storeData } from "@/components/utils/data_store";
-import { useLoginMutation } from "@/features/api/authApi";
+import { useLoginMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { globalStyles } from "@/styles/global.css";
 import { useFocusEffect, useTheme } from "@react-navigation/native";
@@ -19,8 +17,6 @@ import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
-
-  const { setUserCred } = useUserContext();
 
   const [login, { isLoading }] = useLoginMutation();
 
@@ -49,15 +45,15 @@ export default function Login() {
 
     const res = await login(userData).unwrap();
 
+    console.log({ res });
+
     setMessage(res.message);
     Toast.show({
       type: "success",
       text1: res.message,
     });
 
-    if (res && res.status == 200 && res.credentials) {
-      await storeData({ key: "userCred", value: res.credentials });
-      setUserCred(res.credentials);
+    if (res && res.credentials) {
       router.push("/(tabs)");
     }
   };

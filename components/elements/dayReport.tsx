@@ -1,5 +1,5 @@
+import { format } from "date-fns";
 import { router } from "expo-router";
-import moment from "moment";
 import React from "react";
 import { Pressable, StyleSheet, View } from "react-native";
 import { dailyLogInterface } from "../interfaces";
@@ -8,9 +8,10 @@ import { moods } from "./moodAccordition";
 
 interface props {
   data: dailyLogInterface;
+  nextDayWakeupTime: any;
 }
 
-export default function DayReport({ data }: props) {
+export default function DayReport({ data, nextDayWakeupTime }: props) {
   const handleNavigation = () => {
     if (data) {
       router.push({
@@ -21,7 +22,7 @@ export default function DayReport({ data }: props) {
   };
 
   const formatDate = (date: string) => {
-    return moment(date, "DD-MM-YYYY").format("DD MMMM");
+    return date;
   };
 
   const selectIcon = (mood: dailyLogInterface["mood"]) => {
@@ -29,6 +30,25 @@ export default function DayReport({ data }: props) {
 
     return currentMood?.label || "\u{1F610}"; // okay mood default
   };
+
+  function calcSleepTime() {
+    // console.log(data.sleepTime,nextDayWakeupTime);
+    if (!data.sleepTime || !nextDayWakeupTime) return "0 mins";
+
+    let sleep = data.sleepTime;
+    let wake = nextDayWakeupTime;
+
+    // If wake is earlier than sleep, add 1 day to wake
+    if (wake <= sleep) {
+      wake = new Date(wake.getTime() + 24 * 60 * 60 * 1000);
+    }
+
+    const diffMs = wake - sleep;
+    console.log({ diffMs });
+    const mins = Math.floor(diffMs / (1000 * 60));
+
+    return `${mins} mins`;
+  }
 
   return (
     <Pressable style={styles.pressable} onPress={handleNavigation}>
@@ -39,8 +59,13 @@ export default function DayReport({ data }: props) {
       <View style={styles.right}>
         <ThemeText>{formatDate(data.date)}</ThemeText>
         <ThemeText>
-          {data.wakeUpTime?moment(data.wakeUpTime).format("hh :mm A"):"Time Not Saved"} -{" "}
-          {data.sleepTime?moment(data.sleepTime).format("hh :mm A"):"Time Not Saved"}
+          {data.wakeUpTime
+            ? format(new Date(data.wakeUpTime), "hh:mm a")
+            : "Time Not Saved"}{" "}
+          -{" "}
+          {data.sleepTime
+            ? format(new Date(data.sleepTime), "hh:mm a")
+            : "Time Not Saved"}
         </ThemeText>
 
         <ThemeText>{data.somethingProductive}</ThemeText>

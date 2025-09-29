@@ -1,16 +1,13 @@
-import moment from "moment";
 
 export interface ResponseConfig {
-  status: 200 | 300;
   message: string;
 }
 
-export interface QuoteResponseConfig {
-  quote: string;
-}
 
 export interface AuthResponseConfig extends ResponseConfig {
-  credentials: UserDataInterface;
+  credentials: UserDataInterface | null;
+  accessToken?:string,
+  refreshToken?:string
 }
 
 export interface UserDataInterface {
@@ -19,7 +16,7 @@ export interface UserDataInterface {
   created_at: number;
 }
 
-export interface allDocResponseConfig  extends ResponseConfig{
+export interface allDocResponseConfig extends ResponseConfig {
   docs: {
     [date: string]: dailyLogInterface;
   };
@@ -55,7 +52,7 @@ export interface dailyLogInterface {
 
 export const initDailyLog = () => {
   const data: dailyLogInterface = {
-    date: moment(new Date().getTime()).format("DD-MM-yyyy"),
+    date: new Date().toISOString().slice(0, 10),
     wakeUpTime: 0,
     sleepTime: 0,
     meals: {
@@ -78,3 +75,14 @@ export const initDailyLog = () => {
   };
   return data;
 };
+
+export interface QuoteResponse extends ResponseConfig {
+  quote: {
+    quoteId: string;
+    quote: string;
+    author: string;
+    userId: string;
+    createdAt: number;
+    username: string;
+  }[]
+}

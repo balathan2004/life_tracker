@@ -1,16 +1,16 @@
 // app/store.ts
 import { configureStore } from '@reduxjs/toolkit';
-import dailyLogReducer from '../features/dailyLogSlice';
+import authReducer from "./api/authSlice";
 import { baseApi } from './api/baseApi';
-import { dailyLogLogger } from './dispatchActions';
 
 export const store = configureStore({
   reducer: {
-    dailyLog: dailyLogReducer,
+        auth: authReducer,
      [baseApi.reducerPath]: baseApi.reducer,
+     
   },
   middleware:(getDefaultMiddelware)=>
-    getDefaultMiddelware().concat(dailyLogLogger,baseApi.middleware)
+    getDefaultMiddelware().concat(baseApi.middleware)
   
 });
 

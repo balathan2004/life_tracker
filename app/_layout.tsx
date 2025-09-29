@@ -1,7 +1,6 @@
 import LoadingHolder from "@/components/context/loadingContext";
-import UserHolder from "@/components/context/userContext";
 import { darkTheme } from "@/components/ui/themes";
-import { store } from "@/features/store";
+import { store } from "@/redux/store";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -23,31 +22,28 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={darkTheme}>
       <Provider store={store}>
-    
         <LoadingHolder>
-          <UserHolder>
-            <Stack>
-              <Stack.Screen
-                name="index"
-                options={{ headerShown: false }}
-              ></Stack.Screen>
-              <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack>
+            <Stack.Screen
+              name="index"
+              options={{ headerShown: false }}
+            ></Stack.Screen>
+            <Stack.Screen name="(auth)" options={{ headerShown: false }} />
 
-              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-              <Stack.Screen
-                name="(daily_activity)"
-                options={{ headerShown: false }}
-              />
+            <Stack.Screen
+              name="(daily_activity)"
+              options={{ headerShown: false }}
+            />
 
-              <Stack.Screen name="(logs)" options={{ headerShown: false }} />
-              <Stack.Screen name="+not-found" />
-            </Stack>
-          </UserHolder>
+            <Stack.Screen name="(logs)" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+          </Stack>
         </LoadingHolder>
 
         <StatusBar style="auto" />
-            <Toast />
+        <Toast />
       </Provider>
     </ThemeProvider>
   );

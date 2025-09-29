@@ -11,7 +11,7 @@ export default function QuoteBar() {
         "https://collab-quotes-server.vercel.app/public/get_one_random"
       );
 
-      console.log(res);
+      // console.log(res);
 
       setQuote(res.quote[0].quote);
     };
