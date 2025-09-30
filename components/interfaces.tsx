@@ -1,13 +1,11 @@
-
 export interface ResponseConfig {
   message: string;
 }
 
-
 export interface AuthResponseConfig extends ResponseConfig {
   credentials: UserDataInterface | null;
-  accessToken?:string,
-  refreshToken?:string
+  accessToken?: string;
+  refreshToken?: string;
 }
 
 export interface UserDataInterface {
@@ -84,5 +82,5 @@ export interface QuoteResponse extends ResponseConfig {
     userId: string;
     createdAt: number;
     username: string;
-  }[]
+  }[];
 }

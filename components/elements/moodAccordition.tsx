@@ -1,4 +1,4 @@
-import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
+import { useAuth } from "@/redux/api/authSlice";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { List, RadioButton } from "react-native-paper";
@@ -19,13 +19,13 @@ export const moods = [
 export default function MoodCard() {
   const [expanded, setExpanded] = useState(false);
   const dispatch = useDispatch();
-  const { dailyLog } = useAuth();
+  const { dailyLog,useUpdateDailyLog } = useAuth();
 
   const [mood, setMood] = useState<mood>("okay");
 
   const handleSubmit = (value: mood) => {
     if (!value || !dailyLog) return;
-    updateDailyLog({ mood: value });
+    useUpdateDailyLog({ mood: value });
     setMood(value);
   };
 

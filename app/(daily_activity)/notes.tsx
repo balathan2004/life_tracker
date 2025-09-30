@@ -5,18 +5,18 @@ import { globalStyles } from "@/styles/global.css";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import Toast from "react-native-toast-message";
 
-import { updateDailyLog, useAuth } from "@/redux/api/authSlice";
+import { useAuth } from "@/redux/api/authSlice";
 import { useEffect, useState } from "react";
 import {
-    NativeSyntheticEvent,
-    TextInput,
-    TextInputChangeEventData,
-    View,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
 } from "react-native";
 import { useDispatch } from "react-redux";
 
 export default function Home() {
-  const { dailyLog } = useAuth();
+  const { dailyLog,useUpdateDailyLog } = useAuth();
 
   const [data, setData] = useState({
     notes: "",
@@ -38,7 +38,7 @@ export default function Home() {
 
   const handleSubmit = () => {
     const { height, weight, ...left } = data;
-    updateDailyLog({
+    useUpdateDailyLog({
       ...left,
       bodyMeasurements: { height, weight },
     });

@@ -22,19 +22,16 @@ const authSlice = createSlice({
   reducers: {
     setDailyLog: (state, { payload }: { payload: dailyLogInterface }) => {
       storeData({ key: "dailyLog", value: payload });
-      return { ...state, dailyLog: payload };
+      state.dailyLog = payload;
     },
-    updateDailyLog: (state, { payload }) => {
-      return {
-        ...state,
-        dailyLog: {
-          ...state.dailyLog,
-          ...payload,
-        },
-      };
+    updateDailyLog: (
+      state,
+      { payload }: { payload: Partial<dailyLogInterface> }
+    ) => {
+      Object.assign(state.dailyLog, payload);
     },
     resetDailyLog: (state) => {
-      return { ...state, dailyLog: initDailyLog() };
+      state.dailyLog = initDailyLog();
     },
   },
   extraReducers: (builder) => {
@@ -77,9 +74,17 @@ export const useAuth = () => {
   const dispatch = useDispatch();
   const authState = useSelector((state: RootState) => state.auth);
 
-  const setDailyLogAction = (dailyLog: dailyLogInterface) => {
+  const useSetDailyLog = (dailyLog: dailyLogInterface) => {
     dispatch(setDailyLog(dailyLog));
   };
 
-  return { ...authState, setDailyLogAction };
+  const useResetDailyLog=()=>{
+    dispatch(resetDailyLog())
+  }
+
+  const useUpdateDailyLog=(payload:Partial<dailyLogInterface>)=>{
+    dispatch(updateDailyLog(payload))
+  }
+
+  return { ...authState, useSetDailyLog,useResetDailyLog, useUpdateDailyLog };
 };

@@ -9,7 +9,7 @@ export default function AuthLayout() {
         options={{
           title: "Login",
           headerShown: false,
-          tabBarIcon: () => <Entypo name="home" size={24} color="white" />,
+          tabBarIcon: () => <Entypo name="login" size={24} color="black" />,
         }}
       ></Tabs.Screen>
       <Tabs.Screen

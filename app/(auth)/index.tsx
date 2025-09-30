@@ -39,6 +39,8 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
+
+    console.log('submitted');
     if (!userData.email || !userData.password) {
       return;
     }

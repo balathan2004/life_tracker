@@ -1,11 +1,11 @@
-import { JournalCard } from "@/components/elements/foodIconsCard";
+import FoodIconsCard, { JournalCard } from "@/components/elements/foodIconsCard";
 import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/wakeUpcard";
 import WorkoutCard from "@/components/elements/workout_card";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
-import { resetDailyLog, useAuth } from "@/redux/api/authSlice";
+import { useAuth } from "@/redux/api/authSlice";
 import { useUpdateDocMutation } from "@/redux/api/crudApi";
 import { globalStyles } from "@/styles/global.css";
 import { isBefore, parseISO, startOfDay } from "date-fns";
@@ -14,7 +14,7 @@ import { ScrollView, View } from "react-native";
 import Toast from "react-native-toast-message";
 
 export default function Home() {
-  const { dailyLog, userData } = useAuth();
+  const { dailyLog, userData,useResetDailyLog } = useAuth();
 
   const [updateDoc, { isLoading }] = useUpdateDocMutation();
 
@@ -44,11 +44,11 @@ export default function Home() {
 
   const handleDateChange = async () => {
     await handleSubmit();
-    resetDailyLog();
+    useResetDailyLog();
   };
 
   const createNewDoc = () => {
-    resetDailyLog();
+    useResetDailyLog();
   };
 
   return (
@@ -63,11 +63,11 @@ export default function Home() {
       <TimeCard label="Wake Up time" fieldKey="wakeUpTime" />
       <TimeCard label="Sleep Time" fieldKey="sleepTime" />
 
-      {/* <View>
+      <View>
         <Link href="/(daily_activity)/food_health">
           <FoodIconsCard />
         </Link>
-      </View> */}
+      </View>
 
       <View>
         <WorkoutCard />

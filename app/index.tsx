@@ -1,7 +1,6 @@
 import {
   dailyLogInterface,
-  initDailyLog,
-  UserDataInterface,
+  UserDataInterface
 } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
@@ -13,7 +12,7 @@ import React, { useEffect } from "react";
 import { Image, View } from "react-native";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
-  const { setDailyLogAction } = useAuth();
+  const { useSetDailyLog, useResetDailyLog } = useAuth();
 
   const [getJwt, { isLoading }] = useGetAccessTokenMutation();
 
@@ -25,9 +24,9 @@ export default function Home() {
     const dailyLog = ((await getData("dailyLog")) as dailyLogInterface) || null;
 
     if (!dailyLog) {
-      setDailyLogAction(initDailyLog());
+      useResetDailyLog();
     } else {
-      setDailyLogAction(dailyLog);
+      useSetDailyLog(dailyLog);
     }
 
     if (!userData || !jwt) {
@@ -35,13 +34,14 @@ export default function Home() {
       return;
     }
 
-    await getJwt(jwt).unwrap()
+    await getJwt(jwt)
+      .unwrap()
       .then((res) => {
         console.log(res);
         router.replace("/(tabs)");
       })
       .catch((err) => {
-        console.log({err});
+        console.log({ err });
         router.replace("/(auth)");
       });
   };
