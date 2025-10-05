@@ -1,18 +1,16 @@
-import { useLoadingContext } from "@/components/context/loadingContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
-import { globalStyles } from "@/styles/global.css";
-import { useFocusEffect, useTheme } from "@react-navigation/native";
 import { Link, router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 import {
   NativeSyntheticEvent,
   TextInput,
   TextInputChangeEventData,
   View,
 } from "react-native";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Login() {
@@ -20,15 +18,9 @@ export default function Login() {
 
   const [login, { isLoading }] = useLoginMutation();
 
-  const { loading, setLoading } = useLoadingContext();
-
   const [message, setMessage] = useState("");
 
   const { colors } = useTheme();
-
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -39,8 +31,7 @@ export default function Login() {
   };
 
   const handleSubmit = async () => {
-
-    console.log('submitted');
+    console.log("submitted");
     if (!userData.email || !userData.password) {
       return;
     }
@@ -60,43 +51,58 @@ export default function Login() {
     }
   };
 
-  useFocusEffect(
-    useCallback(() => {
-      setUserData({ email: "", password: "" });
-    }, [])
-  );
-
   return (
-    <View style={globalStyles.safearea}>
-      <View style={styles.container}>
-        <CenterText style={{ fontSize: 20 }}>Login</CenterText>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+      }}
+    >
+      <View
+        style={{
+          marginHorizontal: 16,
+        }}
+      >
+        <CenterText style={{ fontSize: 28 }}>Login</CenterText>
         <CenterText style={{ fontSize: 18 }}>{message}</CenterText>
 
-        <View>
-          <ThemeText style={{ marginVertical: 5 }}>Email</ThemeText>
-          <TextInput
-            autoCapitalize="none"
-            onChange={(e) => handleInput(e, "email")}
-            value={userData.email}
-            style={styles.input}
-          ></TextInput>
-        </View>
+        <ThemeText style={{ marginVertical: 5, fontSize: 16 }}>Email</ThemeText>
+        <TextInput
+          autoCapitalize="none"
+          onChange={(e) => handleInput(e, "email")}
+          value={userData.email}
+          style={styles.input}
+        ></TextInput>
 
-        <View>
-          <ThemeText style={{ marginVertical: 5 }}>Password</ThemeText>
-          <TextInput
-            autoCapitalize="none"
-            onChange={(e) => handleInput(e, "password")}
-            value={userData.password}
-            style={styles.input}
-          ></TextInput>
-        </View>
-        <CenterText style={{ marginVertical: 10 }}>
+        <ThemeText style={{ marginVertical: 5, fontSize: 16 }}>
+          Password
+        </ThemeText>
+        <TextInput
+          autoCapitalize="none"
+          onChange={(e) => handleInput(e, "password")}
+          value={userData.password}
+          style={styles.input}
+        ></TextInput>
+
+        <CenterText style={{ marginVertical: 16, fontSize: 16 }}>
           <Link href={"/forget_password"}> Forget Password</Link>
         </CenterText>
-        <PrimaryButton disabled={loading} onPress={handleSubmit}>
-          {"Login"}
+
+        <PrimaryButton disabled={isLoading} onPress={handleSubmit}>
+          Login
         </PrimaryButton>
+        <CenterText
+          style={{
+            marginVertical: 16,
+          }}
+        >
+          New here {" "}
+          <ThemeText
+            style={{ color: colors.primary, textDecorationLine: "underline" }}
+          >
+            <Link href="/(auth)/register">Create Account </Link>
+          </ThemeText>
+        </CenterText>
       </View>
     </View>
   );

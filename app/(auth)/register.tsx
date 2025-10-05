@@ -3,16 +3,15 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
-import { globalStyles } from "@/styles/global.css";
-import { useFocusEffect } from "@react-navigation/native";
-import { router } from "expo-router";
-import { useCallback, useEffect, useState } from "react";
+import { Link, router } from "expo-router";
+import { useEffect, useState } from "react";
 import {
-    NativeSyntheticEvent,
-    TextInput,
-    TextInputChangeEventData,
-    View,
+  NativeSyntheticEvent,
+  TextInput,
+  TextInputChangeEventData,
+  View,
 } from "react-native";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Login() {
@@ -21,6 +20,8 @@ export default function Login() {
   const { loading, setLoading } = useLoadingContext();
 
   const [message, setMessage] = useState("");
+
+  const { colors } = useTheme();
 
   const [register, { isLoading }] = useRegisterMutation();
 
@@ -53,39 +54,57 @@ export default function Login() {
     setLoading(isLoading);
   }, [isLoading]);
 
-  useFocusEffect(
-    useCallback(() => {
-      setUserData({ email: "", password: "" });
-    }, [])
-  );
-
   return (
-    <View style={globalStyles.safearea}>
-      <View style={styles.container}>
-        <CenterText style={{ fontSize: 20 }}>Register</CenterText>
-        <View>
-          <ThemeText>Email</ThemeText>
-          <TextInput
-            autoCapitalize="none"
-            onChange={(e) => handleInput(e, "email")}
-            style={styles.input}
-            value={userData.email}
-          ></TextInput>
-        </View>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+      }}
+    >
+      <View
+        style={{
+          marginHorizontal: 16,
+        }}
+      >
+        <CenterText style={{ fontSize: 28 }}>Register</CenterText>
 
-        <View>
-          <ThemeText>Password</ThemeText>
-          <TextInput
-            autoCapitalize="none"
-            onChange={(e) => handleInput(e, "password")}
-            style={styles.input}
-            value={userData.password}
-          ></TextInput>
-        </View>
+        <ThemeText>Email</ThemeText>
+        <TextInput
+          autoCapitalize="none"
+          onChange={(e) => handleInput(e, "email")}
+          style={styles.input}
+          value={userData.email}
+        ></TextInput>
 
-        <PrimaryButton disabled={loading} onPress={handleSubmit}>
-          {"Register"}
-        </PrimaryButton>
+        <ThemeText>Password</ThemeText>
+        <TextInput
+          autoCapitalize="none"
+          onChange={(e) => handleInput(e, "password")}
+          style={styles.input}
+          value={userData.password}
+        ></TextInput>
+
+        <View
+          style={{
+            marginTop: 24,
+          }}
+        >
+          <PrimaryButton disabled={loading} onPress={handleSubmit}>
+            Register
+          </PrimaryButton>
+          <CenterText
+            style={{
+              marginVertical: 16,
+            }}
+          >
+            Have an account{" "}
+            <ThemeText
+              style={{ color: colors.primary, textDecorationLine: "underline" }}
+            >
+              <Link href="/(auth)">Login Here</Link>
+            </ThemeText>
+          </CenterText>
+        </View>
       </View>
     </View>
   );

@@ -13,7 +13,4 @@ export const globalStyles = StyleSheet.create({
   wakeupCard:{
     marginBottom:20
   },
-  wakeupCardAccordion:{
-    marginBottom:10
-  }
 });

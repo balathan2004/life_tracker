@@ -1,25 +1,25 @@
-import Entypo from "@expo/vector-icons/Entypo";
-import { Tabs } from "expo-router";
+import { Stack } from "expo-router";
+import { useTheme } from "react-native-paper";
 
 export default function AuthLayout() {
+  const { colors } = useTheme();
+
   return (
-    <Tabs>
-      <Tabs.Screen
+    <Stack>
+      <Stack.Screen
         name="index"
         options={{
           title: "Login",
           headerShown: false,
-          tabBarIcon: () => <Entypo name="login" size={24} color="black" />,
         }}
-      ></Tabs.Screen>
-      <Tabs.Screen
+      ></Stack.Screen>
+      <Stack.Screen
         name="register"
         options={{
           title: "Register",
           headerShown: false,
-          tabBarIcon: () => <Entypo name="home" size={24} color="white" />,
         }}
-      ></Tabs.Screen>
-    </Tabs>
+      ></Stack.Screen>
+    </Stack>
   );
 }

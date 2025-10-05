@@ -1,23 +1,22 @@
-import { useTheme } from "@react-navigation/native";
 import { ReactNode } from "react";
-import { StyleProp, Text, TextStyle } from "react-native";
+import { StyleProp, TextStyle } from "react-native";
+import { Text, TextProps } from "react-native-paper";
 
-interface Props {
+type Props = TextProps<any> & {
   children: ReactNode;
   style?: StyleProp<TextStyle>;
-}
-
-export function ThemeText({ children, style }: Props) {
-  const { colors } = useTheme();
-
-  return <Text style={[{ color: colors.text }, style]}>{children}</Text>;
-}
-
-export function CenterText({ children, style }: Props) {
-  const { colors } = useTheme();
-
+};
+export function ThemeText({ children, style, ...props }: Props) {
   return (
-    <Text style={[{ color: colors.text, textAlign: "center" }, style]}>
+    <Text style={[style]} {...props}>
+      {children}
+    </Text>
+  );
+}
+
+export function CenterText({ children, style, ...props }: Props) {
+  return (
+    <Text style={[{ textAlign: "center" }, style]} {...props}>
       {children}
     </Text>
   );

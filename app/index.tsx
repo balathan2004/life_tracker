@@ -1,7 +1,4 @@
-import {
-  dailyLogInterface,
-  UserDataInterface
-} from "@/components/interfaces";
+import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
 import { useGetAccessTokenMutation } from "@/redux/api/authApi";
@@ -17,13 +14,11 @@ export default function Home() {
   const [getJwt, { isLoading }] = useGetAccessTokenMutation();
 
   const retrieveCred = async () => {
-    // await AsyncStorage.removeItem("dailyLog");
-    //     await AsyncStorage.removeItem("userCred");
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
     const jwt = ((await getData("refreshToken")) as string) || null;
     const dailyLog = ((await getData("dailyLog")) as dailyLogInterface) || null;
 
-    if (!dailyLog) {
+    if (!dailyLog || Object.keys(dailyLog).length === 0) {
       useResetDailyLog();
     } else {
       useSetDailyLog(dailyLog);

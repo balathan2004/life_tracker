@@ -12,7 +12,10 @@ export const styles = StyleSheet.create({
     borderColor: "white",
     width: "100%",
     backgroundColor: "white",
-    marginVertical:10,
-    height:35
+    marginVertical: 10,
+    height: 48,
+    paddingLeft: 10,
+    fontSize:18,
+    borderRadius: 8,
   },
 });

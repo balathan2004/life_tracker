@@ -6,6 +6,7 @@ import {
 import { storeData } from "@/components/utils/data_store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../store";
 import { authApi } from "./authApi";
@@ -60,7 +61,6 @@ const authSlice = createSlice({
         console.log("accessed getAccetoken");
         state.accessToken = payload.accessToken || "";
         state.userData = payload.credentials as UserDataInterface;
-        console.log({ state });
         AsyncStorage.setItem("userCred", JSON.stringify(payload.credentials));
       }
     );
@@ -85,6 +85,12 @@ export const useAuth = () => {
   const useUpdateDailyLog=(payload:Partial<dailyLogInterface>)=>{
     dispatch(updateDailyLog(payload))
   }
+
+  useEffect(()=>{
+    if(!authState.dailyLog || Object.keys(authState.dailyLog).length>0){
+      storeData({key:"dailyLog",value:authState.dailyLog})
+    }
+  },[authState.dailyLog])
 
   return { ...authState, useSetDailyLog,useResetDailyLog, useUpdateDailyLog };
 };

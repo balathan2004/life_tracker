@@ -1,66 +1,27 @@
 import { ReactNode } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  TouchableOpacityProps,
-  View,
-} from "react-native";
-import { ThemeText } from "./TextElements";
+import { Button, ButtonProps, useTheme } from "react-native-paper";
 
-type Props = TouchableOpacityProps & {
+type Props = ButtonProps & {
   children: ReactNode;
 };
+
 export function PrimaryButton({ children, ...props }: Props) {
-  const isDisabled = props.disabled;
-
+  const { colors } = useTheme();
   return (
-    <View>
-      <TouchableOpacity
-        {...props}
-        style={[
-          styles.pressable,
-          {
-            backgroundColor: isDisabled ? "gray" : "skyblue",
-            height: 40,
-            borderRadius: 8,
-          },
-        ]}
-      >
-        <ThemeText style={{ fontSize: 18, fontWeight: "bold" }}>
-          {children}
-        </ThemeText>
-      </TouchableOpacity>
-    </View>
+    <Button
+      mode="contained"
+      style={{
+        borderRadius: 10,
+      }}
+      contentStyle={{
+        height: 48,
+      }}
+      labelStyle={{
+        color: colors.onBackground,
+      }}
+      {...props}
+    >
+      {children}
+    </Button>
   );
 }
-
-export function WhiteButton({ children, ...props }: Props) {
-  const isDisabled = props.disabled;
-
-  return (
-    <View>
-      <TouchableOpacity
-        {...props}
-        style={[
-          styles.pressable,
-          { backgroundColor: isDisabled ? "gray" : "white", height: 45 ,
-            borderRadius: 6,
-          },
-        ]}
-      >
-        <ThemeText style={{ fontSize: 18, color: "black", fontWeight: "bold" }}>
-          {children}
-        </ThemeText>
-      </TouchableOpacity>
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  pressable: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginVertical: 5,
-  },
-});

@@ -1,5 +1,5 @@
 import { dailyLogInterface } from "@/components/interfaces";
-import { WhiteButton } from "@/components/ui/buttons";
+import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDate } from 'date-fns';
@@ -98,7 +98,7 @@ export default function LogDetail() {
           hideRoot={true}
           getItemString={customGetItemString}
         />
-        <WhiteButton onPress={showConfirmation}>Delete Log</WhiteButton>
+        <PrimaryButton onPress={showConfirmation}>Delete Log</PrimaryButton>
       </View>
     </>
   );
