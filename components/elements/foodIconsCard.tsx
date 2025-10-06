@@ -42,6 +42,7 @@ export function JournalCard() {
     "somethingProductive",
     "travel",
     "notes",
+    "workout"
   ];
 
   return (

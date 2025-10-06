@@ -37,6 +37,7 @@
     "expo-system-ui": "~5.0.7",
     "expo-web-browser": "~14.1.6",
     "firebase": "^11.7.3",
+    "formik": "^2.4.6",
     "iconsax-react": "^0.0.8",
     "iconsax-react-nativejs": "^0.0.8",
     "react": "19.0.0",

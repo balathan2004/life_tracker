@@ -4,7 +4,6 @@ import FoodIconsCard, {
 import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/TimeCard";
-import WorkoutCard from "@/components/elements/workout_card";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
@@ -63,49 +62,54 @@ export default function Home() {
         margin: 16,
       }}
     >
-      <CenterText style={{ fontSize: 18, marginVertical: 10 }}>
+      <CenterText style={{ fontSize: 20, marginVertical: 16 }}>
         {dailyLog?.date}
       </CenterText>
       <QuoteBar />
-      <View style={{
-        gap:16
-      }}>
-      <TimeCard
-        icon={
-          <FontAwesome5 name="moon" size={28} color={colors.onBackground} />
-        }
-        label="Wake Up time"
-        fieldKey="wakeUpTime"
-      />
-      <TimeCard
-        icon={
-          <FontAwesome name="sun-o" size={28} color={colors.onBackground} />
-        }
-        label="Sleep Time"
-        fieldKey="sleepTime"
-      />
-
-      <FoodIconsCard />
-      <JournalCard />
-      <WorkoutCard />
-      <MoodCard />
-
       <View
         style={{
           gap: 16,
-          marginVertical: 12,
         }}
       >
-        <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
-        {dayCompare() && (
-          <>
-            <PrimaryButton onPress={handleDateChange}>
-              Save and Create
-            </PrimaryButton>
-            <PrimaryButton onPress={createNewDoc}>Create New Log</PrimaryButton>
-          </>
-        )}
-      </View></View>
+        <TimeCard
+          icon={
+            <FontAwesome5 name="moon" size={28} color={colors.onBackground} />
+          }
+          label="Wake Up time"
+          fieldKey="wakeUpTime"
+        />
+        <TimeCard
+          icon={
+            <FontAwesome name="sun-o" size={28} color={colors.onBackground} />
+          }
+          label="Sleep Time"
+          fieldKey="sleepTime"
+        />
+
+        <FoodIconsCard />
+        <JournalCard />
+
+        <MoodCard />
+
+        <View
+          style={{
+            gap: 16,
+            marginVertical: 12,
+          }}
+        >
+          <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
+          {dayCompare() && (
+            <>
+              <PrimaryButton onPress={handleDateChange}>
+                Save and Create
+              </PrimaryButton>
+              <PrimaryButton onPress={createNewDoc}>
+                Create New Log
+              </PrimaryButton>
+            </>
+          )}
+        </View>
+      </View>
     </ScrollView>
   );
 }

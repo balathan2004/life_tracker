@@ -10,9 +10,6 @@ export default function QuoteBar() {
       const res = await fetchData(
         "https://collab-quotes-server.vercel.app/public/get_one_random"
       );
-
-      // console.log(res);
-
       setQuote(res.quote[0].quote);
     };
 
@@ -21,7 +18,7 @@ export default function QuoteBar() {
 
   return (
     <View>
-      <CenterText style={{ fontSize: 16, marginVertical: 10 }}>
+      <CenterText style={{ fontSize: 16, marginVertical: 16, lineHeight: 18 }}>
         {quote}
       </CenterText>
     </View>

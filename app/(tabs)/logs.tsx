@@ -1,14 +1,12 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
 import DayReport from "@/components/elements/dayReport";
 import { CenterText } from "@/components/ui/TextElements";
-import { useAuth } from "@/redux/api/authSlice";
 import { useGetAllDocsQuery } from "@/redux/api/crudApi";
 import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
 export default function Logs() {
-  const { userData } = useAuth();
   const { colors } = useTheme();
   const { loading, setLoading } = useLoadingContext();
   const [refreshing, setRefreshing] = useState(false);
@@ -29,7 +27,7 @@ export default function Logs() {
       style={{
         backgroundColor: colors.background,
         marginVertical: 12,
-        marginHorizontal: 16,
+        marginHorizontal: 28,
         flex: 1,
       }}
     >

@@ -29,6 +29,8 @@ export default function Home() {
       return;
     }
 
+     router.replace("/(tabs)");
+
     await getJwt(jwt)
       .unwrap()
       .then((res) => {

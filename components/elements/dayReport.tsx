@@ -57,7 +57,9 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
         {/* <ThemeText>{data.mood}</ThemeText> */}
       </View>
       <View style={styles.right}>
-        <ThemeText>{formatDate(data.date)}</ThemeText>
+        <ThemeText style={{
+          marginVertical:12
+        }}>{formatDate(data.date)}</ThemeText>
         <ThemeText>
           {data.wakeUpTime
             ? format(new Date(data.wakeUpTime), "hh:mm a")
@@ -77,7 +79,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
 const styles = StyleSheet.create({
   pressable: {
     flexDirection: "row",
-    gap: 20,
+    gap: 32,
     alignItems: "center",
     minHeight: 100,
   },

@@ -1,4 +1,3 @@
-
 import { useAuth } from "@/redux/api/authSlice";
 import { styles } from "@/styles/auth.css";
 import { useEffect, useState } from "react";
@@ -12,15 +11,14 @@ import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export function TextInputCard() {
-  const {dailyLog,useUpdateDailyLog}=useAuth()
+  const { dailyLog, useUpdateDailyLog } = useAuth();
 
   const [data, setData] = useState({
     notes: "",
     somethingProductive: "",
     travel: "",
+    workout: "",
   });
-
-
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
@@ -32,7 +30,7 @@ export function TextInputCard() {
   };
 
   const handleSubmit = () => {
-useUpdateDailyLog({...data})
+    useUpdateDailyLog({ ...data });
   };
 
   useEffect(() => {
@@ -70,6 +68,14 @@ useUpdateDailyLog({...data})
           style={styles.input}
           value={data.travel}
           onChange={(e) => handleInput(e, "travel")}
+        ></TextInput>
+      </View>
+      <View>
+        <ThemeText>Workout</ThemeText>
+        <TextInput
+          style={styles.input}
+          value={data.workout}
+          onChange={(e) => handleInput(e, "workout")}
         ></TextInput>
       </View>
       <PrimaryButton onPress={handleSubmit}>submit</PrimaryButton>
