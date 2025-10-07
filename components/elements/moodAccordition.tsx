@@ -53,6 +53,8 @@ export default function MoodCard() {
       <View
         style={{
           flexDirection: "row",
+          flex:1,
+          flexWrap:"wrap",
           justifyContent: "space-between",
         }}
       >
@@ -60,8 +62,8 @@ export default function MoodCard() {
           <TouchableOpacity
             style={{
               backgroundColor: mood === value ? "#787F9A" : undefined,
-              padding: 12,
-              paddingHorizontal: 20,
+              paddingVertical: 12,
+              paddingHorizontal: 8,
               borderRadius: 12,
             }}
             key={label}
@@ -72,12 +74,12 @@ export default function MoodCard() {
               style={{
                 flexDirection: "column",
                 alignItems: "center",
-                gap:16
+                gap:8
               }}
             >
               <ThemeText
                 style={{
-                  fontSize: 28,
+                  fontSize: 32,
                 }}
               >
                 {label}

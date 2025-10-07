@@ -1,8 +1,17 @@
+import { getData } from "@/components/utils/data_store";
 import { domain_url } from "@/env";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import {
+  BaseQueryApi,
+  BaseQueryFn,
+  createApi,
+  FetchArgs,
+  fetchBaseQuery,
+  FetchBaseQueryError,
+} from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
+import { authApi } from "./authApi";
 
-const rawBaseQuery = fetchBaseQuery({
+const baseQuery = fetchBaseQuery({
   baseUrl: domain_url,
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
@@ -16,8 +25,44 @@ const rawBaseQuery = fetchBaseQuery({
   },
 });
 
+const baseQueryWithReAuth: BaseQueryFn<
+  string | FetchArgs,
+  unknown,
+  FetchBaseQueryError
+> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
+  let result = await baseQuery(args, api, extraOptions);
+
+  if (result.error && result.error.status == 403) {
+    const token = (await getData("refreshToken")) as string;
+
+    if (!token) {
+      api.dispatch({
+        type: "auth/logoutUser",
+      });
+      return result
+    }
+
+    const refreshResult = await api.dispatch(
+      authApi.endpoints.getAccessToken.initiate(token)
+    );
+
+    if (refreshResult.data) {
+      api.dispatch({
+        type: "auth/setAccessToken",
+        payload: refreshResult.data,
+      });
+
+      result = await baseQuery(args, api, extraOptions);
+    } else {
+      api.dispatch({ type: "auth/logoutUser" });
+    }
+  }
+
+  return result;
+};
+
 export const baseApi = createApi({
   reducerPath: "api",
-  baseQuery: rawBaseQuery,
+  baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}), // empty initially
 });

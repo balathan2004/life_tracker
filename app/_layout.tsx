@@ -4,8 +4,7 @@ import { store } from "@/redux/store";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { useColorScheme } from "react-native";
+import { StatusBar, useColorScheme } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -22,21 +21,20 @@ export default function RootLayout() {
 
   const scheme = useColorScheme();
 
-  console.log({ scheme });
-
   if (!loaded) {
     // Async font loading only occurs in development.
     return null;
   }
 
   return (
-    <PaperProvider theme={darkTheme}>
+    <PaperProvider theme={darkTheme as any}>
       <ThemeProvider value={darkTheme as any}>
         <Provider store={store}>
           <SafeAreaProvider>
             <SafeAreaView
               style={{
                 flex: 1,
+                backgroundColor: darkTheme.colors.background,
               }}
             >
               <LoadingHolder>
@@ -68,9 +66,8 @@ export default function RootLayout() {
                 </Stack>
               </LoadingHolder>
               <StatusBar
-                translucent={false}
-                backgroundColor={scheme === "dark" ? "black" : "white"}
-                style={scheme === "dark" ? "dark" : "light"}
+                backgroundColor={darkTheme.colors.background}
+                barStyle={"light-content"}
               />
 
               <Toast />

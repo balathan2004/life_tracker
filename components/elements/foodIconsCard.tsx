@@ -91,9 +91,10 @@ function SingleElement({ keyName, value }: { keyName: string; value: string }) {
         )}
       </View>
       <View style={{}}>
-        <ThemeText variant="labelMedium" style={styles.text}>
+        {value&&  <ThemeText variant="labelMedium" style={styles.text}>
           {value}
-        </ThemeText>
+        </ThemeText>}
+      
       </View>
     </View>
   );

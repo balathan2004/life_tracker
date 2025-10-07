@@ -34,6 +34,11 @@ const authSlice = createSlice({
     resetDailyLog: (state) => {
       state.dailyLog = initDailyLog();
     },
+    logoutUser: (state) => {
+      (state.dailyLog = {} as any),
+        (state.userData = {} as any),
+        AsyncStorage.multiRemove(["refreshToken", "userCred", "dailyLog"]);
+    },
   },
   extraReducers: (builder) => {
     builder.addMatcher(
@@ -78,19 +83,19 @@ export const useAuth = () => {
     dispatch(setDailyLog(dailyLog));
   };
 
-  const useResetDailyLog=()=>{
-    dispatch(resetDailyLog())
-  }
+  const useResetDailyLog = () => {
+    dispatch(resetDailyLog());
+  };
 
-  const useUpdateDailyLog=(payload:Partial<dailyLogInterface>)=>{
-    dispatch(updateDailyLog(payload))
-  }
+  const useUpdateDailyLog = (payload: Partial<dailyLogInterface>) => {
+    dispatch(updateDailyLog(payload));
+  };
 
-  useEffect(()=>{
-    if(!authState.dailyLog || Object.keys(authState.dailyLog).length>0){
-      storeData({key:"dailyLog",value:authState.dailyLog})
+  useEffect(() => {
+    if (authState.dailyLog && Object.keys(authState.dailyLog).length > 0) {
+      storeData({ key: "dailyLog", value: authState.dailyLog });
     }
-  },[authState.dailyLog])
+  }, [authState.dailyLog]);
 
-  return { ...authState, useSetDailyLog,useResetDailyLog, useUpdateDailyLog };
+  return { ...authState, useSetDailyLog, useResetDailyLog, useUpdateDailyLog };
 };

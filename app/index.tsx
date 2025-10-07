@@ -1,7 +1,6 @@
 import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
-import { useGetAccessTokenMutation } from "@/redux/api/authApi";
 import { useAuth } from "@/redux/api/authSlice";
 import { globalStyles } from "@/styles/global.css";
 import { router } from "expo-router";
@@ -10,8 +9,6 @@ import { Image, View } from "react-native";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
   const { useSetDailyLog, useResetDailyLog } = useAuth();
-
-  const [getJwt, { isLoading }] = useGetAccessTokenMutation();
 
   const retrieveCred = async () => {
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
@@ -29,18 +26,7 @@ export default function Home() {
       return;
     }
 
-     router.replace("/(tabs)");
-
-    await getJwt(jwt)
-      .unwrap()
-      .then((res) => {
-        console.log(res);
-        router.replace("/(tabs)");
-      })
-      .catch((err) => {
-        console.log({ err });
-        router.replace("/(auth)");
-      });
+    router.replace("/(tabs)");
   };
 
   useEffect(() => {
