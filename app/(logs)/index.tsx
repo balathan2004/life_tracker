@@ -2,14 +2,14 @@ import { dailyLogInterface } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
-import { formatDate } from 'date-fns';
+import { format, formatDate } from "date-fns";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, View } from "react-native";
 import JSONTree from "react-native-json-tree";
 
 const formatDateNow = (date: string) => {
-  return formatDate(date,'dd mm yyyy')
+  return formatDate(date, "dd mm yyyy");
 };
 
 export default function LogDetail() {
@@ -21,11 +21,18 @@ export default function LogDetail() {
   // convert the JSON string back into your object
   const log: dailyLogInterface = JSON.parse(doc);
 
-  useEffect(() => {
-    if (log?.date) {
-      navigation.setOptions({ title: `${formatDateNow(log.date)} Log` });
-    }
-  }, [log.date]);
+
+useEffect(() => {
+  if (log?.date) {
+    // Parse the ISO date string directly
+    const formatted = format(new Date(log.date), "dd MMMM");
+
+    navigation.setOptions({
+      title: `${formatted} Log`,
+    });
+  }
+}, [log?.date]);
+
 
   const showConfirmation = () => {
     Alert.alert(
@@ -50,11 +57,9 @@ export default function LogDetail() {
     // if (!log || !log.date || !userData) {
     //   return;
     // }
-
     // const response = (await fetchData(
     //   `${domain_url}/api/delete_doc?user_id=${userData.uid}&doc_id=${log.date}`
     // )) as ResponseConfig;
-
     //  Toast.show({
     //       type:"success",
     //       text1:response.message

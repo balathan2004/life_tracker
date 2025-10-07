@@ -102,7 +102,7 @@ const mergedValues={
             <View>
               {renderData.map(({ key, placeholder }) => {
                 return (
-                  <View
+                  <View key={key}
                     style={{
                       marginVertical: 16,
                     }}
