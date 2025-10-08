@@ -1,8 +1,9 @@
 import { format } from "date-fns";
 import { router } from "expo-router";
 import React from "react";
-import { Pressable, StyleSheet, View } from "react-native";
+import { Pressable, View } from "react-native";
 import { dailyLogInterface } from "../interfaces";
+import { moodColors } from "../ui/logCardColors";
 import { ThemeText } from "../ui/TextElements";
 import { moods } from "./moodAccordition";
 
@@ -12,6 +13,8 @@ interface props {
 }
 
 export default function DayReport({ data, nextDayWakeupTime }: props) {
+  const colorVariant = moodColors.find((item) => item.mood == data.mood);
+
   const handleNavigation = () => {
     if (data) {
       router.push({
@@ -51,16 +54,46 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
   }
 
   return (
-    <Pressable style={styles.pressable} onPress={handleNavigation}>
-      <View style={styles.left}>
-        <ThemeText style={{ fontSize: 40 }}>{selectIcon(data.mood)}</ThemeText>
-        {/* <ThemeText>{data.mood}</ThemeText> */}
-      </View>
-      <View style={styles.right}>
-        <ThemeText style={{
-          marginVertical:12
-        }}>{formatDate(data.date)}</ThemeText>
-        <ThemeText>
+    <Pressable
+      style={{
+        flexDirection: "row",
+        gap: 24,
+        alignItems: "center",
+        backgroundColor: colorVariant?.background,
+        borderRadius: 24,
+        paddingHorizontal: 16,
+        paddingVertical:4
+      }}
+      onPress={handleNavigation}
+    >
+      <ThemeText
+        style={{
+          fontSize: 40,
+          backgroundColor: colorVariant?.emoji,
+          borderRadius: 14,
+          paddingHorizontal: 3,
+          paddingVertical: 2,
+        }}
+      >
+        {selectIcon(data.mood)}
+      </ThemeText>
+
+      <View style={{}}>
+        <ThemeText
+          style={{
+            // backgroundColor:colorVariant?.date,
+            marginVertical: 12,
+          }}
+        >
+          {formatDate(data.date)}
+        </ThemeText>
+        <ThemeText
+          style={
+            {
+              // backgroundColor:colorVariant?.time,
+            }
+          }
+        >
           {data.wakeUpTime
             ? format(new Date(data.wakeUpTime), "hh:mm a")
             : "Time Not Saved"}{" "}
@@ -75,14 +108,3 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
     </Pressable>
   );
 }
-
-const styles = StyleSheet.create({
-  pressable: {
-    flexDirection: "row",
-    gap: 32,
-    alignItems: "center",
-    minHeight: 100,
-  },
-  left: {},
-  right: {},
-});

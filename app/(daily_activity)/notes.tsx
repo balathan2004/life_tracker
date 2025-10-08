@@ -49,7 +49,9 @@ const initialValues: Partial<dailyLogInterface> = {
     weight: "",
   },
 };
- const extractDailyLogValues = (dailyLog: dailyLogInterface): Partial<dailyLogInterface> => ({
+const extractDailyLogValues = (
+  dailyLog: dailyLogInterface
+): Partial<dailyLogInterface> => ({
   notes: dailyLog?.notes ?? "",
   somethingProductive: dailyLog?.somethingProductive ?? "",
   travel: dailyLog?.travel ?? "",
@@ -64,12 +66,10 @@ export default function Home() {
   const { dailyLog, useUpdateDailyLog } = useAuth();
   const { colors } = useTheme();
 
-
-
-const mergedValues={
-  ...initialValues,...extractDailyLogValues(dailyLog)
-}
-
+  const mergedValues = {
+    ...initialValues,
+    ...extractDailyLogValues(dailyLog),
+  };
 
   const handleSubmit = (values: Partial<dailyLogInterface>) => {
     useUpdateDailyLog({
@@ -83,18 +83,18 @@ const mergedValues={
     console.log({ values });
   };
 
- 
-
   return (
     <KeyboardAwareScrollView
-      style={globalStyles.safearea}
-      enableOnAndroid={true}
-      extraScrollHeight={100} // pushes the focused input into view
-      keyboardShouldPersistTaps="handled"
+      style={{
+        marginTop:16,
+        marginBottom:28,
+        paddingHorizontal:16
+      }}
       showsVerticalScrollIndicator={false}
     >
       <View style={globalStyles.card}>
-        <Formik enableReinitialize
+        <Formik
+          enableReinitialize
           initialValues={mergedValues}
           onSubmit={(values) => handleSubmit(values)}
         >
@@ -102,7 +102,8 @@ const mergedValues={
             <View>
               {renderData.map(({ key, placeholder }) => {
                 return (
-                  <View key={key}
+                  <View
+                    key={key}
                     style={{
                       marginVertical: 16,
                     }}
@@ -129,7 +130,13 @@ const mergedValues={
                 );
               })}
 
-              <PrimaryButton onPress={() => handleSubmit()}>
+              <PrimaryButton
+                style={{
+                  marginTop: 24,
+                  borderRadius: 10,
+                }}
+                onPress={() => handleSubmit()}
+              >
                 Submit
               </PrimaryButton>
             </View>

@@ -1,9 +1,9 @@
-import { CenterText } from "@/components/ui/TextElements";
+import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
-import { View } from "react-native";
+import { formatDistanceToNow } from "date-fns";
+import { Image, View } from "react-native";
 import { useTheme } from "react-native-paper";
-
-
+import image from "../../assets/images/cat.jpeg";
 
 export default function Home() {
   const { userData } = useAuth();
@@ -16,17 +16,38 @@ export default function Home() {
         marginVertical: 24,
         marginHorizontal: 16,
         flex: 1,
+        gap:16,
+        alignItems: "center",
       }}
     >
       <CenterText
         style={{
           paddingVertical: 12,
+          fontSize:24
         }}
       >
-        Your Logs
+        Your Profile
       </CenterText>
-      <CenterText>{userData.display_name}</CenterText>
-      <CenterText>{JSON.stringify(userData)}</CenterText>
+      <Image
+        style={{
+          height: 100,
+          width: 100,
+          borderRadius: 100,
+        }}
+        source={image}
+      />
+      <CenterText
+        style={{
+          textTransform: "uppercase",
+        }}
+      >
+        {userData.display_name}
+      </CenterText> <ThemeText>{userData.email}</ThemeText>
+      <ThemeText>
+        Joined
+        {" " + formatDistanceToNow(new Date(userData.created_at))} Ago
+      </ThemeText>
+     
     </View>
   );
 }

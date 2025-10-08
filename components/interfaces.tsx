@@ -12,6 +12,7 @@ export interface UserDataInterface {
   display_name: string;
   uid: string;
   created_at: number;
+  email:string
 }
 
 export interface allDocResponseConfig extends ResponseConfig {

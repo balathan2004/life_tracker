@@ -49,6 +49,9 @@ export default function Logs() {
             <DayReport key={item.date} data={item} nextDayWakeupTime={null} />
           );
         }}
+        contentContainerStyle={{
+          gap:16
+        }}
         onRefresh={onRefresh}
         refreshing={refreshing}
         keyExtractor={(item) => item.date}

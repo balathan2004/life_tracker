@@ -85,8 +85,15 @@ export default function Home() {
           );
         })}
 
-       
-        <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
+        <PrimaryButton
+          style={{
+            marginTop: 24,
+            borderRadius: 10,
+          }}
+          onPress={handleSubmit}
+        >
+          Submit
+        </PrimaryButton>
       </View>
     </ScrollView>
   );

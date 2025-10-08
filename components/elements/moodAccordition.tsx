@@ -1,7 +1,6 @@
 import { useAuth } from "@/redux/api/authSlice";
 import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
-import { useDispatch } from "react-redux";
 import { dailyLogInterface } from "../interfaces";
 import { CenterText, ThemeText } from "../ui/TextElements";
 
@@ -16,8 +15,6 @@ export const moods = [
 ];
 
 export default function MoodCard() {
-  const [expanded, setExpanded] = useState(false);
-  const dispatch = useDispatch();
   const { dailyLog, useUpdateDailyLog } = useAuth();
 
   const [mood, setMood] = useState<mood>("okay");
@@ -53,41 +50,35 @@ export default function MoodCard() {
       <View
         style={{
           flexDirection: "row",
-          flex:1,
-          flexWrap:"wrap",
+          flex: 1,
+          flexWrap: "wrap",
           justifyContent: "space-between",
         }}
       >
         {moods.map(({ label, value, color }) => (
           <TouchableOpacity
-            style={{
-              backgroundColor: mood === value ? "#787F9A" : undefined,
-              paddingVertical: 12,
-              paddingHorizontal: 8,
-              borderRadius: 12,
-            }}
             key={label}
             onPress={() => handleSubmit(value as mood)}
+            style={{
+              backgroundColor: mood === value ? "#787F9A" : undefined,
+              paddingVertical: 8,
+              paddingHorizontal: 16,
+              borderRadius: 12,
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 4,
+            }}
           >
-            <TouchableOpacity
-              onPress={() => handleSubmit(value as mood)}
+            <ThemeText
               style={{
-                flexDirection: "column",
-                alignItems: "center",
-                gap:8
+                fontSize: 24,
               }}
             >
-              <ThemeText
-                style={{
-                  fontSize: 32,
-                }}
-              >
-                {label}
-              </ThemeText>
-              <ThemeText style={{ textTransform: "capitalize", color: color }}>
-                {" " + value}
-              </ThemeText>
-            </TouchableOpacity>
+              {label}
+            </ThemeText>
+            <ThemeText style={{ textTransform: "capitalize", color: color }}>
+              {" " + value}
+            </ThemeText>
           </TouchableOpacity>
         ))}
       </View>

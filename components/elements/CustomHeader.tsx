@@ -27,7 +27,7 @@ const CustomHeader = ({ navigation, options, route, back }: Props) => {
           width: 40,
         }}
       >
-        {back && <HeaderBackButton tintColor={colors.onBackground} />}
+        {back && <HeaderBackButton onPress={()=>navigation.goBack()} tintColor={colors.onBackground} />}
       </View>
       <View style={{ flex: 1 }}>
         <ThemeText style={{ textAlign: "center" }} variant="displaySmall">
