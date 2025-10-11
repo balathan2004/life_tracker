@@ -14,7 +14,9 @@ export default function FoodIconsCard() {
   const { colors } = useTheme();
 
   return (
-    <View style={[styles.container, { backgroundColor: colors.primaryContainer }]}>
+    <View
+      style={[styles.container, { backgroundColor: colors.primaryContainer }]}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -24,7 +26,7 @@ export default function FoodIconsCard() {
       >
         <ThemeText variant="bodyLarge">Meals</ThemeText>
         <Link href="/(daily_activity)/food_health">
-          <Feather name="edit" size={24} color={colors.primary} />
+          <Feather name="edit" size={24} color={colors.onBackground} />
         </Link>
       </View>
       {Object.entries(dailyLog?.meals).map(([key, value]) => (
@@ -42,11 +44,13 @@ export function JournalCard() {
     "somethingProductive",
     "travel",
     "notes",
-    "workout"
+    "workout",
   ];
 
   return (
-    <View style={[styles.container,{ backgroundColor: colors.primaryContainer }]}>
+    <View
+      style={[styles.container, { backgroundColor: colors.primaryContainer }]}
+    >
       <View
         style={{
           flexDirection: "row",
@@ -56,7 +60,7 @@ export function JournalCard() {
       >
         <ThemeText variant="bodyLarge">Journal</ThemeText>
         <Link href="/(daily_activity)/notes">
-          <Feather name="edit" size={24} color={colors.primary} />{" "}
+          <Feather name="edit" size={24} color={colors.onBackground} />{" "}
         </Link>
       </View>
       {keysToExtract.map((key) => (
@@ -71,6 +75,10 @@ export function JournalCard() {
 }
 
 function SingleElement({ keyName, value }: { keyName: string; value: string }) {
+
+
+    const { colors } = useTheme();
+
   return (
     <View
       style={{
@@ -85,16 +93,17 @@ function SingleElement({ keyName, value }: { keyName: string; value: string }) {
           {keyName}
         </ThemeText>
         {value ? (
-          <AntDesign name="check" size={20} color={"white"} />
+          <AntDesign name="check" size={20} color={colors.primary} />
         ) : (
-          <FontAwesome name="remove" size={20} color={"white"} />
+          <FontAwesome name="remove" size={20} color={colors.error} />
         )}
       </View>
       <View style={{}}>
-        {value&&  <ThemeText variant="labelMedium" style={styles.text}>
-          {value}
-        </ThemeText>}
-      
+        {value && (
+          <ThemeText variant="labelMedium" style={styles.text}>
+            {value}
+          </ThemeText>
+        )}
       </View>
     </View>
   );
@@ -102,9 +111,9 @@ function SingleElement({ keyName, value }: { keyName: string; value: string }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal:18,
-    paddingVertical:12,
-    borderRadius:12
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 12,
   },
 
   text: {

@@ -3,7 +3,7 @@ import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
 import { Image, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import image from "../../assets/images/cat.jpeg";
+const  image = require("../../assets/images/cat.jpeg");
 
 export default function Home() {
   const { userData } = useAuth();
@@ -16,14 +16,14 @@ export default function Home() {
         marginVertical: 24,
         marginHorizontal: 16,
         flex: 1,
-        gap:16,
+        gap: 16,
         alignItems: "center",
       }}
     >
       <CenterText
         style={{
           paddingVertical: 12,
-          fontSize:24
+          fontSize: 24,
         }}
       >
         Your Profile
@@ -42,12 +42,12 @@ export default function Home() {
         }}
       >
         {userData.display_name}
-      </CenterText> <ThemeText>{userData.email}</ThemeText>
+      </CenterText>
+      <ThemeText>{userData.email}</ThemeText>
       <ThemeText>
         Joined
         {" " + formatDistanceToNow(new Date(userData.created_at))} Ago
       </ThemeText>
-     
     </View>
   );
 }

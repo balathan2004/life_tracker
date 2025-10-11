@@ -7,11 +7,11 @@ import { CenterText, ThemeText } from "../ui/TextElements";
 type mood = dailyLogInterface["mood"];
 
 export const moods = [
-  { label: "\u{1F623}", value: "bad", color: "#F44336" },
-  { label: "\u{1F61E}", value: "low", color: "#FF9800" },
-  { label: "\u{1F610}", value: "okay", color: "#FFC107" },
-  { label: "\u{1F60A}", value: "good", color: "#8BC34A" },
-  { label: "\u2728", value: "great", color: "#4CAF50" },
+  { label: "\u{1F623}", value: "bad", color: "#F44336", emoji: "#FF4C4C" },
+  { label: "\u{1F61E}", value: "low", color: "#FF9800", emoji: "#A770EF" },
+  { label: "\u{1F610}", value: "okay", color: "#FFC107", emoji: "#00B4D8" },
+  { label: "\u{1F60A}", value: "good", color: "#8BC34A", emoji: "#57CC99" },
+  { label: "\u2728", value: "great", color: "#4CAF50", emoji: "#FFD166" },
 ];
 
 export default function MoodCard() {
@@ -39,7 +39,9 @@ export default function MoodCard() {
     >
       <CenterText
         style={{
-          paddingVertical: 16,
+          fontSize: 18,
+          marginVertical: 16,
+          marginBottom: 24,
           textTransform: "capitalize",
         }}
       >
@@ -55,30 +57,32 @@ export default function MoodCard() {
           justifyContent: "space-between",
         }}
       >
-        {moods.map(({ label, value, color }) => (
+        {moods.map(({ label, value, emoji, color }) => (
           <TouchableOpacity
             key={label}
             onPress={() => handleSubmit(value as mood)}
             style={{
-              backgroundColor: mood === value ? "#787F9A" : undefined,
-              paddingVertical: 8,
-              paddingHorizontal: 16,
+              backgroundColor: mood === value ? emoji : undefined,
+              paddingVertical: 2,
+              paddingHorizontal: 6,
               borderRadius: 12,
               flexDirection: "column",
               alignItems: "center",
-              gap: 4,
+              gap: 3,
             }}
           >
             <ThemeText
               style={{
-                fontSize: 24,
+                fontSize: mood === value ? 36 : 24,
               }}
             >
               {label}
             </ThemeText>
-            <ThemeText style={{ textTransform: "capitalize", color: color }}>
-              {" " + value}
-            </ThemeText>
+            {mood !== value && (
+              <ThemeText style={{ textTransform: "capitalize", color: color }}>
+                {value}
+              </ThemeText>
+            )}
           </TouchableOpacity>
         ))}
       </View>
