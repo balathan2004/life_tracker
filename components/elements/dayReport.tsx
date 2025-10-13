@@ -25,7 +25,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
   };
 
   const formatDate = (date: string) => {
-    return date;
+    return format(date, "dd MMMM");
   };
 
   const selectIcon = (mood: dailyLogInterface["mood"]) => {
@@ -62,7 +62,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
         backgroundColor: colorVariant?.background,
         borderRadius: 24,
         paddingHorizontal: 16,
-        paddingVertical:4
+        paddingVertical: 16,
       }}
       onPress={handleNavigation}
     >
@@ -78,22 +78,9 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
         {selectIcon(data.mood)}
       </ThemeText>
 
-      <View style={{}}>
-        <ThemeText
-          style={{
-            // backgroundColor:colorVariant?.date,
-            marginVertical: 12,
-          }}
-        >
-          {formatDate(data.date)}
-        </ThemeText>
-        <ThemeText
-          style={
-            {
-              // backgroundColor:colorVariant?.time,
-            }
-          }
-        >
+      <View style={{ flex: 1, gap: 8 }}>
+        <ThemeText>{formatDate(data.date)}</ThemeText>
+        <ThemeText>
           {data.wakeUpTime
             ? format(new Date(data.wakeUpTime), "hh:mm a")
             : "Time Not Saved"}{" "}
@@ -103,7 +90,17 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
             : "Time Not Saved"}
         </ThemeText>
 
-        <ThemeText>{data.somethingProductive}</ThemeText>
+        {Boolean(data.somethingProductive || data.notes) && (
+          <ThemeText
+            numberOfLines={2}
+            style={{
+              marginRight: 16,
+              flexShrink: 1,
+            }}
+          >
+            {data.somethingProductive || data.notes}
+          </ThemeText>
+        )}
       </View>
     </Pressable>
   );

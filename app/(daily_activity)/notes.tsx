@@ -2,6 +2,7 @@ import { dailyLogInterface } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
+import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import { Formik } from "formik";
 import { View } from "react-native";
@@ -15,11 +16,11 @@ const renderData: {
 }[] = [
   {
     key: "notes",
-    placeholder: "Notes",
+    placeholder: "Make Notes here",
   },
   {
     key: "somethingProductive",
-    placeholder: "some productive things",
+    placeholder: "Any productive things today??",
   },
   {
     key: "travel",
@@ -27,7 +28,7 @@ const renderData: {
   },
   {
     key: "workout",
-    placeholder: "Workout",
+    placeholder: "Any Workout",
   },
   {
     key: "bodyMeasurements.height",
@@ -86,9 +87,9 @@ export default function Home() {
   return (
     <KeyboardAwareScrollView
       style={{
-        marginTop:16,
-        marginBottom:28,
-        paddingHorizontal:16
+        marginTop: 16,
+        marginBottom: 28,
+        paddingHorizontal: 16,
       }}
       showsVerticalScrollIndicator={false}
     >
@@ -105,17 +106,16 @@ export default function Home() {
                   <View
                     key={key}
                     style={{
-                      marginVertical: 16,
+                      marginVertical: 8,
                     }}
                   >
-                    <ThemeText style={{ fontSize: 18, marginBottom: 12 }}>
+                    <ThemeText style={{ fontSize: 18, marginBottom: 4 }}>
                       {placeholder}
                     </ThemeText>
                     <TextInput
+                      multiline
                       mode="outlined"
-                      style={{
-                        color: colors.onBackground,
-                      }}
+                      style={cardStyles.input}
                       value={
                         key.includes(".")
                           ? key

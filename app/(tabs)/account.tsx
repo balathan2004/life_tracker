@@ -7,6 +7,8 @@ const  image = require("../../assets/images/cat.jpeg");
 
 export default function Home() {
   const { userData } = useAuth();
+
+  console.log({userData});
   const { colors } = useTheme();
 
   return (
@@ -46,7 +48,7 @@ export default function Home() {
       <ThemeText>{userData.email}</ThemeText>
       <ThemeText>
         Joined
-        {" " + formatDistanceToNow(new Date(userData.created_at))} Ago
+        {" " + formatDistanceToNow(new Date(userData?.created_at))} Ago
       </ThemeText>
     </View>
   );
