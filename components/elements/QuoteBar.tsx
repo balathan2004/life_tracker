@@ -18,9 +18,13 @@ export default function QuoteBar() {
 
   return (
     <View>
-      <CenterText style={{ fontSize: 16, marginVertical: 16, lineHeight: 18 }}>
-        {quote}
-      </CenterText>
+      {!!quote && (
+        <CenterText variant="bodySmall"
+          style={{  marginVertical: 16 }}
+        >
+          {quote}
+        </CenterText>
+      )}
     </View>
   );
 }

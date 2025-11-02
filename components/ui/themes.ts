@@ -46,7 +46,7 @@ const fontConfig = {
     fontFamily: "Poppins-Medium",
     fontWeight: "400",
     fontSize: 16,
-    lineHeight: 16,
+    lineHeight: 1.5 *16,
     letterSpacing: 0.4,
   },
   labelLarge: {

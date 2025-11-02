@@ -1,14 +1,13 @@
+import ThemeInput from "@/components/elements/ThemeInput";
 import { dailyLogInterface } from "@/components/interfaces";
-import { CenterText, ThemeText } from "@/components/ui/TextElements";
+import { CenterText } from "@/components/ui/TextElements";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { useAuth } from "@/redux/api/authSlice";
-import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import React, { useEffect, useState } from "react";
 import {
   NativeSyntheticEvent,
   ScrollView,
-  TextInput,
   TextInputChangeEventData,
   View,
 } from "react-native";
@@ -68,19 +67,24 @@ export default function Home() {
       showsVerticalScrollIndicator={false}
       style={globalStyles.safearea}
     >
-      <View style={cardStyles.card}>
+      <View
+        style={{
+          flex: 1,
+          width: "95%",
+          marginHorizontal: "auto",
+        }}
+      >
         <CenterText>Food</CenterText>
 
         {renderData.map(({ key, placeholder }) => {
           return (
-            <View key={key}>
-              <ThemeText style={{ fontSize: 18 }}>{placeholder}</ThemeText>
-              <TextInput
-                style={cardStyles.input}
+            <View style={{ marginVertical: 12 }} key={key}>
+              <ThemeInput
                 value={meals[key]}
                 onChange={(e) => handleInput(e, key)}
+                inputLabel={placeholder}
                 placeholder={placeholder}
-              ></TextInput>
+              />
             </View>
           );
         })}

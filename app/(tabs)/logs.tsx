@@ -26,7 +26,7 @@ export default function Logs() {
     <View
       style={{
         backgroundColor: colors.background,
-        marginVertical: 12,
+        marginVertical: 24,
         marginHorizontal: 28,
         flex: 1,
       }}
@@ -34,14 +34,12 @@ export default function Logs() {
       <CenterText
         style={{
           paddingVertical: 12,
+          marginBottom: 12,
         }}
       >
         Your Logs
       </CenterText>
       <FlatList
-        ListHeaderComponent={
-          <View>{loading && <CenterText>Loading</CenterText>}</View>
-        }
         showsVerticalScrollIndicator={false}
         data={Object.values(docs || {})}
         renderItem={({ item, index }) => {
@@ -50,7 +48,7 @@ export default function Logs() {
           );
         }}
         contentContainerStyle={{
-          gap:16
+          gap: 16,
         }}
         onRefresh={onRefresh}
         refreshing={refreshing}

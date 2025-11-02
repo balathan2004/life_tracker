@@ -8,15 +8,17 @@ import { ThemeText } from "../ui/TextElements";
 interface TimeCardProps {
   label: "Wake Up time" | "Sleep Time";
   fieldKey: "wakeUpTime" | "sleepTime"; // extend as needed
-  icon: ReactNode;
+  icon: (color: string) => ReactNode;
 }
 
 export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
   const [time, setTime] = useState<Date | null>(null);
-  const [showPicker, setShowPicker] = useState(false);
-
-  const { colors } = useTheme();
   const { dailyLog, useUpdateDailyLog } = useAuth();
+  const [showPicker, setShowPicker] = useState(false);
+  const value = dailyLog[fieldKey]
+    ? new Date(dailyLog[fieldKey]).toLocaleTimeString()
+    : "";
+  const { colors } = useTheme();
 
   const onChange = (seletedTime: any) => {
     if (seletedTime) {
@@ -58,7 +60,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
           gap: 16,
         }}
       >
-        {icon}
+        {icon(value ? "white" : "#9CA3AF")}
         <View
           style={{
             gap: 16,
@@ -73,13 +75,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
           >
             {label}
           </ThemeText>
-          <ThemeText>
-            {dailyLog[fieldKey]
-              ? ` ${label} Time is ${new Date(
-                  dailyLog[fieldKey]
-                ).toLocaleTimeString()}`
-              : `Not added`}
-          </ThemeText>
+          <ThemeText>{value ? value : `Haven’t added yet`}</ThemeText>
         </View>
       </View>
 
@@ -87,7 +83,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
         style={{
           flexDirection: "row",
           gap: 16,
-          marginTop:12
+          marginTop: 12,
         }}
       >
         <PrimaryButton
@@ -104,6 +100,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
           style={{
             flex: 1,
             borderRadius: 10,
+            backgroundColor: "#5F606A",
           }}
           onPress={() => setShowPicker((prev) => !prev)}
         >

@@ -11,7 +11,7 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
-import { useTheme } from "react-native-paper";
+import { ActivityIndicator, useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Login() {
@@ -66,6 +66,8 @@ export default function Login() {
           marginHorizontal: 16,
         }}
       >
+        {isLoading && <ActivityIndicator />}
+
         <CenterText style={{ fontSize: 28 }}>Register</CenterText>
 
         <ThemeText>Email</ThemeText>

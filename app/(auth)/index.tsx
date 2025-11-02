@@ -5,6 +5,7 @@ import { styles } from "@/styles/auth.css";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   NativeSyntheticEvent,
   TextInput,
   TextInputChangeEventData,
@@ -63,6 +64,7 @@ export default function Login() {
           marginHorizontal: 16,
         }}
       >
+        {isLoading&& <ActivityIndicator/>}
         <CenterText style={{ fontSize: 28 }}>Login</CenterText>
         <CenterText style={{ fontSize: 18 }}>{message}</CenterText>
 

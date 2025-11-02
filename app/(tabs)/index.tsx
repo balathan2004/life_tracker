@@ -9,7 +9,6 @@ import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { useUpdateDocMutation } from "@/redux/api/crudApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import FontAwesome5 from "@expo/vector-icons/FontAwesome5";
 import { isBefore, parseISO, startOfDay } from "date-fns";
 import { ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
@@ -62,7 +61,7 @@ export default function Home() {
         margin: 16,
       }}
     >
-      <CenterText style={{ fontSize: 20, marginVertical: 16 }}>
+      <CenterText variant="bodyMedium" style={{ marginVertical: 8 }}>
         {dailyLog?.date}
       </CenterText>
       <QuoteBar />
@@ -72,16 +71,14 @@ export default function Home() {
         }}
       >
         <TimeCard
-          icon={
-            <FontAwesome5 name="moon" size={28} color={colors.onBackground} />
-          }
+          icon={(color) => <FontAwesome name="sun-o" size={28} color={color} />}
           label="Wake Up time"
           fieldKey="wakeUpTime"
         />
         <TimeCard
-          icon={
-            <FontAwesome name="sun-o" size={28} color={colors.onBackground} />
-          }
+          icon={(color) => (
+            <FontAwesome name="moon-o" size={28} color={color} />
+          )}
           label="Sleep Time"
           fieldKey="sleepTime"
         />

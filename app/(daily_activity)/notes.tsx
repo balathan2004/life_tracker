@@ -1,42 +1,48 @@
+import ThemeInput from "@/components/elements/ThemeInput";
 import { dailyLogInterface } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
-import { ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
-import { cardStyles } from "@/styles/cards.css";
 import { globalStyles } from "@/styles/global.css";
 import { Formik } from "formik";
 import { View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
-import { TextInput, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 const renderData: {
   key: keyof dailyLogInterface | string;
+  label: string;
   placeholder: string;
 }[] = [
   {
     key: "notes",
-    placeholder: "Make Notes here",
+    label: "Notes",
+    placeholder: "Write notes...",
   },
   {
     key: "somethingProductive",
-    placeholder: "Any productive things today??",
+    label: "Productive Tasks",
+    placeholder: "What you did...",
   },
   {
     key: "travel",
-    placeholder: "Travel",
+    label: "Travel",
+    placeholder: "Places visited...",
   },
   {
     key: "workout",
-    placeholder: "Any Workout",
+    label: "Workout",
+    placeholder: "Type or duration...",
   },
   {
     key: "bodyMeasurements.height",
-    placeholder: "Height",
+    label: "Height",
+    placeholder: "Enter height",
   },
   {
     key: "bodyMeasurements.weight",
-    placeholder: "Weight",
+    label: "Weight",
+    placeholder: "Enter weight",
   },
 ];
 
@@ -101,7 +107,7 @@ export default function Home() {
         >
           {({ handleChange, handleSubmit, values }) => (
             <View>
-              {renderData.map(({ key, placeholder }) => {
+              {renderData.map(({ key, placeholder, label }) => {
                 return (
                   <View
                     key={key}
@@ -109,13 +115,8 @@ export default function Home() {
                       marginVertical: 8,
                     }}
                   >
-                    <ThemeText style={{ fontSize: 18, marginBottom: 4 }}>
-                      {placeholder}
-                    </ThemeText>
-                    <TextInput
-                      multiline
-                      mode="outlined"
-                      style={cardStyles.input}
+                    <ThemeInput
+                      inputLabel={label}
                       value={
                         key.includes(".")
                           ? key
@@ -125,7 +126,7 @@ export default function Home() {
                       }
                       onChangeText={handleChange(key)}
                       placeholder={placeholder}
-                    ></TextInput>
+                    />
                   </View>
                 );
               })}

@@ -75,9 +75,7 @@ export function JournalCard() {
 }
 
 function SingleElement({ keyName, value }: { keyName: string; value: string }) {
-
-
-    const { colors } = useTheme();
+  const { colors } = useTheme();
 
   return (
     <View
@@ -92,18 +90,18 @@ function SingleElement({ keyName, value }: { keyName: string; value: string }) {
         <ThemeText variant="bodyMedium" style={styles.text}>
           {keyName}
         </ThemeText>
-        {value ? (
+        {!!value ? (
           <AntDesign name="check" size={20} color={colors.primary} />
         ) : (
           <FontAwesome name="remove" size={20} color={colors.error} />
         )}
       </View>
       <View style={{}}>
-        {value && (
+        {!!value && 
           <ThemeText variant="labelMedium" style={styles.text}>
             {value}
           </ThemeText>
-        )}
+        }
       </View>
     </View>
   );

@@ -1,5 +1,4 @@
 import { dailyLogInterface } from "@/components/interfaces";
-import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { format, formatDate } from "date-fns";
@@ -7,6 +6,7 @@ import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, View } from "react-native";
 import JSONTree from "react-native-json-tree";
+import { Text } from "react-native-paper";
 
 const formatDateNow = (date: string) => {
   return formatDate(date, "dd mm yyyy");
@@ -21,18 +21,16 @@ export default function LogDetail() {
   // convert the JSON string back into your object
   const log: dailyLogInterface = JSON.parse(doc);
 
+  useEffect(() => {
+    if (log?.date) {
+      // Parse the ISO date string directly
+      const formatted = format(new Date(log.date), "dd MMMM");
 
-useEffect(() => {
-  if (log?.date) {
-    // Parse the ISO date string directly
-    const formatted = format(new Date(log.date), "dd MMMM");
-
-    navigation.setOptions({
-      title: `${formatted} Log`,
-    });
-  }
-}, [log?.date]);
-
+      navigation.setOptions({
+        title: `${formatted} Log`,
+      });
+    }
+  }, [log?.date]);
 
   const showConfirmation = () => {
     Alert.alert(
@@ -75,6 +73,8 @@ useEffect(() => {
     itemType: React.ReactNode,
     itemString: string | number | undefined
   ): React.ReactNode => {
+
+    console.log({_data,_type,itemType,itemString});
     // If itemString contains "keys" or "items" (for arrays), return an empty string
     // Otherwise, return the original itemType and itemString
     if (
@@ -82,6 +82,13 @@ useEffect(() => {
       (itemString.includes("keys") || itemString.includes("items"))
     ) {
       return ""; //itemType; // Only return the type (e.g., "Object", "Array") without the count
+    }
+    if ((itemType == "sleepTime" || itemType == "wakeUpTime") && itemString) {
+      return (
+        <>
+          {itemType} {format(new Date(itemString), "hh mm a")}
+        </>
+      );
     }
     return (
       <>
@@ -98,12 +105,30 @@ useEffect(() => {
         </CenterText>
 
         <JSONTree
+          labelRenderer={(label) => (
+            <Text
+              style={{ color: "#FBC02D", textTransform: "capitalize" }}
+              variant="bodySmall"
+            >
+              {label}:
+            </Text>
+          )}
+          valueRenderer={(value) => (
+            <Text
+              style={{
+                color: "#90CAF9",
+              }}
+              variant="bodySmall"
+            >
+              {value?.toString()}
+            </Text>
+          )}
           data={{ ...log }}
           shouldExpandNode={() => true}
           hideRoot={true}
           getItemString={customGetItemString}
         />
-        <PrimaryButton onPress={showConfirmation}>Delete Log</PrimaryButton>
+        {/* <PrimaryButton onPress={showConfirmation}>Delete Log</PrimaryButton> */}
       </View>
     </>
   );

@@ -8,11 +8,14 @@ export const cardStyles = StyleSheet.create({
   },
   input: {
     borderColor: "white",
+    color:"black",
     width: "100%",
     backgroundColor: "white",
     height: 45,
+    minHeight:40,
     fontSize: 18,
     borderRadius: 4,
+    paddingLeft:0
   },
 
   secondCard: {

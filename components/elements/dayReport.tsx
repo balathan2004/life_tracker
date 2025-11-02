@@ -60,6 +60,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
         gap: 24,
         alignItems: "center",
         backgroundColor: colorVariant?.background,
+        borderColor:colorVariant?.border,borderWidth:1,
         borderRadius: 24,
         paddingHorizontal: 16,
         paddingVertical: 16,
@@ -95,6 +96,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
             numberOfLines={2}
             style={{
               marginRight: 16,
+              lineHeight:24,
               flexShrink: 1,
             }}
           >
