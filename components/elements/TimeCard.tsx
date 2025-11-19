@@ -1,4 +1,5 @@
 import { useAuth } from "@/redux/api/authSlice";
+import { addDays, subDays } from "date-fns";
 import { ReactNode, useEffect, useState } from "react";
 import { View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
@@ -111,8 +112,12 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
           <DateTimePickerModal
             isVisible={showPicker}
             mode="datetime"
+            date={new Date()}
+            design="default"
             onConfirm={onChange}
-            onCancel={() => {}}
+            minimumDate={subDays(new Date(), 3)}
+            maximumDate={addDays(new Date(), 2)}
+            onCancel={() => { }}
             is24Hour={false} // change to true if needed
           />
         )}

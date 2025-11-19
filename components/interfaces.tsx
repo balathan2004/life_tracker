@@ -12,7 +12,7 @@ export interface UserDataInterface {
   display_name: string;
   uid: string;
   created_at: number;
-  email:string
+  email: string
 }
 
 export interface allDocResponseConfig extends ResponseConfig {
@@ -51,7 +51,7 @@ export interface dailyLogInterface {
 
 export const initDailyLog = () => {
   const data: dailyLogInterface = {
-    date: new Date().toISOString().slice(0, 10),
+    date: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }).slice(0, 10),
     wakeUpTime: 0,
     sleepTime: 0,
     meals: {
@@ -85,3 +85,6 @@ export interface QuoteResponse extends ResponseConfig {
     username: string;
   }[];
 }
+
+
+export const formatDailyLogForUi=(value:dailyLogInterface)=>{}
