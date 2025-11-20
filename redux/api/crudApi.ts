@@ -1,7 +1,8 @@
 import {
-  allDocResponseConfig,
   dailyLogInterface,
-  ResponseConfig
+  LogsResponseConfig,
+  ResponseConfig,
+  SingleLogResponseConfig,
 } from "@/components/interfaces";
 import { baseApi } from "./baseApi";
 
@@ -17,16 +18,22 @@ export const crudApi = baseApi.injectEndpoints({
         body: payload,
       }),
     }),
-
-    getAllDocs: builder.query<allDocResponseConfig, void>({
-      query: () => ({
-        // url: `api/get_docs?userId=${uid}`,
-           url: `api/get_docs`,
+    getSingleLog: builder.query<SingleLogResponseConfig,  string >({
+      query: (doc_id) => ({
+        url: `api/get_my_dailylog/${doc_id}`,
       }),
     }),
-   
+
+    getAllDocs: builder.query<LogsResponseConfig, void>({
+      query: () => ({
+        url: `api/get_docs`,
+      }),
+    }),
   }),
-  overrideExisting: false, // optional
 });
 
-export const { useUpdateDocMutation, useGetAllDocsQuery } = crudApi;
+export const {
+  useUpdateDocMutation,
+  useGetAllDocsQuery,
+  useGetSingleLogQuery,
+} = crudApi;

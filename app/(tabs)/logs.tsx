@@ -10,7 +10,7 @@ export default function Logs() {
   const { colors } = useTheme();
   const { loading, setLoading } = useLoadingContext();
   const [refreshing, setRefreshing] = useState(false);
-  const { data: { docs } = {}, isLoading, refetch } = useGetAllDocsQuery();
+  const { data: { data } = {}, isLoading, refetch } = useGetAllDocsQuery();
 
   useEffect(() => {
     setLoading(isLoading);
@@ -41,7 +41,7 @@ export default function Logs() {
       </CenterText>
       <FlatList
         showsVerticalScrollIndicator={false}
-        data={Object.values(docs || {})}
+        data={Object.values(data || {})}
         renderItem={({ item, index }) => {
           return (
             <DayReport key={item.date} data={item} nextDayWakeupTime={null} />

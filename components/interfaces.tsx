@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+
 export interface ResponseConfig {
   message: string;
 }
@@ -15,11 +17,7 @@ export interface UserDataInterface {
   email: string
 }
 
-export interface allDocResponseConfig extends ResponseConfig {
-  docs: {
-    [date: string]: dailyLogInterface;
-  };
-}
+
 
 export type foods = "breakfast" | "lunch" | "dinner" | "snacks";
 
@@ -48,6 +46,15 @@ export interface dailyLogInterface {
   notes: string;
   mood: "great" | "good" | "okay" | "low" | "bad";
 }
+
+export interface LogsResponseConfig extends ResponseConfig {
+  data: dailyLogInterface[];
+}
+
+export interface SingleLogResponseConfig extends ResponseConfig {
+  data: dailyLogInterface|null;
+}
+
 
 export const initDailyLog = () => {
   const data: dailyLogInterface = {
@@ -86,5 +93,27 @@ export interface QuoteResponse extends ResponseConfig {
   }[];
 }
 
-
-export const formatDailyLogForUi=(value:dailyLogInterface)=>{}
+export const formatDailyLogForUI = (data: dailyLogInterface) => {
+  return {
+    Date: data.date,
+    "WakeUp Time": data.wakeUpTime === 0 ? "-" : `${format(data.wakeUpTime, "hh:mm a")}`,
+    "Sleep Time": data.sleepTime === 0 ? "-" : format(data.sleepTime, "hh:mm a"),
+    Meals: {
+      Breakfast: data?.meals?.breakfast || "Not Added",
+      Lunch: data?.meals?.lunch || "Not Added",
+      Snacks: data?.meals?.snacks || "Not Added",
+      Dinner: data?.meals?.dinner || "Not Added",
+    },
+    Workout: data.workout || "None",
+    "Body Measurements": {
+      Height: data?.bodyMeasurements?.height ? `${data.bodyMeasurements.height}` : "Not Added",
+      Weight: data?.bodyMeasurements?.weight ? `${data.bodyMeasurements.weight}` : "Not Added",
+    },
+    "Screen Time": `${data.screenTimeMinutes} min`,
+    "Productive Thing": data.somethingProductive || "-",
+    "Bath Taken": data.isBathTaken ? "Yes" : "No",
+    Travel: data.travel || "Not Added",
+    Notes: data.notes || "Not Added",
+    Mood: data.mood,
+  };
+};

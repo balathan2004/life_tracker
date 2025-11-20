@@ -7,8 +7,8 @@ export default function Layout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Logs",
-          headerTitle: "Logs",
+          title: "Daily Log",
+          headerTitle: "Daily Log",
           header: (props) => <CustomHeader {...props} />,
         }}
       ></Stack.Screen>
