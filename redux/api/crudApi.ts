@@ -10,10 +10,20 @@ export const crudApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     updateDoc: builder.mutation<
       ResponseConfig,
-      { uid: string; data: dailyLogInterface }
+      {  data: dailyLogInterface }
     >({
       query: (payload) => ({
         url: "api/update_doc",
+        method: "POST",
+        body: payload,
+      }),
+    }),
+    encryptDoc: builder.mutation<
+      ResponseConfig,
+      {  data: dailyLogInterface }
+    >({
+      query: (payload) => ({
+        url: "api/encrypt_doc",
         method: "POST",
         body: payload,
       }),
@@ -34,6 +44,7 @@ export const crudApi = baseApi.injectEndpoints({
 
 export const {
   useUpdateDocMutation,
+  useEncryptDocMutation,
   useGetAllDocsQuery,
   useGetSingleLogQuery,
 } = crudApi;

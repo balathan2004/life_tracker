@@ -3,7 +3,7 @@ import { useLoadingContext } from "@/components/context/loadingContext";
 import LogListItem from "@/components/elements/LogListItem";
 import { formatDailyLogForUI } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
-import { useGetSingleLogQuery } from "@/redux/api/crudApi";
+import { useEncryptDocMutation, useGetSingleLogQuery } from "@/redux/api/crudApi";
 import { format } from "date-fns";
 import { useLocalSearchParams } from "expo-router";
 import React, { useEffect } from "react";
@@ -19,9 +19,13 @@ export default function LogDetail() {
 
   const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id)
 
-  console.log({ data });
+
+  const [encryptDoc] = useEncryptDocMutation()
 
   const { setLoading } = useLoadingContext()
+
+
+
 
 
   const formattedLog = data ? formatDailyLogForUI(data) : null
@@ -49,6 +53,13 @@ export default function LogDetail() {
   const handleDelete = async () => {
 
   };
+
+
+  useEffect(() => {
+    if (data) {
+      encryptDoc({ data })
+    }
+  }, [data])
 
 
 

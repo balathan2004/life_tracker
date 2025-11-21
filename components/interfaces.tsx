@@ -52,7 +52,7 @@ export interface LogsResponseConfig extends ResponseConfig {
 }
 
 export interface SingleLogResponseConfig extends ResponseConfig {
-  data: dailyLogInterface|null;
+  data: dailyLogInterface | null;
 }
 
 
@@ -92,6 +92,15 @@ export interface QuoteResponse extends ResponseConfig {
     username: string;
   }[];
 }
+
+
+export interface FirebaseDailyLog {
+  data: string;
+  encrypted: boolean
+}
+
+
+
 
 export const formatDailyLogForUI = (data: dailyLogInterface) => {
   return {
