@@ -8,35 +8,29 @@ import { baseApi } from "./baseApi";
 
 export const crudApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    updateDoc: builder.mutation<
-      ResponseConfig,
-      {  data: dailyLogInterface }
-    >({
+    updateDoc: builder.mutation<ResponseConfig, { data: dailyLogInterface }>({
       query: (payload) => ({
         url: "api/update_doc",
         method: "POST",
         body: payload,
       }),
     }),
-    encryptDoc: builder.mutation<
-      ResponseConfig,
-      {  data: dailyLogInterface }
-    >({
+    encryptDoc: builder.mutation<ResponseConfig, { data: dailyLogInterface }>({
       query: (payload) => ({
         url: "api/encrypt_doc",
         method: "POST",
         body: payload,
       }),
     }),
-    getSingleLog: builder.query<SingleLogResponseConfig,  string >({
+    getSingleLog: builder.query<SingleLogResponseConfig, string>({
       query: (doc_id) => ({
         url: `api/get_my_dailylog/${doc_id}`,
       }),
     }),
 
-    getAllDocs: builder.query<LogsResponseConfig, void>({
-      query: () => ({
-        url: `api/get_docs`,
+    getAllDocs: builder.query<LogsResponseConfig, string>({
+      query: (cursor) => ({
+        url: `api/get_docs?cursor=${cursor}`,
       }),
     }),
   }),

@@ -10,8 +10,9 @@ import { useAuth } from "@/redux/api/authSlice";
 import { useUpdateDocMutation } from "@/redux/api/crudApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { isBefore, parseISO, startOfDay } from "date-fns";
+import { Link } from "expo-router";
 import { ScrollView, View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Home() {
@@ -26,7 +27,7 @@ export default function Home() {
     }
 
     const res = await updateDoc({
-      uid: userData?.uid,
+
       data: dailyLog,
     }).unwrap();
     Toast.show({
@@ -82,6 +83,12 @@ export default function Home() {
           label="Sleep Time"
           fieldKey="sleepTime"
         />
+
+        <Link href="/(daily_activity)">
+          <Text>Hello</Text>
+        </Link>
+
+
 
         <FoodIconsCard />
         <JournalCard />

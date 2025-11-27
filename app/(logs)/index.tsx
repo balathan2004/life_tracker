@@ -15,19 +15,9 @@ export default function LogDetail() {
   const { doc_id } = useLocalSearchParams<{ doc_id: string }>();
 
 
-
-
   const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id)
-
-
   const [encryptDoc] = useEncryptDocMutation()
-
   const { setLoading } = useLoadingContext()
-
-
-
-
-
   const formattedLog = data ? formatDailyLogForUI(data) : null
 
 
@@ -56,7 +46,7 @@ export default function LogDetail() {
 
 
   useEffect(() => {
-    if (data) {
+    if (data && !data?.encrypted) {
       encryptDoc({ data })
     }
   }, [data])
@@ -69,16 +59,12 @@ export default function LogDetail() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ padding: 16, paddingHorizontal: 28, paddingBottom: 100 }}>
+      <View style={{ padding: 16, paddingHorizontal: 28, paddingBottom: 100, flex: 1 }}>
         <CenterText style={{ fontSize: 20, marginBottom: 24 }}>
           {format(new Date(doc_id), "dd MMMM")} Log
         </CenterText>
 
         {formattedLog && Object.entries(formattedLog).map(([key, value]) => <LogListItem key={key} label={key as any} value={value} />)}
-
-
-
-
       </View>
     </ScrollView>
   );

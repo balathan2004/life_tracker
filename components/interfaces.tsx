@@ -44,6 +44,7 @@ export interface dailyLogInterface {
   isBathTaken: boolean;
   travel: string;
   notes: string;
+  encrypted?: boolean;
   mood: "great" | "good" | "okay" | "low" | "bad";
 }
 
@@ -119,10 +120,11 @@ export const formatDailyLogForUI = (data: dailyLogInterface) => {
       Weight: data?.bodyMeasurements?.weight ? `${data.bodyMeasurements.weight}` : "Not Added",
     },
     "Screen Time": `${data.screenTimeMinutes} min`,
-    "Productive Thing": data.somethingProductive || "-",
+    "Productive Things": data.somethingProductive || "-",
     "Bath Taken": data.isBathTaken ? "Yes" : "No",
     Travel: data.travel || "Not Added",
     Notes: data.notes || "Not Added",
     Mood: data.mood,
+
   };
 };

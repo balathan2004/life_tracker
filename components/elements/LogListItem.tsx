@@ -1,15 +1,16 @@
 import React from "react";
-import { View } from "react-native";
-import { useTheme } from "react-native-paper";
+import { useWindowDimensions, View } from "react-native";
+import { Text, useTheme } from "react-native-paper";
 import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 
-type ValueTypes = dailyLogInterface[keyof dailyLogInterface];
 
 type Props = {
   label: keyof dailyLogInterface;
   value: string | string[] | object;
 };
+
+
 
 const LogListItem = ({ label, value }: Props) => {
   const { colors } = useTheme();
@@ -20,7 +21,7 @@ const LogListItem = ({ label, value }: Props) => {
         flexDirection: "row",
         alignItems: "flex-start",
         borderLeftWidth: 1,
-        borderColor:"#5F606A",
+        borderColor: "#5F606A",
         position: "relative",
         paddingBottom: 8,
       }}
@@ -37,7 +38,7 @@ const LogListItem = ({ label, value }: Props) => {
         }}
       />
 
-      <View style={{ marginLeft: 24 }}>
+      <View style={{ marginLeft: 24, flex: 1 }}>
         <ThemeText style={{ textTransform: "capitalize", marginVertical: 12 }}>
           {label}
         </ThemeText>
@@ -50,23 +51,45 @@ const LogListItem = ({ label, value }: Props) => {
 export default LogListItem;
 
 const ValueRenderer = ({ value }: { value: any }) => {
-
-
   const { colors } = useTheme();
 
+  const { width } = useWindowDimensions()
+
   return (
-    <View >
+    <>
       {typeof value == "object" &&
         Object.entries(value).map(([key, element]: [string, any]) => (
-          <View style={{ flexDirection: "row", gap: 16,marginVertical:4 }} key={key}>
-            <ThemeText style={{
-              color: "#B0B300", minWidth: 75
-            }}>{key} :</ThemeText>
-            <ThemeText>{element}</ThemeText>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: "row",
+              gap: 16,
+              marginVertical: 4,
+              width: "100%"
+
+            }}
+            key={key}
+          >
+            <Text
+              style={{
+                color: "#B0B300",
+                width: 75
+              }}
+            >
+              {key} :
+            </Text>
+
+            <Text style={{ flex: 1 }} >
+              {element}
+            </Text>
           </View>
         ))}
-      {typeof value == "string" && <ThemeText style={{color:"#B0B300"}}>{value}</ThemeText>}
+      {typeof value == "string" && (
+        <ThemeText numberOfLines={3} style={{ color: "#B0B300" }}>
+          {value}
+        </ThemeText>
+      )}
       {typeof value == "number" && <ThemeText>{value?.toString()}</ThemeText>}
-    </View>
+    </>
   );
 };
