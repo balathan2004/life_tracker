@@ -1,11 +1,16 @@
+import { useFormikContext } from "formik";
 import React from "react";
 import { useWindowDimensions, View } from "react-native";
+import CustomRadio from "../elements/CustomRadio";
 import FormMaker, { FormMakerProps } from "../elements/FormMaker";
+import { dailyLogInterface } from "../interfaces";
 
 type Props = {};
 
 const WellnessForm = (props: Props) => {
   const { width } = useWindowDimensions();
+
+  const { values, setFieldValue } = useFormikContext<dailyLogInterface>();
 
   const form: FormMakerProps[] = [
     {
@@ -23,6 +28,22 @@ const WellnessForm = (props: Props) => {
         label: "Your Weight 🌼",
         placeholder: "What’s your current weight?",
       },
+    },
+    {
+      type: "element",
+      Element: () => (
+        <CustomRadio
+          label="Took bath?"
+          value={values.isBathTaken ? "yes" : "no"}
+          options={[
+            { label: "Yes", value: "yes" },
+            { label: "No", value: "no" },
+          ]}
+          onChange={(value) => {
+            setFieldValue("isBathTaken", value == "yes" ? true : false);
+          }}
+        />
+      ),
     },
   ];
 

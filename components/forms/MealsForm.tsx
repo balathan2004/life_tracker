@@ -19,7 +19,7 @@ const MealsForm = (props: Props) => {
     {
       type: "input",
       inputProps: {
-        formikKey: "lunch",
+        formikKey: "meals.lunch",
         label: "Midday meal 🍽️",
         placeholder: "What kept you going for lunch?",
       },

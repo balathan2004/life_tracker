@@ -4,7 +4,12 @@ import { store } from "@/redux/store";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import { StatusBar, useColorScheme } from "react-native";
+import {
+  KeyboardAvoidingView,
+  Platform,
+  StatusBar,
+  useColorScheme,
+} from "react-native";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -38,32 +43,38 @@ export default function RootLayout() {
               }}
             >
               <LoadingHolder>
-                <Stack>
-                  <Stack.Screen
-                    name="index"
-                    options={{ headerShown: false }}
-                  ></Stack.Screen>
-                  <Stack.Screen
-                    name="(auth)"
-                    options={{ headerShown: false }}
-                  />
+                <KeyboardAvoidingView
+                  behavior={Platform.OS === "ios" ? "padding" : "height"}
+                  style={{ flex: 1 }}
+                  keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+                >
+                  <Stack>
+                    <Stack.Screen
+                      name="index"
+                      options={{ headerShown: false }}
+                    ></Stack.Screen>
+                    <Stack.Screen
+                      name="(auth)"
+                      options={{ headerShown: false }}
+                    />
 
-                  <Stack.Screen
-                    name="(tabs)"
-                    options={{ headerShown: false }}
-                  />
+                    <Stack.Screen
+                      name="(tabs)"
+                      options={{ headerShown: false }}
+                    />
 
-                  <Stack.Screen
-                    name="(daily_activity)"
-                    options={{ headerShown: false }}
-                  />
+                    <Stack.Screen
+                      name="(daily_activity)"
+                      options={{ headerShown: false }}
+                    />
 
-                  <Stack.Screen
-                    name="(logs)"
-                    options={{ headerShown: false }}
-                  />
-                  <Stack.Screen name="+not-found" />
-                </Stack>
+                    <Stack.Screen
+                      name="(logs)"
+                      options={{ headerShown: false }}
+                    />
+                    <Stack.Screen name="+not-found" />
+                  </Stack>
+                </KeyboardAvoidingView>
               </LoadingHolder>
               <StatusBar
                 backgroundColor={darkTheme.colors.background}

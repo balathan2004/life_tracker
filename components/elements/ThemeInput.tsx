@@ -8,15 +8,15 @@ type Props = TextInputProps & {
   inputLabel?: string;
 };
 
-const ThemeInput = (props: Props) => {
+const ThemeInput = ({ inputLabel, contentStyle, ...rest }: Props) => {
   const minheight = 38;
   const [height, setHeight] = useState(minheight);
 
   return (
     <View>
-      {props?.inputLabel && (
+      {inputLabel && (
         <ThemeText style={{ fontSize: 16, marginBottom: 12 }}>
-          {props.inputLabel}
+          {inputLabel}
         </ThemeText>
       )}
       <TextInput
@@ -28,8 +28,8 @@ const ThemeInput = (props: Props) => {
             setHeight(newHeight);
           }
         }}
-        contentStyle={[cardStyles.input, { height: height }]}
-        {...props}
+        contentStyle={[cardStyles.input, { height: height }, contentStyle]}
+        {...rest}
       ></TextInput>
     </View>
   );

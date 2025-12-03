@@ -29,7 +29,7 @@ const FormMaker = ({ data }: Props) => {
         const { type } = item;
 
         if (type == "element") {
-          return <item.Element />;
+          return <item.Element key={index} />;
         } else {
           const { inputProps } = item;
 

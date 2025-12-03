@@ -1,7 +1,8 @@
-import { useField } from "formik";
+import { getIn, useFormikContext } from "formik";
 import React from "react";
 import { View, ViewStyle } from "react-native";
 import { TextInputProps } from "react-native-paper";
+import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 import ThemeInput from "./ThemeInput";
 
@@ -19,10 +20,12 @@ const FormikInput = ({
   containerStyle,
   ...rest
 }: FormikeInputProps) => {
-  const [value] = useField(formikKey);
+  const { values, setFieldValue } = useFormikContext<dailyLogInterface>();
+
+  const value = getIn(values, formikKey);
 
   return (
-    <View style={[{marginBottom:16},containerStyle]}>
+    <View style={[{ marginBottom: 16 }, containerStyle]}>
       <ThemeText
         style={{
           marginBottom: 8,
@@ -32,8 +35,10 @@ const FormikInput = ({
       </ThemeText>
 
       <ThemeInput
-        value={value.value?.toString() || ""}
+        contentStyle={{ paddingLeft: 4 }}
+        value={value?.toString() || ""}
         onSubmitEditing={onSubmitEditing}
+        onChangeText={(text) => setFieldValue(formikKey, text)}
         ref={ref}
         {...rest}
       />

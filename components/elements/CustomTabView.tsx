@@ -7,10 +7,11 @@ type Props = {
     title: string;
     Component: ComponentType<any>;
   }[];
+  commonFooter?: ComponentType<any>;
 };
 
-const CustomTabView = ({ data }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(0);
+const CustomTabView = ({ data, commonFooter }: Props) => {
+  const [activeIndex, setActiveIndex] = useState(2);
 
   const flatListRef = useRef<FlatList>(null);
 
@@ -41,12 +42,24 @@ const CustomTabView = ({ data }: Props) => {
           ))}
         </ScrollView>,
         <FlatList
+          style={{ flexGrow: 0 }}
           ref={flatListRef}
           onMomentumScrollEnd={(event) => {
             const contentOffsetX = event.nativeEvent.contentOffset.x; // horizontal scroll position
             const viewSize = event.nativeEvent.layoutMeasurement.width; // width of the visible area
             const currentIndex = Math.floor(contentOffsetX / viewSize);
             setActiveIndex(currentIndex);
+          }}
+          onScrollToIndexFailed={(info) => {
+            console.log("FAILED:", info);
+
+            // Wait for item to render, then retry
+            setTimeout(() => {
+              flatListRef.current?.scrollToIndex({
+                index: info.index,
+                animated: true,
+              });
+            }, 100);
           }}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
@@ -59,6 +72,7 @@ const CustomTabView = ({ data }: Props) => {
       renderItem={({ item, index }) => (
         <React.Fragment key={index}>{item}</React.Fragment>
       )}
+      ListFooterComponent={commonFooter && commonFooter}
     />
   );
 };
