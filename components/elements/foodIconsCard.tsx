@@ -25,7 +25,7 @@ export default function FoodIconsCard() {
         }}
       >
         <ThemeText variant="bodyLarge">Meals</ThemeText>
-        <Link href="/(daily_activity)/food_health">
+        <Link href="/(daily_activity)?form=0">
           <Feather name="edit" size={24} color={colors.onBackground} />
         </Link>
       </View>
@@ -44,7 +44,6 @@ export function JournalCard() {
     "somethingProductive",
     "travel",
     "notes",
-    "workout",
   ];
 
   return (
@@ -59,7 +58,7 @@ export function JournalCard() {
         }}
       >
         <ThemeText variant="bodyLarge">Journal</ThemeText>
-        <Link href="/(daily_activity)/notes">
+        <Link href="/(daily_activity)?form=1">
           <Feather name="edit" size={24} color={colors.onBackground} />{" "}
         </Link>
       </View>
@@ -74,7 +73,55 @@ export function JournalCard() {
   );
 }
 
-function SingleElement({ keyName, value }: { keyName: string; value: string }) {
+export function WellnessCard() {
+  const { dailyLog } = useAuth();
+  const { colors } = useTheme();
+
+  const keysToExtract: string[] = [
+    "workout",
+    "bodyMeasurements.height",
+    "bodyMeasurements.weight",
+    "isBathTaken",
+  ];
+
+  function getValueByPath(obj: any, path: string) {
+    return path.split(".").reduce((acc, key) => acc?.[key], obj);
+  }
+
+  return (
+    <View
+      style={[styles.container, { backgroundColor: colors.primaryContainer }]}
+    >
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingVertical: 12,
+        }}
+      >
+        <ThemeText variant="bodyLarge">Wellness</ThemeText>
+        <Link href="/(daily_activity)?form=2">
+          <Feather name="edit" size={24} color={colors.onBackground} />{" "}
+        </Link>
+      </View>
+      {keysToExtract.map((key) => (
+        <SingleElement
+          key={key}
+          keyName={key.includes(".") ? key.split(".")[1] : key}
+          value={getValueByPath(dailyLog, key)}
+        ></SingleElement>
+      ))}
+    </View>
+  );
+}
+
+function SingleElement({
+  keyName,
+  value,
+}: {
+  keyName: string;
+  value: string | boolean;
+}) {
   const { colors } = useTheme();
 
   return (
@@ -97,11 +144,16 @@ function SingleElement({ keyName, value }: { keyName: string; value: string }) {
         )}
       </View>
       <View style={{}}>
-        {!!value && 
+        {typeof value === "boolean" && (
+          <ThemeText variant="labelMedium" style={styles.text}>
+            {value ? "Done" : "Not Done"}
+          </ThemeText>
+        )}
+        {typeof value === "string" && !!value && (
           <ThemeText variant="labelMedium" style={styles.text}>
             {value}
           </ThemeText>
-        }
+        )}
       </View>
     </View>
   );

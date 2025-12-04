@@ -5,9 +5,11 @@ import WellnessForm from "@/components/forms/WellnessForm";
 import { dailyLogInterface } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { useAuth } from "@/redux/api/authSlice";
+import { useLocalSearchParams } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { useWindowDimensions, View } from "react-native";
+import Toast from "react-native-toast-message";
 
 type Props = {};
 const initialValues: Partial<dailyLogInterface> = {
@@ -33,6 +35,10 @@ const Index = (props: Props) => {
 
   const { dailyLog, useUpdateDailyLog } = useAuth();
 
+  const { form } = useLocalSearchParams<{ form?: string }>();
+
+  const [selectedPage, setSelectedPage] = useState(parseInt(form || "0"));
+
   const [formValue, setFormValue] = useState(initialValues);
 
   useEffect(() => {
@@ -55,8 +61,11 @@ const Index = (props: Props) => {
   ];
 
   const handleSubmit = (values: Partial<dailyLogInterface>) => {
-    console.log({values});
     useUpdateDailyLog(values);
+    Toast.show({
+      type: "success",
+      text1: "Saved",
+    });
   };
 
   return (
@@ -67,6 +76,7 @@ const Index = (props: Props) => {
     >
       {({ handleSubmit }) => (
         <CustomTabView
+          selectedPage={selectedPage}
           data={data}
           commonFooter={() => (
             <View style={{ marginHorizontal: 16 }}>

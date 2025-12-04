@@ -1,5 +1,6 @@
 import FoodIconsCard, {
   JournalCard,
+  WellnessCard,
 } from "@/components/elements/foodIconsCard";
 import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
@@ -27,7 +28,6 @@ export default function Home() {
     }
 
     const res = await updateDoc({
-
       data: dailyLog,
     }).unwrap();
     Toast.show({
@@ -84,14 +84,14 @@ export default function Home() {
           fieldKey="sleepTime"
         />
 
-        <Link href="/(daily_activity)">
+        <Link href="/(daily_activity)?form=0">
           <Text>Hello</Text>
         </Link>
 
-
-
         <FoodIconsCard />
         <JournalCard />
+
+        <WellnessCard/>
 
         <MoodCard />
 

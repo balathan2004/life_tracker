@@ -1,6 +1,6 @@
 import React, { ComponentType, useEffect, useRef, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity } from "react-native";
-import { Text } from "react-native-paper";
+import { Text, useTheme } from "react-native-paper";
 
 type Props = {
   data: {
@@ -8,10 +8,11 @@ type Props = {
     Component: ComponentType<any>;
   }[];
   commonFooter?: ComponentType<any>;
+  selectedPage?: number;
 };
 
-const CustomTabView = ({ data, commonFooter }: Props) => {
-  const [activeIndex, setActiveIndex] = useState(2);
+const CustomTabView = ({ data, commonFooter, selectedPage }: Props) => {
+  const [activeIndex, setActiveIndex] = useState(selectedPage || 0);
 
   const flatListRef = useRef<FlatList>(null);
 
@@ -84,6 +85,9 @@ type TabButtonProps = {
 };
 
 export function TabButton({ isActive, label, onPress }: TabButtonProps) {
+ 
+  const {colors}=useTheme()
+ 
   return (
     <TouchableOpacity
       style={{
@@ -98,7 +102,7 @@ export function TabButton({ isActive, label, onPress }: TabButtonProps) {
       <Text
         style={{
           textAlign: "center",
-          borderColor: "red",
+          borderColor: colors.primary,
           paddingBottom: 8,
           borderBottomWidth: isActive ? 2 : 0,
         }}
