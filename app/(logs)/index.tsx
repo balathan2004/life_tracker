@@ -1,25 +1,24 @@
-
 import { useLoadingContext } from "@/components/context/loadingContext";
 import LogListItem from "@/components/elements/LogListItem";
 import { formatDailyLogForUI } from "@/components/interfaces";
-import { CenterText } from "@/components/ui/TextElements";
-import { useEncryptDocMutation, useGetSingleLogQuery } from "@/redux/api/crudApi";
+import {
+  useEncryptDocMutation,
+  useGetSingleLogQuery,
+} from "@/redux/api/crudApi";
 import { format } from "date-fns";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
 import { Alert, ScrollView, View } from "react-native";
 
-
 export default function LogDetail() {
-
   const { doc_id } = useLocalSearchParams<{ doc_id: string }>();
 
+  const navigation = useNavigation();
 
-  const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id)
-  const [encryptDoc] = useEncryptDocMutation()
-  const { setLoading } = useLoadingContext()
-  const formattedLog = data ? formatDailyLogForUI(data) : null
-
+  const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id);
+  const [encryptDoc] = useEncryptDocMutation();
+  const { setLoading } = useLoadingContext();
+  const formattedLog = data ? formatDailyLogForUI(data) : null;
 
   const showConfirmation = () => {
     Alert.alert(
@@ -40,18 +39,16 @@ export default function LogDetail() {
     );
   };
 
-  const handleDelete = async () => {
-
-  };
-
+  const handleDelete = async () => {};
 
   useEffect(() => {
     if (data && !data?.encrypted) {
-      encryptDoc({ data })
+      encryptDoc({ data });
+      navigation.setOptions({
+        title: `${format(new Date(doc_id), "dd MMM yyyy ")} log`,
+      });
     }
-  }, [data])
-
-
+  }, [data]);
 
   useEffect(() => {
     setLoading(isLoading);
@@ -59,12 +56,22 @@ export default function LogDetail() {
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
-      <View style={{ padding: 16, paddingHorizontal: 28, paddingBottom: 100, flex: 1 }}>
-        <CenterText style={{ fontSize: 20, marginBottom: 24 }}>
+      <View
+        style={{
+          padding: 16,
+          paddingHorizontal: 28,
+          paddingBottom: 100,
+          flex: 1,
+        }}
+      >
+        {/* <CenterText style={{ fontSize: 20, marginBottom: 24 }}>
           {format(new Date(doc_id), "dd MMMM")} Log
-        </CenterText>
+        </CenterText> */}
 
-        {formattedLog && Object.entries(formattedLog).map(([key, value]) => <LogListItem key={key} label={key as any} value={value} />)}
+        {formattedLog &&
+          Object.entries(formattedLog).map(([key, value]) => (
+            <LogListItem key={key} label={key as any} value={value} />
+          ))}
       </View>
     </ScrollView>
   );

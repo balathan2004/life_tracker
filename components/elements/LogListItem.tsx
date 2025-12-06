@@ -85,7 +85,7 @@ const ValueRenderer = ({ value }: { value: any }) => {
           </View>
         ))}
       {typeof value == "string" && (
-        <ThemeText numberOfLines={3} style={{ color: "#B0B300" }}>
+        <ThemeText style={{ color: "#B0B300" }}>
           {value}
         </ThemeText>
       )}

@@ -31,7 +31,7 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
   const selectIcon = (mood: dailyLogInterface["mood"]) => {
     const currentMood = moods.find((item) => item.value == mood);
 
-    return currentMood?.label || "\u{1F610}"; // okay mood default
+    return currentMood?.emoji || "\u{1F610}"; // okay mood default
   };
 
   function calcSleepTime() {

@@ -5,14 +5,17 @@ type Props = ButtonProps & {
   children: ReactNode;
 };
 
-export function PrimaryButton({ children, ...props }: Props) {
+export function PrimaryButton({ children, style, ...props }: Props) {
   const { colors } = useTheme();
   return (
     <Button
       mode="contained"
-      style={{
-        borderRadius: 10,
-      }}
+      style={[
+        {
+          borderRadius: 10,
+        },
+        style,
+      ]}
       contentStyle={{
         height: 48,
       }}

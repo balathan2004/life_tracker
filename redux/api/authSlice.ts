@@ -75,7 +75,7 @@ const authSlice = createSlice({
   },
 });
 
-export const { setDailyLog, updateDailyLog, resetDailyLog, setUser } =
+export const { setDailyLog, updateDailyLog, resetDailyLog, setUser, logoutUser } =
   authSlice.actions;
 export default authSlice.reducer;
 
@@ -91,6 +91,10 @@ export const useAuth = () => {
     dispatch(setUser(userData));
   };
 
+  const handleLogout = () => {
+    dispatch(logoutUser())
+  }
+
   const useResetDailyLog = () => {
     dispatch(resetDailyLog());
   };
@@ -105,5 +109,5 @@ export const useAuth = () => {
     }
   }, [authState.dailyLog]);
 
-  return { ...authState, useSetDailyLog, useResetDailyLog, useUpdateDailyLog,setUserData };
+  return { ...authState, useSetDailyLog, useResetDailyLog, useUpdateDailyLog, setUserData,handleLogout };
 };

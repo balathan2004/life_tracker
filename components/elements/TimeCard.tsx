@@ -70,7 +70,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
           <ThemeText
             variant="displaySmall"
             style={{
-              fontSize: 20,
+              fontSize: 18,
               lineHeight: 20,
             }}
           >

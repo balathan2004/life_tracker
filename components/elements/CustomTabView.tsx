@@ -1,5 +1,5 @@
 import React, { ComponentType, useEffect, useRef, useState } from "react";
-import { FlatList, ScrollView, TouchableOpacity } from "react-native";
+import { FlatList, ScrollView, TouchableOpacity, View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 
 type Props = {
@@ -85,9 +85,8 @@ type TabButtonProps = {
 };
 
 export function TabButton({ isActive, label, onPress }: TabButtonProps) {
- 
-  const {colors}=useTheme()
- 
+  const { colors } = useTheme();
+
   return (
     <TouchableOpacity
       style={{
@@ -96,6 +95,7 @@ export function TabButton({ isActive, label, onPress }: TabButtonProps) {
         borderRadius: 8,
         minWidth: 100,
         marginRight: 24,
+        position: "relative",
       }}
       onPress={onPress}
     >
@@ -104,12 +104,23 @@ export function TabButton({ isActive, label, onPress }: TabButtonProps) {
           textAlign: "center",
           borderColor: colors.primary,
           paddingBottom: 8,
-          borderBottomWidth: isActive ? 2 : 0,
         }}
         variant="labelLarge"
       >
         {label}
       </Text>
+      <View
+        style={{
+          display: isActive ? "flex" : "none",
+          position: "absolute",
+          height: 1.8,
+          left: 4,
+          right: 4,
+          bottom: 0,
+          borderRadius: 24,
+          backgroundColor: colors.primary,
+        }}
+      />
     </TouchableOpacity>
   );
 }

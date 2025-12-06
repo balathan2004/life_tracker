@@ -15,12 +15,12 @@ export default function ActivityLayout() {
       <Stack.Screen
         name="index"
         options={{
-          title: "Journal",
-          headerTitle: "Journal",
+          title: "Today Journal",
+          headerTitle: "Today Journal",
           header: (props) => <CustomHeader {...props} />,
         }}
       ></Stack.Screen>
-      <Stack.Screen
+      {/* <Stack.Screen
         name="notes"
         options={{
           title: "Journal",
@@ -35,7 +35,7 @@ export default function ActivityLayout() {
           headerTitle: "Meals",
           header: (props) => <CustomHeader {...props} />,
         }}
-      ></Stack.Screen>
+      ></Stack.Screen> */}
     </Stack>
   );
 }

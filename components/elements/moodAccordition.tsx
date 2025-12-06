@@ -7,17 +7,49 @@ import { CenterText, ThemeText } from "../ui/TextElements";
 type mood = dailyLogInterface["mood"];
 
 export const moods = [
-  { label: "\u{1F623}", value: "bad", color: "#F44336", emoji: "#FF4C4C" },
-  { label: "\u{1F61E}", value: "low", color: "#FF9800", emoji: "#A770EF" },
-  { label: "\u{1F610}", value: "okay", color: "#FFC107", emoji: "#00B4D8" },
-  { label: "\u{1F60A}", value: "good", color: "#8BC34A", emoji: "#57CC99" },
-  { label: "\u2728", value: "great", color: "#4CAF50", emoji: "#FFD166" },
+  {
+    label: "It’s okay to move slowly today.", // message
+    value: "bad",
+    color: "#F44336",
+    emoji: "\u{1F623}", // old label moved here
+    emojiBg: "#FF4C4C",
+  },
+  {
+    label: "Even quiet days count.",
+    value: "low",
+    color: "#FF9800",
+    emoji: "\u{1F61E}",
+    emojiBg: "#A770EF",
+  },
+  {
+    label: "You showed up today.",
+    value: "okay",
+    color: "#FFC107",
+    emoji: "\u{1F610}",
+    emojiBg: "#00B4D8",
+  },
+  {
+    label: "Today brought some light.",
+    value: "good",
+    color: "#8BC34A",
+    emoji: "\u{1F60A}",
+    emojiBg: "#57CC99",
+  },
+  {
+    label: "You’ve earned this moment - let it shine.",
+    value: "great",
+    color: "#4CAF50",
+    emoji: "\u2728",
+    emojiBg: "#FFD166",
+  },
 ];
 
 export default function MoodCard() {
   const { dailyLog, useUpdateDailyLog } = useAuth();
 
   const [mood, setMood] = useState<mood>("okay");
+
+  const currentMoodObj = moods.find((item) => item.value == mood);
 
   const handleSubmit = (value: mood) => {
     if (!value || !dailyLog) return;
@@ -34,19 +66,28 @@ export default function MoodCard() {
   return (
     <View
       style={{
-        marginVertical: 24,
+        marginVertical: 12,
       }}
     >
       <CenterText
         style={{
-          fontSize: 18,
-          marginVertical: 16,
-          marginBottom: 24,
+          fontSize: 16,
+          marginBottom: 16,
+          textTransform: "capitalize",
+          color:currentMoodObj?.color
+        }}
+      >
+        {`Your Mood - ${mood}`}
+      </CenterText>
+
+      <CenterText
+        style={{
+          fontSize: 12,
+          marginBottom: 16,
           textTransform: "capitalize",
         }}
       >
-        {" "}
-        {`Your Mood - ${mood}`}
+        {currentMoodObj?.label}
       </CenterText>
 
       <View
@@ -57,12 +98,12 @@ export default function MoodCard() {
           justifyContent: "space-between",
         }}
       >
-        {moods.map(({ label, value, emoji, color }) => (
+        {moods.map(({ label, value, emoji, color ,emojiBg }) => (
           <TouchableOpacity
             key={label}
             onPress={() => handleSubmit(value as mood)}
             style={{
-              backgroundColor: mood === value ? emoji : undefined,
+              backgroundColor: mood === value ? emojiBg : undefined,
               paddingVertical: 2,
               paddingHorizontal: 6,
               borderRadius: 12,
@@ -76,7 +117,7 @@ export default function MoodCard() {
                 fontSize: mood === value ? 36 : 24,
               }}
             >
-              {label}
+              {emoji}
             </ThemeText>
             {mood !== value && (
               <ThemeText style={{ textTransform: "capitalize", color: color }}>

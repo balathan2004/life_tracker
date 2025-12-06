@@ -3,12 +3,12 @@ import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
 import { Image, View } from "react-native";
 import { useTheme } from "react-native-paper";
-const  image = require("../../assets/images/cat.jpeg");
+const image = require("../../assets/images/cat.jpeg");
 
 export default function Home() {
-  const { userData } = useAuth();
+  const { userData, handleLogout } = useAuth();
 
-  console.log({userData});
+  console.log({ userData });
   const { colors } = useTheme();
 
   return (
@@ -50,6 +50,7 @@ export default function Home() {
         Joined
         {" " + formatDistanceToNow(new Date(userData?.created_at))} Ago
       </ThemeText>
+      {/* <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton> */}
     </View>
   );
 }

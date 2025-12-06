@@ -10,37 +10,39 @@ import { useTheme } from "react-native-paper";
 export default function Logs() {
   const { colors } = useTheme();
   const { loading, setLoading } = useLoadingContext();
-  const [cursor, setCursor] = useState("")
+  const [cursor, setCursor] = useState("");
   const [refreshing, setRefreshing] = useState(false);
-  const { data: { data } = {}, isLoading, refetch } = useGetAllDocsQuery(cursor);
+  const {
+    data: { data } = {},
+    isLoading,
+    refetch,
+  } = useGetAllDocsQuery(cursor);
 
-  const [logs, setLogs] = useState<dailyLogInterface[]>([])
-
-
+  const [logs, setLogs] = useState<dailyLogInterface[]>([]);
 
   useEffect(() => {
     setLoading(isLoading);
   }, [isLoading]);
 
   const onRefresh = async () => {
-
     setRefreshing(true);
+    setLogs([]);
+    setCursor("")
     await refetch();
     setRefreshing(false);
   };
 
-
   useEffect(() => {
+    if (!data || data.length <= 0) return;
 
-    if (!data || data.length <= 0) return
-
-    setLogs(prev => ([...prev.filter(item => !data.includes(item)), ...data]))
-
-  }, [data])
-
+    setLogs((prev) => [
+      ...prev.filter((item) => !data.includes(item)),
+      ...data,
+    ]);
+  }, [data]);
 
   const handlePagination = () => {
-    if (isLoading) return;       // avoid duplicate triggers
+    if (isLoading) return; // avoid duplicate triggers
     if (!logs || logs.length === 0) return;
 
     setCursor(logs[logs.length - 1].date);
@@ -63,7 +65,8 @@ export default function Logs() {
       >
         Your Logs
       </CenterText>
-      <FlatList onEndReached={() => handlePagination()}
+      <FlatList
+        onEndReached={() => handlePagination()}
         onEndReachedThreshold={0.2}
         showsVerticalScrollIndicator={false}
         data={Object.values(logs || {})}

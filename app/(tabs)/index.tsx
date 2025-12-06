@@ -11,9 +11,8 @@ import { useAuth } from "@/redux/api/authSlice";
 import { useUpdateDocMutation } from "@/redux/api/crudApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { isBefore, parseISO, startOfDay } from "date-fns";
-import { Link } from "expo-router";
 import { ScrollView, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Home() {
@@ -84,14 +83,10 @@ export default function Home() {
           fieldKey="sleepTime"
         />
 
-        <Link href="/(daily_activity)?form=0">
-          <Text>Hello</Text>
-        </Link>
-
         <FoodIconsCard />
         <JournalCard />
 
-        <WellnessCard/>
+        <WellnessCard />
 
         <MoodCard />
 
@@ -104,7 +99,12 @@ export default function Home() {
           <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
           {dayCompare() && (
             <>
-              <PrimaryButton onPress={handleDateChange}>
+              <PrimaryButton
+                style={{
+                  backgroundColor: "#5F606A",
+                }}
+                onPress={handleDateChange}
+              >
                 Save and Create
               </PrimaryButton>
               <PrimaryButton onPress={createNewDoc}>
