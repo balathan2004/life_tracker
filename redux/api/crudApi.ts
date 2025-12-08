@@ -14,6 +14,7 @@ export const crudApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
+      invalidatesTags:['logs']
     }),
     encryptDoc: builder.mutation<ResponseConfig, { data: dailyLogInterface }>({
       query: (payload) => ({
@@ -32,6 +33,7 @@ export const crudApi = baseApi.injectEndpoints({
       query: (cursor) => ({
         url: `api/get_docs?cursor=${cursor}`,
       }),
+      providesTags:["logs"]
     }),
   }),
 });

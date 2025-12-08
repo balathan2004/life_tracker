@@ -42,8 +42,11 @@ export default function LogDetail() {
   const handleDelete = async () => {};
 
   useEffect(() => {
-    if (data && !data?.encrypted) {
-      encryptDoc({ data });
+    if (data) {
+      if (!data?.encrypted) {
+        encryptDoc({ data });
+      }
+
       navigation.setOptions({
         title: `${format(new Date(doc_id), "dd MMM yyyy ")} log`,
       });

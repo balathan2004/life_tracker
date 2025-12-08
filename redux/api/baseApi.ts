@@ -65,4 +65,5 @@ export const baseApi = createApi({
   reducerPath: "api",
   baseQuery: baseQueryWithReAuth,
   endpoints: () => ({}), // empty initially
+  tagTypes: ['logs', 'account']
 });

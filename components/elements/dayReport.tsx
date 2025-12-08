@@ -15,6 +15,8 @@ interface props {
 export default function DayReport({ data, nextDayWakeupTime }: props) {
   const colorVariant = moodColors.find((item) => item.mood == data.mood);
 
+  console.log(data.date);
+
   const handleNavigation = () => {
     if (data) {
       router.push({
