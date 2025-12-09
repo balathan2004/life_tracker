@@ -1,8 +1,8 @@
 import { useAuth } from "@/redux/api/authSlice";
 import Entypo from "@expo/vector-icons/Entypo";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
-import Octicons from "@expo/vector-icons/Octicons";
 import { router, Tabs } from "expo-router";
+import { ArchiveBook } from "iconsax-react-nativejs";
 import { useEffect } from "react";
 import { useTheme } from "react-native-paper";
 
@@ -46,9 +46,8 @@ export default function Layout() {
           headerShown: false,
 
           tabBarIcon: ({ focused }) => (
-            <Octicons
-              name="log"
-              size={24}
+            <ArchiveBook
+              size="24"
               color={focused ? colors.primary : colors.onSurface}
             />
           ),

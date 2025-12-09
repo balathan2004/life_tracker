@@ -4,6 +4,7 @@ import {
   ResponseConfig,
   SingleLogResponseConfig,
 } from "@/components/interfaces";
+import querystring from 'query-string';
 import { baseApi } from "./baseApi";
 
 export const crudApi = baseApi.injectEndpoints({
@@ -14,7 +15,7 @@ export const crudApi = baseApi.injectEndpoints({
         method: "POST",
         body: payload,
       }),
-      invalidatesTags:['logs']
+      invalidatesTags: ['logs']
     }),
     encryptDoc: builder.mutation<ResponseConfig, { data: dailyLogInterface }>({
       query: (payload) => ({
@@ -29,11 +30,22 @@ export const crudApi = baseApi.injectEndpoints({
       }),
     }),
 
-    getAllDocs: builder.query<LogsResponseConfig, string>({
-      query: (cursor) => ({
-        url: `api/get_docs?cursor=${cursor}`,
-      }),
-      providesTags:["logs"]
+    // getAllDocs: builder.query<LogsResponseConfig, string>({
+
+
+
+    //   query: (cursor) => ({
+    //     url: `api/get_docs?cursor=${cursor}`,
+    //   }),
+    //   providesTags:["logs"]
+    // }),
+
+    getAllDocs: builder.query<LogsResponseConfig, Object>({
+      query: (cursor) => {
+        const querypayload = querystring.stringify(cursor, { skipEmptyString: true })
+        return ({ url: `api/get_docs?${querypayload}` })
+      },
+      providesTags: ["logs"]
     }),
   }),
 });

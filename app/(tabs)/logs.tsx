@@ -1,7 +1,7 @@
 import DayReport from "@/components/elements/dayReport";
 import { dailyLogInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
-import { crudApi, useGetAllDocsQuery } from "@/redux/api/crudApi";
+import { useGetAllDocsQuery } from "@/redux/api/crudApi";
 import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
@@ -10,39 +10,51 @@ import { useDispatch } from "react-redux";
 export default function Logs() {
   const { colors } = useTheme();
 
+  const [refreshKey, setRefreshKey] = useState(Date.now());
   const [cursor, setCursor] = useState("");
   const dispatch = useDispatch();
   const [refreshing, setRefreshing] = useState(false);
-  const {
-    data: { data } = {},
-    isLoading,
-    isFetching,
-  } = useGetAllDocsQuery(cursor);
+  const { data, isLoading, refetch, isFetching } = useGetAllDocsQuery({
+    cursor,
+    refreshKey,
+  });
+
+  const responseData = data?.data;
 
   const [logs, setLogs] = useState<dailyLogInterface[]>([]);
 
   const onRefresh = async () => {
     setRefreshing(true);
-    setLogs([]);
     setCursor("");
-    dispatch(crudApi.util.invalidateTags(["logs"]));
+    setRefreshKey(Date.now());
+    console.log("1");
+    setLogs([]);
+    console.log("2");
+    const data = await refetch();
+
+    data.data?.data.map((item) => item.date);
+    console.log("3");
+    setRefreshing(false);
+    console.log("4");
   };
 
   useEffect(() => {
-    if (!data) return;
+    if (!responseData) return;
 
-    setRefreshing(false); // ✅ stop spinner when API returns
+    // ✅ stop spinner when API returns
+
+    console.log("responseData chanegd");
 
     setLogs((prev) => {
       const map = new Map(prev.map((item) => [item.date, item]));
 
-      data.forEach((item) => {
+      responseData.forEach((item) => {
         map.set(item.date, item);
       });
 
       return Array.from(map.values());
     });
-  }, [data]);
+  }, [responseData]);
 
   const handlePagination = () => {
     console.log("pagination called");
