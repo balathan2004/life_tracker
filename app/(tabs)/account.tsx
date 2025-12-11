@@ -1,7 +1,7 @@
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
-import { Image, View } from "react-native";
+import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 const image = require("../../assets/images/cat.jpeg");
 
@@ -12,6 +12,7 @@ export default function Home() {
   const { colors } = useTheme();
 
   return (
+    <ScrollView>
     <View
       style={{
         backgroundColor: colors.background,
@@ -52,5 +53,6 @@ export default function Home() {
       </ThemeText>
       {/* <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton> */}
     </View>
+    </ScrollView>
   );
 }

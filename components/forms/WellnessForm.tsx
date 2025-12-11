@@ -29,6 +29,14 @@ const WellnessForm = (props: Props) => {
         placeholder: "What’s your current weight?",
       },
     },
+     {
+      type: "input",
+      inputProps: {
+        formikKey: "workout",
+        label: "Movement & Energy 💪",
+        placeholder: "How did you move your body today?",
+      },
+    },
     {
       type: "element",
       Element: () => (

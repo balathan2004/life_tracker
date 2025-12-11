@@ -2,7 +2,6 @@ import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
 import { useAuth } from "@/redux/api/authSlice";
-import { globalStyles } from "@/styles/global.css";
 import { router } from "expo-router";
 import React, { useEffect } from "react";
 import { Image, View } from "react-native";
@@ -34,24 +33,21 @@ export default function Home() {
   }, []);
 
   return (
-    <View style={globalStyles.safearea}>
-      <View
-        style={{
-          display: "flex",
-          flex: 1,
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <CenterText style={{ fontSize: 32, marginVertical: 20 }}>
-          {" "}
-          Welcome
-        </CenterText>
-        <Image
-          style={{ width: 250, height: 250, borderRadius: 10 }}
-          source={image}
-        ></Image>
-      </View>
+    <View
+      style={{
+        display: "flex",
+        flex: 1,
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+    >
+      <CenterText style={{ fontSize: 24, marginVertical: 20 }}>
+        Welcome to Life Tracker
+      </CenterText>
+      <Image
+        style={{ width: 250, height: 250, borderRadius: 10 }}
+        source={image}
+      ></Image>
     </View>
   );
 }

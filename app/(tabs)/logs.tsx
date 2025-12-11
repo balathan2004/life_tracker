@@ -5,6 +5,7 @@ import { useGetAllDocsQuery } from "@/redux/api/crudApi";
 import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
+
 import { useDispatch } from "react-redux";
 
 export default function Logs() {
@@ -68,23 +69,25 @@ export default function Logs() {
   return (
     <View
       style={{
+        paddingTop: 24,
         backgroundColor: colors.background,
-        marginVertical: 24,
         marginHorizontal: 28,
-        flex: 1,
       }}
     >
-      <CenterText
-        style={{
-          paddingVertical: 12,
-          marginBottom: 12,
-        }}
-      >
-        Your Logs
-      </CenterText>
-      {isFetching && <ActivityIndicator></ActivityIndicator>}
-
       <FlatList
+        ListHeaderComponent={() => (
+          <>
+            <CenterText
+              style={{
+                paddingBottom: 16,
+                fontSize: 22,
+              }}
+            >
+              Your Logs
+            </CenterText>
+            {isFetching && <ActivityIndicator></ActivityIndicator>}
+          </>
+        )}
         onEndReached={() => handlePagination()}
         onEndReachedThreshold={0.2}
         showsVerticalScrollIndicator={false}
@@ -96,6 +99,7 @@ export default function Logs() {
         }}
         contentContainerStyle={{
           gap: 16,
+          paddingBottom:24
         }}
         onRefresh={onRefresh}
         refreshing={refreshing}

@@ -32,14 +32,7 @@ const JournalForm = (props: Props) => {
         placeholder: "Any places you went or small adventures?",
       },
     },
-    {
-      type: "input",
-      inputProps: {
-        formikKey: "workout",
-        label: "Movement & Energy 💪",
-        placeholder: "How did you move your body today?",
-      },
-    },
+   
   ];
 
   return (

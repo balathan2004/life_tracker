@@ -20,7 +20,13 @@ export default function Layout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { backgroundColor: colors.background },
+        tabBarStyle: {
+          backgroundColor: colors.background,
+          padding: 0,
+          minHeight: 60,
+          maxHeight: 80,
+  
+        },
       }}
     >
       <Tabs.Screen

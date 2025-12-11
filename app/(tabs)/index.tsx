@@ -58,9 +58,14 @@ export default function Home() {
       showsVerticalScrollIndicator={false}
       style={{
         backgroundColor: colors.background,
-        margin: 16,
+       
       }}
     >
+      <View style={{
+         margin: 16,flex:1
+      }}>
+
+      
       <CenterText variant="bodyMedium" style={{ marginVertical: 8 }}>
         {dailyLog?.date}
       </CenterText>
@@ -113,6 +118,7 @@ export default function Home() {
             </>
           )}
         </View>
+      </View>
       </View>
     </ScrollView>
   );
