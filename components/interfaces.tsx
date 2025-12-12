@@ -79,6 +79,7 @@ export const initDailyLog = () => {
     travel: "",
     notes: "",
     mood: "okay",
+    
   };
   return data;
 };

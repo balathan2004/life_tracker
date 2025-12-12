@@ -15,10 +15,15 @@ export default function LogDetail() {
 
   const navigation = useNavigation();
 
+  
   const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id);
   const [encryptDoc] = useEncryptDocMutation();
   const { setLoading } = useLoadingContext();
   const formattedLog = data ? formatDailyLogForUI(data) : null;
+
+
+  console.log({data});
+
 
   const showConfirmation = () => {
     Alert.alert(
@@ -67,10 +72,6 @@ export default function LogDetail() {
           flex: 1,
         }}
       >
-        {/* <CenterText style={{ fontSize: 20, marginBottom: 24 }}>
-          {format(new Date(doc_id), "dd MMMM")} Log
-        </CenterText> */}
-
         {formattedLog &&
           Object.entries(formattedLog).map(([key, value]) => (
             <LogListItem key={key} label={key as any} value={value} />

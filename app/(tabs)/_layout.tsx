@@ -25,7 +25,6 @@ export default function Layout() {
           padding: 0,
           minHeight: 60,
           maxHeight: 80,
-  
         },
       }}
     >
@@ -48,7 +47,7 @@ export default function Layout() {
       <Tabs.Screen
         name="logs"
         options={{
-          title: "logs",
+          title: "Logs",
           headerShown: false,
 
           tabBarIcon: ({ focused }) => (
