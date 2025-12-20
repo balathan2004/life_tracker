@@ -1,10 +1,7 @@
 import { useLoadingContext } from "@/components/context/loadingContext";
 import LogListItem from "@/components/elements/LogListItem";
 import { formatDailyLogForUI } from "@/components/interfaces";
-import {
-  useEncryptDocMutation,
-  useGetSingleLogQuery,
-} from "@/redux/api/crudApi";
+import { useEncryptMutation, useGetDocByIdQuery } from "@/redux/api/crudApi";
 import { format } from "date-fns";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
@@ -15,15 +12,12 @@ export default function LogDetail() {
 
   const navigation = useNavigation();
 
-  
-  const { data: { data } = {}, isLoading } = useGetSingleLogQuery(doc_id);
-  const [encryptDoc] = useEncryptDocMutation();
+  const { data: { data } = {}, isLoading } = useGetDocByIdQuery(doc_id);
+  const [encryptDoc] = useEncryptMutation();
   const { setLoading } = useLoadingContext();
   const formattedLog = data ? formatDailyLogForUI(data) : null;
 
-
-  console.log({data});
-
+  console.log({ data });
 
   const showConfirmation = () => {
     Alert.alert(

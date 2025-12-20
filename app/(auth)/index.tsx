@@ -2,7 +2,7 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
-import { Link, router } from "expo-router";
+import { Link } from "expo-router";
 import { useState } from "react";
 import {
   ActivityIndicator,
@@ -12,7 +12,6 @@ import {
   View,
 } from "react-native";
 import { useTheme } from "react-native-paper";
-import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
@@ -28,7 +27,7 @@ export default function Login() {
     name: string
   ) => {
     const value = event.nativeEvent.text;
-    setUserData((prev) => ({ ...prev, [name]: value }));
+    setUserData((prev) => ({ ...prev, [name]: value.trim() }));
   };
 
   const handleSubmit = async () => {
@@ -37,19 +36,20 @@ export default function Login() {
       return;
     }
 
-    const res = await login(userData).unwrap();
+    const res = await login(userData)
+      .unwrap()
+      .then((res) => setMessage(res.message))
+      .catch((err) => setMessage(err.error || err.data.message));
 
-    console.log({ res });
+    // setMessage();
+    // Toast.show({
+    //   type: "success",
+    //   text1: res.message,
+    // });
 
-    setMessage(res.message);
-    Toast.show({
-      type: "success",
-      text1: res.message,
-    });
-
-    if (res && res.credentials) {
-      router.push("/(tabs)");
-    }
+    // if (res && res.credentials) {
+    //   router.push("/(tabs)");
+    // }
   };
 
   return (
@@ -64,7 +64,7 @@ export default function Login() {
           marginHorizontal: 16,
         }}
       >
-        {isLoading&& <ActivityIndicator/>}
+        {isLoading && <ActivityIndicator />}
         <CenterText style={{ fontSize: 28 }}>Login</CenterText>
         <CenterText style={{ fontSize: 18 }}>{message}</CenterText>
 
@@ -98,7 +98,7 @@ export default function Login() {
             marginVertical: 16,
           }}
         >
-          New here {" "}
+          New here{" "}
           <ThemeText
             style={{ color: colors.primary, textDecorationLine: "underline" }}
           >

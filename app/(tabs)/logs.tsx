@@ -1,24 +1,25 @@
 import DayReport from "@/components/elements/dayReport";
 import { dailyLogInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
-import { useGetAllDocsQuery } from "@/redux/api/crudApi";
+import { useGetDocsQuery } from "@/redux/api/crudApi";
 import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
-import { useDispatch } from "react-redux";
 
 export default function Logs() {
   const { colors } = useTheme();
 
   const [refreshKey, setRefreshKey] = useState(Date.now());
   const [cursor, setCursor] = useState("");
-  const dispatch = useDispatch();
+
   const [refreshing, setRefreshing] = useState(false);
-  const { data, isLoading, refetch, isFetching } = useGetAllDocsQuery({
+  const { data, isLoading, refetch, isFetching,error } = useGetDocsQuery({
     cursor,
     refreshKey,
   });
+
+  console.log({data,error});
 
   const responseData = data?.data;
 
@@ -99,7 +100,7 @@ export default function Logs() {
         }}
         contentContainerStyle={{
           gap: 16,
-          paddingBottom:24
+          paddingBottom: 24,
         }}
         onRefresh={onRefresh}
         refreshing={refreshing}

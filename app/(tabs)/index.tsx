@@ -8,7 +8,7 @@ import TimeCard from "@/components/elements/TimeCard";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
-import { useUpdateDocMutation } from "@/redux/api/crudApi";
+import { useUpdateMutation } from "@/redux/api/crudApi";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { isBefore, parseISO, startOfDay } from "date-fns";
 import { ScrollView, View } from "react-native";
@@ -19,7 +19,7 @@ export default function Home() {
   const { dailyLog, userData, useResetDailyLog } = useAuth();
   const { colors } = useTheme();
 
-  const [updateDoc, { isLoading }] = useUpdateDocMutation();
+  const [updateDoc, { isLoading }] = useUpdateMutation();
 
   const handleSubmit = async () => {
     if (!userData || !dailyLog) {
@@ -58,67 +58,69 @@ export default function Home() {
       showsVerticalScrollIndicator={false}
       style={{
         backgroundColor: colors.background,
-       
       }}
     >
-      <View style={{
-         margin: 16,flex:1
-      }}>
-
-      
-      <CenterText variant="bodyMedium" style={{ marginVertical: 8 }}>
-        {dailyLog?.date}
-      </CenterText>
-      <QuoteBar />
       <View
         style={{
-          gap: 16,
+          margin: 16,
+          flex: 1,
         }}
       >
-        <TimeCard
-          icon={(color) => <FontAwesome name="sun-o" size={28} color={color} />}
-          label="Wake Up time"
-          fieldKey="wakeUpTime"
-        />
-        <TimeCard
-          icon={(color) => (
-            <FontAwesome name="moon-o" size={28} color={color} />
-          )}
-          label="Sleep Time"
-          fieldKey="sleepTime"
-        />
-
-        <FoodIconsCard />
-        <JournalCard />
-
-        <WellnessCard />
-
-        <MoodCard />
-
+        <CenterText variant="bodyMedium" style={{ marginVertical: 8 }}>
+          {dailyLog?.date}
+        </CenterText>
+        <QuoteBar />
         <View
           style={{
             gap: 16,
-            marginVertical: 12,
           }}
         >
-          <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
-          {dayCompare() && (
-            <>
-              <PrimaryButton
-                style={{
-                  backgroundColor: "#5F606A",
-                }}
-                onPress={handleDateChange}
-              >
-                Save and Create
-              </PrimaryButton>
-              <PrimaryButton onPress={createNewDoc}>
-                Create New Log
-              </PrimaryButton>
-            </>
-          )}
+          <TimeCard
+            icon={(color) => (
+              <FontAwesome name="sun-o" size={28} color={color} />
+            )}
+            label="Wake Up time"
+            fieldKey="wakeUpTime"
+          />
+          <TimeCard
+            icon={(color) => (
+              <FontAwesome name="moon-o" size={28} color={color} />
+            )}
+            label="Sleep Time"
+            fieldKey="sleepTime"
+          />
+
+          <FoodIconsCard />
+          <JournalCard />
+
+          <WellnessCard />
+
+          <MoodCard />
+
+          <View
+            style={{
+              gap: 16,
+              marginVertical: 12,
+            }}
+          >
+            <PrimaryButton onPress={handleSubmit}>Submit</PrimaryButton>
+            {dayCompare() && (
+              <>
+                <PrimaryButton
+                  style={{
+                    backgroundColor: "#5F606A",
+                  }}
+                  onPress={handleDateChange}
+                >
+                  Save and Create
+                </PrimaryButton>
+                <PrimaryButton onPress={createNewDoc}>
+                  Create New Log
+                </PrimaryButton>
+              </>
+            )}
+          </View>
         </View>
-      </View>
       </View>
     </ScrollView>
   );

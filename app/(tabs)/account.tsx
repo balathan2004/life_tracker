@@ -5,7 +5,7 @@ import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 const image = require("../../assets/images/cat.jpeg");
 
-export default function Home() {
+export default function Account() {
   const { userData, handleLogout } = useAuth();
 
   console.log({ userData });
@@ -13,46 +13,46 @@ export default function Home() {
 
   return (
     <ScrollView>
-    <View
-      style={{
-        backgroundColor: colors.background,
-        marginVertical: 24,
-        marginHorizontal: 16,
-        flex: 1,
-        gap: 16,
-        alignItems: "center",
-      }}
-    >
-      <CenterText
+      <View
         style={{
-          paddingVertical: 12,
-          fontSize: 24,
+          backgroundColor: colors.background,
+          marginVertical: 24,
+          marginHorizontal: 16,
+          flex: 1,
+          gap: 16,
+          alignItems: "center",
         }}
       >
-        Your Profile
-      </CenterText>
-      <Image
-        style={{
-          height: 100,
-          width: 100,
-          borderRadius: 100,
-        }}
-        source={image}
-      />
-      <CenterText
-        style={{
-          textTransform: "uppercase",
-        }}
-      >
-        {userData.display_name}
-      </CenterText>
-      <ThemeText>{userData.email}</ThemeText>
-      <ThemeText>
-        Joined
-        {" " + formatDistanceToNow(new Date(userData?.created_at))} Ago
-      </ThemeText>
-      {/* <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton> */}
-    </View>
+        <CenterText
+          style={{
+            paddingVertical: 12,
+            fontSize: 24,
+          }}
+        >
+          Your Profile
+        </CenterText>
+        <Image
+          style={{
+            height: 100,
+            width: 100,
+            borderRadius: 100,
+          }}
+          source={image}
+        />
+        <CenterText
+          style={{
+            textTransform: "uppercase",
+          }}
+        >
+          {userData.display_name}
+        </CenterText>
+        <ThemeText>{userData.email}</ThemeText>
+        <ThemeText>
+          Joined
+          {" " + formatDistanceToNow(new Date(userData?.created_at))} Ago
+        </ThemeText>
+        {/* <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton> */}
+      </View>
     </ScrollView>
   );
 }

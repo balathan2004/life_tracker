@@ -22,9 +22,10 @@ export default function Layout() {
       screenOptions={{
         tabBarStyle: {
           backgroundColor: colors.background,
-          padding: 0,
-          minHeight: 60,
-          maxHeight: 80,
+        },
+
+        tabBarBadgeStyle: {
+          backgroundColor: "red",
         },
       }}
     >
