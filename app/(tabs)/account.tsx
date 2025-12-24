@@ -8,7 +8,7 @@ const image = require("../../assets/images/cat.jpeg");
 export default function Account() {
   const { userData, handleLogout } = useAuth();
 
-  console.log({ userData });
+
   const { colors } = useTheme();
 
   return (

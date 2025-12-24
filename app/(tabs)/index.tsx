@@ -26,6 +26,8 @@ export default function Home() {
       return;
     }
 
+    console.log({dailyLog});
+
     const res = await updateDoc({
       data: dailyLog,
     }).unwrap();

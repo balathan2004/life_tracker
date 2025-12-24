@@ -11,7 +11,7 @@ import {
   TextInputChangeEventData,
   View,
 } from "react-native";
-import { ActivityIndicator, useTheme } from "react-native-paper";
+import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Login() {
@@ -35,6 +35,10 @@ export default function Login() {
 
   const handleSubmit = async () => {
     if (!userData.email || !userData.password) {
+      Toast.show({
+        type: "error",
+        text1: "Please fill in all fields",
+      });
       return;
     }
 
@@ -66,8 +70,6 @@ export default function Login() {
           marginHorizontal: 16,
         }}
       >
-        {isLoading && <ActivityIndicator />}
-
         <CenterText style={{ fontSize: 28 }}>Register</CenterText>
 
         <ThemeText>Email</ThemeText>
@@ -91,7 +93,11 @@ export default function Login() {
             marginTop: 24,
           }}
         >
-          <PrimaryButton disabled={loading} onPress={handleSubmit}>
+          <PrimaryButton
+            loading={loading}
+            disabled={loading}
+            onPress={handleSubmit}
+          >
             Register
           </PrimaryButton>
           <CenterText

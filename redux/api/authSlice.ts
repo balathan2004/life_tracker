@@ -25,6 +25,10 @@ const authSlice = createSlice({
       storeData({ key: "dailyLog", value: payload });
       state.dailyLog = payload;
     },
+    setAccessToken: (state, { payload }) => {
+      state.accessToken = payload.accessToken || "";
+      state.userData = payload.credentials;
+    },
     updateDailyLog: (
       state,
       { payload }: { payload: Partial<dailyLogInterface> }
@@ -75,8 +79,13 @@ const authSlice = createSlice({
   },
 });
 
-export const { setDailyLog, updateDailyLog, resetDailyLog, setUser, logoutUser } =
-  authSlice.actions;
+export const {
+  setDailyLog,
+  updateDailyLog,
+  resetDailyLog,
+  setUser,
+  logoutUser,setAccessToken,
+} = authSlice.actions;
 export default authSlice.reducer;
 
 export const useAuth = () => {
@@ -92,8 +101,8 @@ export const useAuth = () => {
   };
 
   const handleLogout = () => {
-    dispatch(logoutUser())
-  }
+    dispatch(logoutUser());
+  };
 
   const useResetDailyLog = () => {
     dispatch(resetDailyLog());
@@ -109,5 +118,12 @@ export const useAuth = () => {
     }
   }, [authState.dailyLog]);
 
-  return { ...authState, useSetDailyLog, useResetDailyLog, useUpdateDailyLog, setUserData,handleLogout };
+  return {
+    ...authState,
+    useSetDailyLog,
+    useResetDailyLog,
+    useUpdateDailyLog,
+    setUserData,
+    handleLogout,
+  };
 };

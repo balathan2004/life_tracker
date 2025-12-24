@@ -7,35 +7,45 @@ export const authApi = baseApi.injectEndpoints({
       AuthResponseConfig,
       { email: string; password: string }
     >({
-      query: (payload) => ({
+      query: (data) => ({
         url: "auth/login",
         method: "POST",
-        body: payload,
+        body: { data },
       }),
     }),
     register: builder.mutation<
       AuthResponseConfig,
       { email: string; password: string }
     >({
-      query: (payload) => ({
+      query: (data) => ({
         url: "auth/register",
         method: "POST",
-        body: payload,
+        body: { data },
       }),
     }),
-    getAccessToken: builder.mutation<AuthResponseConfig,  string >({
-      query: (payload) => ({
+    resetPassword: builder.mutation<
+      AuthResponseConfig,
+      { email: string }
+    >({
+      query: (data) => ({
+        url: "auth/reset_password",
+        method: "POST",
+        body: { data },
+      }),
+    }),
+    getAccessToken: builder.mutation<AuthResponseConfig, string>({
+      query: (refreshToken) => ({
         url: "auth/refreshToken",
         method: "POST",
-        body: { refreshToken:payload },
+        body: { data: { refreshToken } },
       }),
     }),
   }),
-
 });
 
 export const {
   useLoginMutation,
   useRegisterMutation,
   useGetAccessTokenMutation,
+  useResetPasswordMutation
 } = authApi;

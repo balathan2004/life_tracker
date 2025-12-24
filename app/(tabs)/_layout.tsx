@@ -23,10 +23,6 @@ export default function Layout() {
         tabBarStyle: {
           backgroundColor: colors.background,
         },
-
-        tabBarBadgeStyle: {
-          backgroundColor: "red",
-        },
       }}
     >
       <Tabs.Screen

@@ -2,16 +2,16 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
-  ActivityIndicator,
   NativeSyntheticEvent,
   TextInput,
   TextInputChangeEventData,
   View,
 } from "react-native";
 import { useTheme } from "react-native-paper";
+import Toast from "react-native-toast-message";
 
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
@@ -33,23 +33,24 @@ export default function Login() {
   const handleSubmit = async () => {
     console.log("submitted");
     if (!userData.email || !userData.password) {
+       Toast.show({
+          type: "error",
+          text1: "Please fill in all fields",
+        });
       return;
     }
 
     const res = await login(userData)
       .unwrap()
-      .then((res) => setMessage(res.message))
+      .then((res) => {
+        setMessage(res.message);
+        Toast.show({
+          type: "success",
+          text1: res.message,
+        });
+        router.push("/(tabs)");
+      })
       .catch((err) => setMessage(err.error || err.data.message));
-
-    // setMessage();
-    // Toast.show({
-    //   type: "success",
-    //   text1: res.message,
-    // });
-
-    // if (res && res.credentials) {
-    //   router.push("/(tabs)");
-    // }
   };
 
   return (
@@ -64,9 +65,10 @@ export default function Login() {
           marginHorizontal: 16,
         }}
       >
-        {isLoading && <ActivityIndicator />}
         <CenterText style={{ fontSize: 28 }}>Login</CenterText>
-        <CenterText style={{ fontSize: 18 }}>{message}</CenterText>
+        <CenterText style={{ fontSize: 18, textTransform: "capitalize" }}>
+          {message}
+        </CenterText>
 
         <ThemeText style={{ marginVertical: 5, fontSize: 16 }}>Email</ThemeText>
         <TextInput
@@ -90,7 +92,11 @@ export default function Login() {
           <Link href={"/forget_password"}> Forget Password</Link>
         </CenterText>
 
-        <PrimaryButton disabled={isLoading} onPress={handleSubmit}>
+        <PrimaryButton
+          loading={isLoading}
+          disabled={isLoading}
+          onPress={handleSubmit}
+        >
           Login
         </PrimaryButton>
         <CenterText

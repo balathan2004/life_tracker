@@ -7,7 +7,8 @@ import React, { useEffect } from "react";
 import { Image, View } from "react-native";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
-  const { useSetDailyLog, useResetDailyLog, setUserData } = useAuth();
+  const { useSetDailyLog, useResetDailyLog, setUserData, handleLogout } =
+    useAuth();
 
   const retrieveCred = async () => {
     const userData = ((await getData("userCred")) as UserDataInterface) || null;
@@ -30,6 +31,7 @@ export default function Home() {
 
   useEffect(() => {
     retrieveCred();
+    // handleLogout();
   }, []);
 
   return (

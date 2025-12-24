@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import { FlatList, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
-
 export default function Logs() {
   const { colors } = useTheme();
 
@@ -14,12 +13,10 @@ export default function Logs() {
   const [cursor, setCursor] = useState("");
 
   const [refreshing, setRefreshing] = useState(false);
-  const { data, isLoading, refetch, isFetching,error } = useGetDocsQuery({
+  const { data, isLoading, refetch, isFetching, error } = useGetDocsQuery({
     cursor,
     refreshKey,
   });
-
-  console.log({data,error});
 
   const responseData = data?.data;
 
@@ -29,15 +26,14 @@ export default function Logs() {
     setRefreshing(true);
     setCursor("");
     setRefreshKey(Date.now());
-    console.log("1");
+
     setLogs([]);
-    console.log("2");
+
     const data = await refetch();
 
     data.data?.data.map((item) => item.date);
-    console.log("3");
+
     setRefreshing(false);
-    console.log("4");
   };
 
   useEffect(() => {

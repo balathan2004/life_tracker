@@ -1,5 +1,5 @@
 import { useAuth } from "@/redux/api/authSlice";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { dailyLogInterface } from "../interfaces";
 import { CenterText, ThemeText } from "../ui/TextElements";
@@ -47,22 +47,19 @@ export const moods = [
 export default function MoodCard() {
   const { dailyLog, useUpdateDailyLog } = useAuth();
 
-  const [mood, setMood] = useState<mood>("okay");
+  const [mood, setMood] = useState<mood>(dailyLog.mood || "okay");
 
   const currentMoodObj = moods.find((item) => item.value == mood);
 
-  const handleSubmit = (value: mood) => {
+  const handleChange = (value: mood) => {
     if (!value || !dailyLog) return;
+    console.log("called handleChange", value);
     useUpdateDailyLog({ mood: value });
     setMood(value);
   };
 
-  useEffect(() => {
-    if (dailyLog) {
-      setMood(dailyLog.mood);
-    }
-  }, [dailyLog]);
 
+  console.log({dailyLog});
   return (
     <View
       style={{
@@ -74,7 +71,7 @@ export default function MoodCard() {
           fontSize: 16,
           marginBottom: 16,
           textTransform: "capitalize",
-          color:currentMoodObj?.color
+          color: currentMoodObj?.color,
         }}
       >
         {`Your Mood - ${mood}`}
@@ -98,10 +95,10 @@ export default function MoodCard() {
           justifyContent: "space-between",
         }}
       >
-        {moods.map(({ label, value, emoji, color ,emojiBg }) => (
+        {moods.map(({ label, value, emoji, color, emojiBg }) => (
           <TouchableOpacity
             key={label}
-            onPress={() => handleSubmit(value as mood)}
+            onPress={() => handleChange(value as mood)}
             style={{
               backgroundColor: mood === value ? emojiBg : undefined,
               paddingVertical: 2,
