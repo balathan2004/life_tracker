@@ -49,7 +49,7 @@ export default function MoodCard() {
 
   const [mood, setMood] = useState<mood>(dailyLog.mood || "okay");
 
-  const currentMoodObj = moods.find((item) => item.value == mood);
+  const currentMoodObj = moods.find((item) => item.value === mood);
 
   const handleChange = (value: mood) => {
     if (!value || !dailyLog) return;
@@ -58,8 +58,6 @@ export default function MoodCard() {
     setMood(value);
   };
 
-
-  console.log({dailyLog});
   return (
     <View
       style={{
@@ -68,18 +66,17 @@ export default function MoodCard() {
     >
       <CenterText
         style={{
-          fontSize: 16,
+          fontSize: 18,
           marginBottom: 16,
-          textTransform: "capitalize",
           color: currentMoodObj?.color,
         }}
       >
-        {`Your Mood - ${mood}`}
+        {`Your mood - ${mood}`}
       </CenterText>
 
       <CenterText
         style={{
-          fontSize: 12,
+          fontSize: 14,
           marginBottom: 16,
           textTransform: "capitalize",
         }}
@@ -92,7 +89,7 @@ export default function MoodCard() {
           flexDirection: "row",
           flex: 1,
           flexWrap: "wrap",
-          justifyContent: "space-between",
+          justifyContent: "space-around",
         }}
       >
         {moods.map(({ label, value, emoji, color, emojiBg }) => (
@@ -106,12 +103,13 @@ export default function MoodCard() {
               borderRadius: 12,
               flexDirection: "column",
               alignItems: "center",
+              justifyContent: "center",
               gap: 3,
             }}
           >
             <ThemeText
               style={{
-                fontSize: mood === value ? 36 : 24,
+                fontSize: mood === value ? 30 : 24,
               }}
             >
               {emoji}

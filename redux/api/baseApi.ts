@@ -9,8 +9,6 @@ import {
   FetchBaseQueryError,
 } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { authApi } from "./authApi";
-import { setAccessToken } from "./authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: domain_url,
@@ -33,31 +31,37 @@ const baseQueryWithReAuth: BaseQueryFn<
 > = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
   let result = await baseQuery(args, api, extraOptions);
 
-
   if (
     result.error &&
     (result.error.status === 401 || result.error.status === 403)
   ) {
-    const token = (await getData("refreshToken")) as string;
+    const refreshToken = (await getData("refreshToken")) as string;
 
-    if (!token) {
+    if (!refreshToken) {
       api.dispatch({
         type: "auth/logoutUser",
       });
       return result;
     }
 
-    const refreshResult = await api
-      .dispatch(authApi.endpoints.getAccessToken.initiate(token))
-      .unwrap();
+    const refreshResult = (await baseQuery(
+      {
+        url: "auth/refreshToken",
+        method: "POST",
+        body: { data: { refreshToken } },
+      },
+      api,
+      extraOptions,
+    )) as any;
 
     if (refreshResult) {
-      api.dispatch(
-        setAccessToken({
+      api.dispatch({
+        type: "auth/setAccessToken",
+        payload: {
           accessToken: refreshResult.accessToken,
           credentials: refreshResult.credentials,
-        })
-      );
+        },
+      });
       result = await baseQuery(args, api, extraOptions);
     } else {
       api.dispatch({ type: "auth/logoutUser" });

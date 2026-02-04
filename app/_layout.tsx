@@ -1,4 +1,3 @@
-import LoadingHolder from "@/components/context/loadingContext";
 import { darkTheme } from "@/components/ui/themes";
 import { store } from "@/redux/store";
 import { ThemeProvider } from "@react-navigation/native";
@@ -42,40 +41,39 @@ export default function RootLayout() {
                 backgroundColor: darkTheme.colors.background,
               }}
             >
-              <LoadingHolder>
-                <KeyboardAvoidingView
-                  behavior={Platform.OS === "ios" ? "padding" : "height"}
-                  style={{ flex: 1 }}
-                  keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-                >
-                  <Stack>
-                    <Stack.Screen
-                      name="index"
-                      options={{ headerShown: false }}
-                    ></Stack.Screen>
-                    <Stack.Screen
-                      name="(auth)"
-                      options={{ headerShown: false }}
-                    />
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={{ flex: 1 }}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
+              >
+                <Stack>
+                  <Stack.Screen
+                    name="index"
+                    options={{ headerShown: false }}
+                  ></Stack.Screen>
+                  <Stack.Screen
+                    name="(auth)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(tabs)"
-                      options={{ headerShown: false }}
-                    />
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(daily_activity)"
-                      options={{ headerShown: false }}
-                    />
+                  <Stack.Screen
+                    name="(daily_activity)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(logs)"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                </KeyboardAvoidingView>
-              </LoadingHolder>
+                  <Stack.Screen
+                    name="(logs)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+              </KeyboardAvoidingView>
+
               <StatusBar
                 backgroundColor={darkTheme.colors.background}
                 barStyle={"light-content"}

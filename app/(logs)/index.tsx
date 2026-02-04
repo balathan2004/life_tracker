@@ -1,4 +1,3 @@
-import { useLoadingContext } from "@/components/context/loadingContext";
 import LogListItem from "@/components/elements/LogListItem";
 import { formatDailyLogForUI } from "@/components/interfaces";
 import { useEncryptMutation, useGetDocByIdQuery } from "@/redux/api/crudApi";
@@ -14,7 +13,7 @@ export default function LogDetail() {
 
   const { data: { data } = {}, isLoading } = useGetDocByIdQuery(doc_id);
   const [encryptDoc] = useEncryptMutation();
-  const { setLoading } = useLoadingContext();
+
   const formattedLog = data ? formatDailyLogForUI(data) : null;
 
   console.log({ data });
@@ -34,7 +33,7 @@ export default function LogDetail() {
           onPress: handleDelete,
         },
       ],
-      { cancelable: true }
+      { cancelable: true },
     );
   };
 
@@ -51,10 +50,6 @@ export default function LogDetail() {
       });
     }
   }, [data]);
-
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>

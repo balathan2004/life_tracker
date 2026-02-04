@@ -1,10 +1,9 @@
-import { useLoadingContext } from "@/components/context/loadingContext";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { Link, router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   NativeSyntheticEvent,
   TextInput,
@@ -17,8 +16,6 @@ import Toast from "react-native-toast-message";
 export default function Login() {
   const [userData, setUserData] = useState({ email: "", password: "" });
 
-  const { loading, setLoading } = useLoadingContext();
-
   const [message, setMessage] = useState("");
 
   const { colors } = useTheme();
@@ -27,7 +24,7 @@ export default function Login() {
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
-    name: string
+    name: string,
   ) => {
     const value = event.nativeEvent.text;
     setUserData((prev) => ({ ...prev, [name]: value }));
@@ -53,10 +50,6 @@ export default function Login() {
       router.push("/(tabs)");
     }
   };
-
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
 
   return (
     <View
@@ -94,8 +87,8 @@ export default function Login() {
           }}
         >
           <PrimaryButton
-            loading={loading}
-            disabled={loading}
+            loading={isLoading}
+            disabled={isLoading}
             onPress={handleSubmit}
           >
             Register
