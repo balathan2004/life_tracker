@@ -13,9 +13,7 @@ interface props {
 }
 
 export default function DayReport({ data, nextDayWakeupTime }: props) {
-  const colorVariant = moodColors.find((item) => item.mood == data.mood);
-
-
+  const colorVariant = moodColors.find((item) => item.mood === data.mood);
 
   const handleNavigation = () => {
     if (data) {
@@ -62,7 +60,8 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
         gap: 24,
         alignItems: "center",
         backgroundColor: colorVariant?.background,
-        borderColor: colorVariant?.border, borderWidth: 1,
+        borderColor: colorVariant?.border,
+        borderWidth: 1,
         borderRadius: 24,
         paddingHorizontal: 16,
         paddingVertical: 16,

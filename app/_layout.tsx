@@ -6,8 +6,7 @@ import { Stack } from "expo-router";
 import {
   KeyboardAvoidingView,
   Platform,
-  StatusBar,
-  useColorScheme,
+  StatusBar
 } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
@@ -22,8 +21,6 @@ export default function RootLayout() {
     PoppinsMedium: require("../assets/fonts/Poppins-Medium.ttf"),
     PoppinsRegular: require("../assets/fonts/Poppins-Regular.ttf"),
   });
-
-  const scheme = useColorScheme();
 
   if (!loaded) {
     // Async font loading only occurs in development.

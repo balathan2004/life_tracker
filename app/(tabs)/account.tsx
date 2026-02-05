@@ -1,3 +1,4 @@
+import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
@@ -6,8 +7,7 @@ import { useTheme } from "react-native-paper";
 const image = require("../../assets/images/cat.jpeg");
 
 export default function Account() {
-  const { userData, handleLogout } = useAuth();
-
+  const { user, handleLogout } = useAuth();
 
   const { colors } = useTheme();
 
@@ -44,14 +44,14 @@ export default function Account() {
             textTransform: "uppercase",
           }}
         >
-          {userData.display_name}
+          {user?.display_name}
         </CenterText>
-        <ThemeText>{userData.email}</ThemeText>
+        <ThemeText>{user?.email}</ThemeText>
         <ThemeText>
           Joined
-          {" " + formatDistanceToNow(new Date(userData?.created_at))} Ago
+          {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
         </ThemeText>
-        {/* <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton> */}
+        <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton>
       </View>
     </ScrollView>
   );

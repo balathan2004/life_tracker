@@ -8,10 +8,9 @@ import { useAuth } from "@/redux/api/authSlice";
 import { useLocalSearchParams } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import Toast from "react-native-toast-message";
 
-type Props = {};
 const initialValues: Partial<dailyLogInterface> = {
   isBathTaken: false,
   workout: "",
@@ -30,15 +29,10 @@ const initialValues: Partial<dailyLogInterface> = {
   travel: "",
 };
 
-const Index = (props: Props) => {
-  const { width } = useWindowDimensions();
-
-  const { dailyLog, useUpdateDailyLog } = useAuth();
-
+const Index = () => {
+  const { dailyLog, updateDailylog } = useAuth();
   const { form } = useLocalSearchParams<{ form?: string }>();
-
   const [selectedPage, setSelectedPage] = useState(parseInt(form || "0"));
-
   const [formValue, setFormValue] = useState(initialValues);
 
   useEffect(() => {
@@ -61,7 +55,7 @@ const Index = (props: Props) => {
   ];
 
   const handleSubmit = (values: Partial<dailyLogInterface>) => {
-    useUpdateDailyLog(values);
+    updateDailylog(values);
     Toast.show({
       type: "success",
       text1: "Saved",

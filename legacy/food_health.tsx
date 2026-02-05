@@ -27,7 +27,7 @@
 // ];
 
 // export default function Home() {
-//   const { dailyLog, useUpdateDailyLog } = useAuth();
+//   const { dailyLog, updateDailylog } = useAuth();
 
 //   const [meals, setMeals] = useState({
 //     breakfast: "",
@@ -41,7 +41,7 @@
 //       Object.entries(meals).map(([key, value]) => [key, value.trim()])
 //     ) as dailyLogInterface["meals"];
 
-//     useUpdateDailyLog({ meals: trimmedValue });
+//     updateDailylog({ meals: trimmedValue });
 //     Toast.show({
 //       type: "success",
 //       text1: "Updated",

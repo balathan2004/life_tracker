@@ -16,17 +16,15 @@ import { useTheme } from "react-native-paper";
 import Toast from "react-native-toast-message";
 
 export default function Home() {
-  const { dailyLog, userData, useResetDailyLog } = useAuth();
+  const { dailyLog, user, resetDailylog } = useAuth();
   const { colors } = useTheme();
 
-  const [updateDoc, { isLoading }] = useUpdateMutation();
+  const [updateDoc] = useUpdateMutation();
 
   const handleSubmit = async () => {
-    if (!userData || !dailyLog) {
+    if (!user || !dailyLog) {
       return;
     }
-
-    console.log({dailyLog});
 
     const res = await updateDoc({
       data: dailyLog,
@@ -48,11 +46,11 @@ export default function Home() {
 
   const handleDateChange = async () => {
     await handleSubmit();
-    useResetDailyLog();
+    resetDailylog();
   };
 
   const createNewDoc = () => {
-    useResetDailyLog();
+    resetDailylog();
   };
 
   return (

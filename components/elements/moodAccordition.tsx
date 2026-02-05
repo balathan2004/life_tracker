@@ -45,7 +45,7 @@ export const moods = [
 ];
 
 export default function MoodCard() {
-  const { dailyLog, useUpdateDailyLog } = useAuth();
+  const { dailyLog, updateDailylog } = useAuth();
 
   const [mood, setMood] = useState<mood>(dailyLog.mood || "okay");
 
@@ -54,7 +54,7 @@ export default function MoodCard() {
   const handleChange = (value: mood) => {
     if (!value || !dailyLog) return;
     console.log("called handleChange", value);
-    useUpdateDailyLog({ mood: value });
+    updateDailylog({ mood: value });
     setMood(value);
   };
 

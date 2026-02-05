@@ -13,7 +13,7 @@ export default function Logs() {
   const [cursor, setCursor] = useState("");
 
   const [refreshing, setRefreshing] = useState(false);
-  const { data, isLoading, refetch, isFetching, error } = useGetDocsQuery({
+  const { data, isLoading, refetch, isFetching } = useGetDocsQuery({
     cursor,
     refreshKey,
   });
@@ -39,10 +39,6 @@ export default function Logs() {
   useEffect(() => {
     if (!responseData) return;
 
-    // ✅ stop spinner when API returns
-
-    console.log("responseData chanegd");
-
     setLogs((prev) => {
       const map = new Map(prev.map((item) => [item.date, item]));
 
@@ -55,8 +51,6 @@ export default function Logs() {
   }, [responseData]);
 
   const handlePagination = () => {
-    console.log("pagination called");
-
     if (isLoading || isFetching || refreshing) return; // ✅
     if (!logs.length) return;
 

@@ -7,15 +7,14 @@ import { useEffect } from "react";
 import { useTheme } from "react-native-paper";
 
 export default function Layout() {
-  const { userData } = useAuth();
+  const { user } = useAuth();
   const { colors } = useTheme();
 
   useEffect(() => {
-    if (!userData) {
-      console.log(userData);
+    if (!user) {
       router.replace("/(auth)");
     }
-  }, []);
+  }, [user]);
 
   return (
     <Tabs

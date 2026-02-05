@@ -1,8 +1,4 @@
-import {
-  dailyLogInterface,
-  initDailyLog,
-  UserDataInterface,
-} from "@/components/interfaces";
+import { dailyLogInterface, initDailyLog, User } from "@/components/interfaces";
 import { storeData } from "@/components/utils/data_store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createSlice } from "@reduxjs/toolkit";
@@ -12,7 +8,7 @@ import { RootState } from "../store";
 import { authApi } from "./authApi";
 
 const initialState = {
-  userData: {} as UserDataInterface,
+  user: {} as User,
   dailyLog: {} as dailyLogInterface,
   accessToken: "",
 };
@@ -27,24 +23,25 @@ const authSlice = createSlice({
     },
     setAccessToken: (state, { payload }) => {
       state.accessToken = payload.accessToken || "";
-      state.userData = payload.credentials;
+      state.user = payload.credentials;
     },
     updateDailyLog: (
       state,
-      { payload }: { payload: Partial<dailyLogInterface> }
+      { payload }: { payload: Partial<dailyLogInterface> },
     ) => {
       Object.assign(state.dailyLog, payload);
     },
     resetDailyLog: (state) => {
       state.dailyLog = initDailyLog();
     },
-    setUser: (state, { payload }: { payload: UserDataInterface }) => {
-      state.userData = payload;
+    setUser: (state, { payload }: { payload: User }) => {
+      state.user = payload;
     },
     logoutUser: (state) => {
-      (state.dailyLog = {} as any),
-        (state.userData = {} as any),
-        AsyncStorage.multiRemove(["refreshToken", "userCred", "dailyLog"]);
+      state.dailyLog = {} as any;
+      state.user = {} as any;
+      state.accessToken = "";
+      AsyncStorage.multiRemove(["refreshToken", "userCred", "dailyLog"]);
     },
   },
   extraReducers: (builder) => {
@@ -52,29 +49,29 @@ const authSlice = createSlice({
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
         console.log({ payload });
-        state.accessToken = payload.accessToken || "";
-        state.userData = payload.credentials as UserDataInterface;
-        AsyncStorage.setItem("refreshToken", payload.refreshToken || "");
-        AsyncStorage.setItem("userCred", JSON.stringify(payload.credentials));
-      }
-    ),
-      builder.addMatcher(
-        authApi.endpoints.register.matchFulfilled,
-        (state, { payload }) => {
-          state.accessToken = payload.accessToken || "";
-          state.userData = payload.credentials as UserDataInterface;
-          AsyncStorage.setItem("refreshToken", payload.refreshToken || "");
-          AsyncStorage.setItem("userCred", JSON.stringify(payload.credentials));
-        }
-      );
+        state.accessToken = payload.data.accessToken || "";
+        state.user = payload.data.user as User;
+        AsyncStorage.setItem("refreshToken", payload.data.refreshToken || "");
+        AsyncStorage.setItem("userCred", JSON.stringify(payload.data.user));
+      },
+    );
+    builder.addMatcher(
+      authApi.endpoints.register.matchFulfilled,
+      (state, { payload }) => {
+        state.accessToken = payload.data.accessToken || "";
+        state.user = payload.data.user as User;
+        AsyncStorage.setItem("refreshToken", payload.data.refreshToken || "");
+        AsyncStorage.setItem("userCred", JSON.stringify(payload.data.user));
+      },
+    );
     builder.addMatcher(
       authApi.endpoints.getAccessToken.matchFulfilled,
       (state, { payload }) => {
         console.log("accessed getAccetoken");
-        state.accessToken = payload.accessToken || "";
-        state.userData = payload.credentials as UserDataInterface;
-        AsyncStorage.setItem("userCred", JSON.stringify(payload.credentials));
-      }
+        state.accessToken = payload.data.accessToken || "";
+        state.user = payload.data.user;
+        AsyncStorage.setItem("userCred", JSON.stringify(payload.data.user));
+      },
     );
   },
 });
@@ -84,7 +81,8 @@ export const {
   updateDailyLog,
   resetDailyLog,
   setUser,
-  logoutUser,setAccessToken,
+  logoutUser,
+  setAccessToken,
 } = authSlice.actions;
 export default authSlice.reducer;
 
@@ -92,11 +90,11 @@ export const useAuth = () => {
   const dispatch = useDispatch();
   const authState = useSelector((state: RootState) => state.auth);
 
-  const useSetDailyLog = (dailyLog: dailyLogInterface) => {
+  const setDailylog = (dailyLog: dailyLogInterface) => {
     dispatch(setDailyLog(dailyLog));
   };
 
-  const setUserData = (userData: UserDataInterface) => {
+  const setUserData = (userData: User) => {
     dispatch(setUser(userData));
   };
 
@@ -104,11 +102,11 @@ export const useAuth = () => {
     dispatch(logoutUser());
   };
 
-  const useResetDailyLog = () => {
+  const resetDailylog = () => {
     dispatch(resetDailyLog());
   };
 
-  const useUpdateDailyLog = (payload: Partial<dailyLogInterface>) => {
+  const updateDailylog = (payload: Partial<dailyLogInterface>) => {
     dispatch(updateDailyLog(payload));
   };
 
@@ -120,9 +118,9 @@ export const useAuth = () => {
 
   return {
     ...authState,
-    useSetDailyLog,
-    useResetDailyLog,
-    useUpdateDailyLog,
+    setDailylog,
+    resetDailylog,
+    updateDailylog,
     setUserData,
     handleLogout,
   };

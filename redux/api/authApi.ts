@@ -1,10 +1,10 @@
-import { AuthResponseConfig } from "@/components/interfaces";
+import { AuthUser, DataResponseConfig } from "@/components/interfaces";
 import { baseApi } from "./baseApi";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     login: builder.mutation<
-      AuthResponseConfig,
+      DataResponseConfig<AuthUser>,
       { email: string; password: string }
     >({
       query: (data) => ({
@@ -14,7 +14,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     register: builder.mutation<
-      AuthResponseConfig,
+      DataResponseConfig<AuthUser>,
       { email: string; password: string }
     >({
       query: (data) => ({
@@ -24,7 +24,7 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
     resetPassword: builder.mutation<
-      AuthResponseConfig,
+      DataResponseConfig<AuthUser>,
       { email: string }
     >({
       query: (data) => ({
@@ -33,7 +33,7 @@ export const authApi = baseApi.injectEndpoints({
         body: { data },
       }),
     }),
-    getAccessToken: builder.mutation<AuthResponseConfig, string>({
+    getAccessToken: builder.mutation<DataResponseConfig<AuthUser>, string>({
       query: (refreshToken) => ({
         url: "auth/refreshToken",
         method: "POST",
@@ -47,5 +47,5 @@ export const {
   useLoginMutation,
   useRegisterMutation,
   useGetAccessTokenMutation,
-  useResetPasswordMutation
+  useResetPasswordMutation,
 } = authApi;

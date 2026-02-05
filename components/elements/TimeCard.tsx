@@ -1,6 +1,6 @@
 import { useAuth } from "@/redux/api/authSlice";
 import { addDays, subDays } from "date-fns";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useState } from "react";
 import { View } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { useTheme } from "react-native-paper";
@@ -13,8 +13,7 @@ interface TimeCardProps {
 }
 
 export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
-  const [time, setTime] = useState<Date | null>(null);
-  const { dailyLog, useUpdateDailyLog } = useAuth();
+  const { dailyLog, updateDailylog } = useAuth();
   const [showPicker, setShowPicker] = useState(false);
   const value = dailyLog[fieldKey]
     ? new Date(dailyLog[fieldKey]).toLocaleTimeString()
@@ -23,25 +22,18 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
 
   const onChange = (seletedTime: any) => {
     if (seletedTime) {
-      useUpdateDailyLog({ [fieldKey]: seletedTime.getTime() });
+      updateDailylog({ [fieldKey]: seletedTime.getTime() });
     }
-    setTime(seletedTime);
+
     setShowPicker(false);
   };
 
   const handleCurrentTime = () => {
     const newTime = new Date();
     if (newTime) {
-      useUpdateDailyLog({ [fieldKey]: newTime.getTime() });
+      updateDailylog({ [fieldKey]: newTime.getTime() });
     }
-    setTime(newTime);
   };
-
-  useEffect(() => {
-    if (dailyLog && dailyLog[fieldKey]) {
-      setTime(new Date(dailyLog[fieldKey]));
-    }
-  }, [dailyLog]);
 
   return (
     <View
@@ -117,7 +109,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
             onConfirm={onChange}
             minimumDate={subDays(new Date(), 3)}
             maximumDate={addDays(new Date(), 2)}
-            onCancel={() => { }}
+            onCancel={() => {}}
             is24Hour={false} // change to true if needed
           />
         )}

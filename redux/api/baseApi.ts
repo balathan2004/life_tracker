@@ -28,7 +28,7 @@ const baseQueryWithReAuth: BaseQueryFn<
   string | FetchArgs,
   unknown,
   FetchBaseQueryError
-> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: {}) => {
+> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions: any) => {
   let result = await baseQuery(args, api, extraOptions);
 
   if (
@@ -55,11 +55,12 @@ const baseQueryWithReAuth: BaseQueryFn<
     )) as any;
 
     if (refreshResult) {
+      console.log({ refreshResult });
       api.dispatch({
         type: "auth/setAccessToken",
         payload: {
-          accessToken: refreshResult.accessToken,
-          credentials: refreshResult.credentials,
+          accessToken: refreshResult.data.accessToken,
+          credentials: refreshResult.data.credentials,
         },
       });
       result = await baseQuery(args, api, extraOptions);

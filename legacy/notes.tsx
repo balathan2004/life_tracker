@@ -70,7 +70,7 @@
 // });
 
 // export default function Home() {
-//   const { dailyLog, useUpdateDailyLog } = useAuth();
+//   const { dailyLog, updateDailylog } = useAuth();
 //   const { colors } = useTheme();
 
 //   const mergedValues = {
@@ -79,7 +79,7 @@
 //   };
 
 //   const handleSubmit = (values: Partial<dailyLogInterface>) => {
-//     useUpdateDailyLog({
+//     updateDailylog({
 //       ...values,
 //     });
 

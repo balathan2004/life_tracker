@@ -1,8 +1,8 @@
 import {
   dailyLogInterface,
-  LogsResponseConfig,
+  DataListResponseConfig,
+  DataResponseConfig,
   ResponseConfig,
-  SingleLogResponseConfig,
 } from "@/components/interfaces";
 import querystring from "query-string";
 import { baseApi } from "./baseApi";
@@ -24,13 +24,13 @@ export const crudApi = baseApi.injectEndpoints({
         body: { data },
       }),
     }),
-    getDocById: builder.query<SingleLogResponseConfig, string>({
+    getDocById: builder.query<DataResponseConfig<dailyLogInterface>, string>({
       query: (doc_id) => ({
         url: `api/docs/${doc_id}`,
       }),
     }),
 
-    getDocs: builder.query<LogsResponseConfig, Object>({
+    getDocs: builder.query<DataListResponseConfig<dailyLogInterface>, object>({
       query: (cursor) => {
         const querypayload = querystring.stringify(cursor, {
           skipEmptyString: true,

@@ -1,4 +1,4 @@
-import { dailyLogInterface, UserDataInterface } from "@/components/interfaces";
+import { dailyLogInterface, User } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { getData } from "@/components/utils/data_store";
 import { useAuth } from "@/redux/api/authSlice";
@@ -7,18 +7,17 @@ import React, { useEffect } from "react";
 import { Image, View } from "react-native";
 const image = require("../assets/images/life-tracker.png");
 export default function Home() {
-  const { useSetDailyLog, useResetDailyLog, setUserData, handleLogout } =
-    useAuth();
+  const { setDailylog, resetDailylog, setUserData } = useAuth();
 
   const retrieveCred = async () => {
-    const userData = ((await getData("userCred")) as UserDataInterface) || null;
+    const userData = ((await getData("userCred")) as User) || null;
     const jwt = ((await getData("refreshToken")) as string) || null;
     const dailyLog = ((await getData("dailyLog")) as dailyLogInterface) || null;
 
     if (!dailyLog || Object.keys(dailyLog).length === 0) {
-      useResetDailyLog();
+      resetDailylog();
     } else {
-      useSetDailyLog(dailyLog);
+      setDailylog(dailyLog);
     }
 
     if (!userData || !jwt) {

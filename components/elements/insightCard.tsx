@@ -11,7 +11,7 @@ import { ThemeText } from "../ui/TextElements";
 import { PrimaryButton } from "../ui/buttons";
 
 export function TextInputCard() {
-  const { dailyLog, useUpdateDailyLog } = useAuth();
+  const { dailyLog, updateDailylog } = useAuth();
 
   const [data, setData] = useState({
     notes: "",
@@ -22,7 +22,7 @@ export function TextInputCard() {
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
-    name: string
+    name: string,
   ) => {
     const value = event.nativeEvent.text;
     setData((prev) => ({ ...prev, [name]: value }));
@@ -30,7 +30,7 @@ export function TextInputCard() {
   };
 
   const handleSubmit = () => {
-    useUpdateDailyLog({ ...data });
+    updateDailylog({ ...data });
   };
 
   useEffect(() => {

@@ -4,20 +4,26 @@ export interface ResponseConfig {
   message: string;
 }
 
-export interface AuthResponseConfig extends ResponseConfig {
-  credentials: UserDataInterface | null;
-  accessToken?: string;
-  refreshToken?: string;
-}
+export type DataResponseConfig<T> = ResponseConfig & {
+  data: T;
+};
 
-export interface UserDataInterface {
+export type DataListResponseConfig<T> = ResponseConfig & {
+  data: T[];
+};
+
+export interface User {
   display_name: string;
   uid: string;
   created_at: number;
-  email: string
+  email: string;
 }
 
-
+export interface AuthUser {
+  user: User;
+  accessToken: string;
+  refreshToken: string;
+}
 
 export type foods = "breakfast" | "lunch" | "dinner" | "snacks";
 
@@ -48,18 +54,11 @@ export interface dailyLogInterface {
   mood: "great" | "good" | "okay" | "low" | "bad";
 }
 
-export interface LogsResponseConfig extends ResponseConfig {
-  data: dailyLogInterface[];
-}
-
-export interface SingleLogResponseConfig extends ResponseConfig {
-  data: dailyLogInterface | null;
-}
-
-
 export const initDailyLog = () => {
   const data: dailyLogInterface = {
-    date: new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }).slice(0, 10),
+    date: new Date()
+      .toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" })
+      .slice(0, 10),
     wakeUpTime: 0,
     sleepTime: 0,
     meals: {
@@ -79,7 +78,6 @@ export const initDailyLog = () => {
     travel: "",
     notes: "",
     mood: "okay",
-    
   };
   return data;
 };
@@ -95,20 +93,13 @@ export interface QuoteResponse extends ResponseConfig {
   }[];
 }
 
-
-export interface FirebaseDailyLog {
-  data: string;
-  encrypted: boolean
-}
-
-
-
-
 export const formatDailyLogForUI = (data: dailyLogInterface) => {
   return {
     Date: data.date,
-    "WakeUp Time": data.wakeUpTime === 0 ? "-" : `${format(data.wakeUpTime, "hh:mm a")}`,
-    "Sleep Time": data.sleepTime === 0 ? "-" : format(data.sleepTime, "hh:mm a"),
+    "WakeUp Time":
+      data.wakeUpTime === 0 ? "-" : `${format(data.wakeUpTime, "hh:mm a")}`,
+    "Sleep Time":
+      data.sleepTime === 0 ? "-" : format(data.sleepTime, "hh:mm a"),
     Meals: {
       Breakfast: data?.meals?.breakfast || "Not Added",
       Lunch: data?.meals?.lunch || "Not Added",
@@ -117,8 +108,12 @@ export const formatDailyLogForUI = (data: dailyLogInterface) => {
     },
     Workout: data.workout || "None",
     "Body Measurements": {
-      Height: data?.bodyMeasurements?.height ? `${data.bodyMeasurements.height}` : "Not Added",
-      Weight: data?.bodyMeasurements?.weight ? `${data.bodyMeasurements.weight}` : "Not Added",
+      Height: data?.bodyMeasurements?.height
+        ? `${data.bodyMeasurements.height}`
+        : "Not Added",
+      Weight: data?.bodyMeasurements?.weight
+        ? `${data.bodyMeasurements.weight}`
+        : "Not Added",
     },
     "Screen Time": `${data.screenTimeMinutes} min`,
     "Productive Things": data.somethingProductive || "-",
@@ -126,6 +121,5 @@ export const formatDailyLogForUI = (data: dailyLogInterface) => {
     Travel: data.travel || "Not Added",
     Notes: data.notes || "Not Added",
     Mood: data.mood,
-
   };
 };
