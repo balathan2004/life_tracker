@@ -23,7 +23,7 @@ const authSlice = createSlice({
     },
     setAccessToken: (state, { payload }) => {
       state.accessToken = payload.accessToken || "";
-      state.user = payload.credentials;
+      state.user = payload.user;
     },
     updateDailyLog: (
       state,

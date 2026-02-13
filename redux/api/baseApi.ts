@@ -1,3 +1,4 @@
+import { AuthUser, DataResponseConfig } from "@/components/interfaces";
 import { getData } from "@/components/utils/data_store";
 import { domain_url } from "@/env";
 import {
@@ -37,6 +38,8 @@ const baseQueryWithReAuth: BaseQueryFn<
   ) {
     const refreshToken = (await getData("refreshToken")) as string;
 
+    console.log({ refreshToken });
+
     if (!refreshToken) {
       api.dispatch({
         type: "auth/logoutUser",
@@ -54,13 +57,14 @@ const baseQueryWithReAuth: BaseQueryFn<
       extraOptions,
     )) as any;
 
-    if (refreshResult) {
-      console.log({ refreshResult });
+    const response = refreshResult.data as DataResponseConfig<AuthUser>;
+
+    if (response) {
       api.dispatch({
         type: "auth/setAccessToken",
         payload: {
-          accessToken: refreshResult.data.accessToken,
-          credentials: refreshResult.data.credentials,
+          accessToken: response.data.accessToken,
+          user: response.data.user,
         },
       });
       result = await baseQuery(args, api, extraOptions);

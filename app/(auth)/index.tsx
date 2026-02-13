@@ -24,7 +24,7 @@ export default function Login() {
 
   const handleInput = (
     event: NativeSyntheticEvent<TextInputChangeEventData>,
-    name: string
+    name: string,
   ) => {
     const value = event.nativeEvent.text;
     setUserData((prev) => ({ ...prev, [name]: value.trim() }));
@@ -33,10 +33,10 @@ export default function Login() {
   const handleSubmit = async () => {
     console.log("submitted");
     if (!userData.email || !userData.password) {
-       Toast.show({
-          type: "error",
-          text1: "Please fill in all fields",
-        });
+      Toast.show({
+        type: "error",
+        text1: "Please fill in all fields",
+      });
       return;
     }
 
@@ -50,7 +50,10 @@ export default function Login() {
         });
         router.push("/(tabs)");
       })
-      .catch((err) => setMessage(err.error || err.data.message));
+      .catch((err) => {
+        console.log({ err });
+        setMessage(err.error || err.data.message);
+      });
   };
 
   return (

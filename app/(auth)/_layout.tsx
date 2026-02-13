@@ -1,11 +1,7 @@
-
 import CustomHeader from "@/components/elements/CustomHeader";
 import { Stack } from "expo-router";
-import { useTheme } from "react-native-paper";
 
 export default function AuthLayout() {
-  const { colors } = useTheme();
-
   return (
     <Stack>
       <Stack.Screen

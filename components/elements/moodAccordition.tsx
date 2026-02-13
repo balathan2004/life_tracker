@@ -53,7 +53,7 @@ export default function MoodCard() {
 
   const handleChange = (value: mood) => {
     if (!value || !dailyLog) return;
-    console.log("called handleChange", value);
+
     updateDailylog({ mood: value });
     setMood(value);
   };

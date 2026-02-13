@@ -46,7 +46,7 @@ export default function Login() {
       type: "success",
       text1: res.message,
     });
-    if (res && res.credentials) {
+    if (res && res.data) {
       router.push("/(tabs)");
     }
   };

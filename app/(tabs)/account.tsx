@@ -2,14 +2,19 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
+import { router } from "expo-router";
 import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 const image = require("../../assets/images/cat.jpeg");
-
 export default function Account() {
   const { user, handleLogout } = useAuth();
 
   const { colors } = useTheme();
+
+  const logout = () => {
+    router.replace("/(auth)");
+    // handleLogout();
+  };
 
   return (
     <ScrollView>
@@ -51,7 +56,7 @@ export default function Account() {
           Joined
           {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
         </ThemeText>
-        <PrimaryButton onPress={handleLogout}>Logout</PrimaryButton>
+        <PrimaryButton onPress={logout}>Logout</PrimaryButton>
       </View>
     </ScrollView>
   );

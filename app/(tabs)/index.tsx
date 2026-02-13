@@ -112,10 +112,10 @@ export default function Home() {
                   }}
                   onPress={handleDateChange}
                 >
-                  Save and Create
+                  Save and create
                 </PrimaryButton>
                 <PrimaryButton onPress={createNewDoc}>
-                  Create New Log
+                  Start new day
                 </PrimaryButton>
               </>
             )}
