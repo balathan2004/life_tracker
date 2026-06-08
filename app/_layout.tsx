@@ -3,11 +3,9 @@ import { store } from "@/redux/store";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
-import {
-  KeyboardAvoidingView,
-  Platform,
-  StatusBar
-} from "react-native";
+import Updates from "expo-updates";
+import { useEffect } from "react";
+import { Alert, KeyboardAvoidingView, Platform, StatusBar } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -21,6 +19,29 @@ export default function RootLayout() {
     PoppinsMedium: require("../assets/fonts/Poppins-Medium.ttf"),
     PoppinsRegular: require("../assets/fonts/Poppins-Regular.ttf"),
   });
+
+  async function checkUpdate() {
+    if (__DEV__) return;
+
+    const update = await Updates.checkForUpdateAsync();
+    if (update.isAvailable) {
+      Alert.alert(
+        "Update Available",
+        "A new update is available. Do you want to update now?",
+      );
+      await Updates.fetchUpdateAsync();
+      await Updates.reloadAsync();
+    } else {
+      Alert.alert(
+        "Update is not Available",
+        "A new update is available. Do you want to update now?",
+      );
+    }
+  }
+
+  useEffect(() => {
+    checkUpdate();
+  }, []);
 
   if (!loaded) {
     // Async font loading only occurs in development.

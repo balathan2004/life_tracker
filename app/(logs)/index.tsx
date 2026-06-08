@@ -16,7 +16,7 @@ export default function LogDetail() {
 
   const formattedLog = data ? formatDailyLogForUI(data) : null;
 
-  console.log({ data });
+  // console.log({ data });
 
   const showConfirmation = () => {
     Alert.alert(

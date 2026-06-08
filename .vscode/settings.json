@@ -4,5 +4,8 @@
     "source.organizeImports": "explicit",
     "source.sortMembers": "explicit"
   },
-  "editor.fontSize": 16
+  "editor.fontSize": 14,
+  "editor.minimap.sectionHeaderFontSize": 9,
+  "terminal.integrated.fontSize": 13,
+  "notebook.markup.fontSize": 0
 }

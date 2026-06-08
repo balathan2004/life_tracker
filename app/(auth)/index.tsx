@@ -1,7 +1,9 @@
+import { User } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useLoginMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link, router } from "expo-router";
 import { useState } from "react";
 import {
@@ -40,9 +42,18 @@ export default function Login() {
       return;
     }
 
+    const userCredString = (await AsyncStorage.getItem("userCred")) || "";
+
+    const userCred = userCredString
+      ? (JSON.parse(userCredString) as User)
+      : null;
+
     const res = await login(userData)
       .unwrap()
       .then((res) => {
+        if (userCred && res.data.user.uid !== userCred.uid) {
+          AsyncStorage.removeItem("dailyLog");
+        }
         setMessage(res.message);
         Toast.show({
           type: "success",
@@ -51,7 +62,11 @@ export default function Login() {
         router.push("/(tabs)");
       })
       .catch((err) => {
-        console.log({ err });
+        Toast.show({
+          type: "error",
+          text1: err.error || err.data.message,
+        });
+        console.log(err);
         setMessage(err.error || err.data.message);
       });
   };

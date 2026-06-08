@@ -44,6 +44,7 @@ const Index = () => {
       isBathTaken: dailyLog.isBathTaken,
       meals: { ...dailyLog.meals },
       notes: dailyLog.notes,
+      travel: dailyLog.travel,
       somethingProductive: dailyLog.somethingProductive,
     }));
   }, [dailyLog]);

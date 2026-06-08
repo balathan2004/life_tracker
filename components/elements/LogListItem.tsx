@@ -1,16 +1,13 @@
 import React from "react";
-import { useWindowDimensions, View } from "react-native";
+import { View } from "react-native";
 import { Text, useTheme } from "react-native-paper";
 import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
-
 
 type Props = {
   label: keyof dailyLogInterface;
   value: string | string[] | object;
 };
-
-
 
 const LogListItem = ({ label, value }: Props) => {
   const { colors } = useTheme();
@@ -51,10 +48,6 @@ const LogListItem = ({ label, value }: Props) => {
 export default LogListItem;
 
 const ValueRenderer = ({ value }: { value: any }) => {
-  const { colors } = useTheme();
-
-  const { width } = useWindowDimensions()
-
   return (
     <>
       {typeof value == "object" &&
@@ -65,29 +58,24 @@ const ValueRenderer = ({ value }: { value: any }) => {
               flexDirection: "row",
               gap: 16,
               marginVertical: 4,
-              width: "100%"
-
+              width: "100%",
             }}
             key={key}
           >
             <Text
               style={{
                 color: "#B0B300",
-                width: 75
+                width: 75,
               }}
             >
               {key} :
             </Text>
 
-            <Text style={{ flex: 1 }} >
-              {element}
-            </Text>
+            <Text style={{ flex: 1 }}>{element}</Text>
           </View>
         ))}
       {typeof value == "string" && (
-        <ThemeText style={{ color: "#B0B300" }}>
-          {value}
-        </ThemeText>
+        <ThemeText style={{ color: "#B0B300" }}>{value}</ThemeText>
       )}
       {typeof value == "number" && <ThemeText>{value?.toString()}</ThemeText>}
     </>

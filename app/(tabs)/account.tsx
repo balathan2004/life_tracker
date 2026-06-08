@@ -1,4 +1,3 @@
-import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
@@ -56,7 +55,7 @@ export default function Account() {
           Joined
           {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
         </ThemeText>
-        <PrimaryButton onPress={logout}>Logout</PrimaryButton>
+        {/* <PrimaryButton onPress={logout}>Logout</PrimaryButton> */}
       </View>
     </ScrollView>
   );

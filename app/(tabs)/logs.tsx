@@ -79,6 +79,31 @@ export default function Logs() {
             {isFetching && <ActivityIndicator></ActivityIndicator>}
           </>
         )}
+        ListEmptyComponent={() =>
+          !isLoading && !isFetching ? (
+            <View
+              style={{
+                backgroundColor: colors.surface,
+                padding: 20,
+                borderRadius: 12,
+                alignItems: "center",
+              }}
+            >
+              <CenterText
+                style={{
+                  fontSize: 18,
+                  marginBottom: 4,
+                }}
+              >
+                No logs yet
+              </CenterText>
+
+              <CenterText>
+                Start tracking your day to see entries here.
+              </CenterText>
+            </View>
+          ) : null
+        }
         onEndReached={() => handlePagination()}
         onEndReachedThreshold={0.2}
         showsVerticalScrollIndicator={false}

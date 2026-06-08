@@ -21,11 +21,10 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
   const { colors } = useTheme();
 
   const onChange = (seletedTime: any) => {
+    setShowPicker(false);
     if (seletedTime) {
       updateDailylog({ [fieldKey]: seletedTime.getTime() });
     }
-
-    setShowPicker(false);
   };
 
   const handleCurrentTime = () => {
@@ -95,7 +94,7 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
             borderRadius: 10,
             backgroundColor: "#5F606A",
           }}
-          onPress={() => setShowPicker((prev) => !prev)}
+          onPress={() => setShowPicker(true)}
         >
           Pick
         </PrimaryButton>
@@ -109,7 +108,9 @@ export default function TimeCard({ label, fieldKey, icon }: TimeCardProps) {
             onConfirm={onChange}
             minimumDate={subDays(new Date(), 3)}
             maximumDate={addDays(new Date(), 2)}
-            onCancel={() => {}}
+            onCancel={() => {
+              setShowPicker(false);
+            }}
             is24Hour={false} // change to true if needed
           />
         )}

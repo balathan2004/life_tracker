@@ -38,11 +38,13 @@ const authSlice = createSlice({
       state.user = payload;
     },
     logoutUser: (state) => {
-      state.dailyLog = {} as any;
       state.user = {} as any;
       state.accessToken = "";
-      AsyncStorage.multiRemove(["refreshToken", "userCred", "dailyLog"]);
+      AsyncStorage.removeItem("refreshToken");
     },
+
+
+
   },
   extraReducers: (builder) => {
     builder.addMatcher(

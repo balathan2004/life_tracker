@@ -47,9 +47,11 @@ export const moods = [
 export default function MoodCard() {
   const { dailyLog, updateDailylog } = useAuth();
 
-  const [mood, setMood] = useState<mood>(dailyLog.mood || "okay");
+  const [mood, setMood] = useState<mood>(dailyLog.mood);
 
-  const currentMoodObj = moods.find((item) => item.value === mood);
+  const currentMoodObj =
+    moods.find((item) => item.value === mood) ||
+    moods.find((item) => item.value === "okay");
 
   const handleChange = (value: mood) => {
     if (!value || !dailyLog) return;
