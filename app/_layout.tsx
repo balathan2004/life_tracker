@@ -1,5 +1,6 @@
 import { darkTheme } from "@/components/ui/themes";
 import { store } from "@/redux/store";
+import NotificationManager from "@/utils/NotificationManager";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -32,12 +33,6 @@ export default function RootLayout() {
       await Updates.fetchUpdateAsync();
       await Updates.reloadAsync();
     }
-    // else {
-    //   Alert.alert(
-    //     "Update is not Available",
-    //     "A new update is available. Do you want to update now?",
-    //   );
-    // }
   }
 
   useEffect(() => {
@@ -52,6 +47,7 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={darkTheme as any}>
       <ThemeProvider value={darkTheme as any}>
+        <NotificationManager />
         <Provider store={store}>
           <SafeAreaProvider>
             <SafeAreaView
