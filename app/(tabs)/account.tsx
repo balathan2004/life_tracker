@@ -1,12 +1,16 @@
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
+import * as Application from "expo-application";
 import { router } from "expo-router";
 import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
+
 const image = require("../../assets/images/cat.jpeg");
 export default function Account() {
   const { user, handleLogout } = useAuth();
+
+  const version = Application.nativeApplicationVersion || ""; // e.g. "1.2.0"
 
   const { colors } = useTheme();
 
@@ -54,6 +58,10 @@ export default function Account() {
         <ThemeText>
           Joined
           {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
+        </ThemeText>
+        <ThemeText>
+          Version
+          {" " + version}
         </ThemeText>
         {/* <PrimaryButton onPress={logout}>Logout</PrimaryButton> */}
       </View>

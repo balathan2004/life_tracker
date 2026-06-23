@@ -1,5 +1,5 @@
 import { useAuth } from "@/redux/api/authSlice";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TouchableOpacity, View } from "react-native";
 import { dailyLogInterface } from "../interfaces";
 import { CenterText, ThemeText } from "../ui/TextElements";
@@ -59,6 +59,12 @@ export default function MoodCard() {
     updateDailylog({ mood: value });
     setMood(value);
   };
+
+  useEffect(() => {
+    if (!dailyLog) return;
+
+    setMood(dailyLog.mood);
+  }, [dailyLog]);
 
   return (
     <View

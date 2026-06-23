@@ -30,7 +30,6 @@ export default function Home() {
 
   useEffect(() => {
     retrieveCred();
-    // handleLogout();
   }, []);
 
   return (

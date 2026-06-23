@@ -31,12 +31,13 @@ export default function RootLayout() {
       );
       await Updates.fetchUpdateAsync();
       await Updates.reloadAsync();
-    } else {
-      Alert.alert(
-        "Update is not Available",
-        "A new update is available. Do you want to update now?",
-      );
     }
+    // else {
+    //   Alert.alert(
+    //     "Update is not Available",
+    //     "A new update is available. Do you want to update now?",
+    //   );
+    // }
   }
 
   useEffect(() => {
