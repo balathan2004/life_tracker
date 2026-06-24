@@ -1,7 +1,8 @@
-import FoodIconsCard, {
+import {
+  FoodIconsCard,
   JournalCard,
   WellnessCard,
-} from "@/components/elements/foodIconsCard";
+} from "@/components/elements/homeSummaryCards";
 import MoodCard from "@/components/elements/moodAccordition";
 import QuoteBar from "@/components/elements/QuoteBar";
 import TimeCard from "@/components/elements/TimeCard";
@@ -9,6 +10,7 @@ import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { useUpdateMutation } from "@/redux/api/crudApi";
+import NotificationManager from "@/utils/NotificationManager";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { isBefore, parseISO, startOfDay } from "date-fns";
 import { ScrollView, View } from "react-native";
@@ -60,6 +62,7 @@ export default function Home() {
         backgroundColor: colors.background,
       }}
     >
+      <NotificationManager />
       <View
         style={{
           margin: 16,

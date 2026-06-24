@@ -5,10 +5,9 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Link } from "expo-router";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "react-native-paper";
-import { dailyLogInterface } from "../interfaces";
 import { ThemeText } from "../ui/TextElements";
 
-export default function FoodIconsCard() {
+export const FoodIconsCard = () => {
   const { dailyLog } = useAuth();
 
   const { colors } = useTheme();
@@ -30,21 +29,25 @@ export default function FoodIconsCard() {
         </Link>
       </View>
       {Object.entries(dailyLog?.meals).map(([key, value]) => (
-        <SingleElement key={key} keyName={key} value={value}></SingleElement>
+        <SingleElement
+          key={key}
+          keyName={key}
+          value={value || "N/A"}
+        ></SingleElement>
       ))}
     </View>
   );
-}
+};
 
 export function JournalCard() {
   const { dailyLog } = useAuth();
   const { colors } = useTheme();
 
-  const keysToExtract: (keyof dailyLogInterface)[] = [
-    "somethingProductive",
-    "travel",
-    "notes",
-  ];
+  const renderData = {
+    "Something Productive": dailyLog?.somethingProductive,
+    Travel: dailyLog?.travel,
+    Notes: dailyLog?.notes,
+  };
 
   return (
     <View
@@ -62,11 +65,11 @@ export function JournalCard() {
           <Feather name="edit" size={24} color={colors.onBackground} />{" "}
         </Link>
       </View>
-      {keysToExtract.map((key) => (
+      {Object.entries(renderData).map(([key, value]) => (
         <SingleElement
           key={key}
           keyName={key}
-          value={dailyLog[key] as string}
+          value={value || "N/A"}
         ></SingleElement>
       ))}
     </View>
@@ -77,16 +80,12 @@ export function WellnessCard() {
   const { dailyLog } = useAuth();
   const { colors } = useTheme();
 
-  const keysToExtract: string[] = [
-    "workout",
-    "bodyMeasurements.height",
-    "bodyMeasurements.weight",
-    "isBathTaken",
-  ];
-
-  function getValueByPath(obj: any, path: string) {
-    return path.split(".").reduce((acc, key) => acc?.[key], obj);
-  }
+  const renderData = {
+    Workout: dailyLog?.workout,
+    Height: dailyLog?.bodyMeasurements?.height,
+    Weight: dailyLog?.bodyMeasurements?.weight,
+    BathTaken: dailyLog?.isBathTaken,
+  };
 
   return (
     <View
@@ -104,11 +103,13 @@ export function WellnessCard() {
           <Feather name="edit" size={24} color={colors.onBackground} />{" "}
         </Link>
       </View>
-      {keysToExtract.map((key) => (
+      {Object.entries(renderData).map(([key, value]) => (
         <SingleElement
           key={key}
           keyName={key.includes(".") ? key.split(".")[1] : key}
-          value={getValueByPath(dailyLog, key)}
+          value={
+            value?.toString() || typeof value === "boolean" ? value : "N/A"
+          }
         ></SingleElement>
       ))}
     </View>

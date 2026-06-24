@@ -1,6 +1,5 @@
 import { darkTheme } from "@/components/ui/themes";
 import { store } from "@/redux/store";
-import NotificationManager from "@/utils/NotificationManager";
 import { ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
@@ -60,7 +59,6 @@ export default function RootLayout() {
                 style={{ flex: 1 }}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
               >
-                <NotificationManager />
                 <Stack>
                   <Stack.Screen
                     name="index"
