@@ -38,7 +38,7 @@ export default function Layout() {
             />
           ),
         }}
-      ></Tabs.Screen>
+      />
 
       <Tabs.Screen
         name="logs"
@@ -53,8 +53,7 @@ export default function Layout() {
             />
           ),
         }}
-      ></Tabs.Screen>
-
+      />
       <Tabs.Screen
         name="account"
         options={{
@@ -68,7 +67,7 @@ export default function Layout() {
             />
           ),
         }}
-      ></Tabs.Screen>
+      />
     </Tabs>
   );
 }

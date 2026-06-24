@@ -4,7 +4,7 @@ import { useEncryptMutation, useGetDocByIdQuery } from "@/redux/api/crudApi";
 import { format } from "date-fns";
 import { useLocalSearchParams, useNavigation } from "expo-router";
 import React, { useEffect } from "react";
-import { Alert, ScrollView, View } from "react-native";
+import { ScrollView, View } from "react-native";
 
 export default function LogDetail() {
   const { doc_id } = useLocalSearchParams<{ doc_id: string }>();
@@ -15,29 +15,6 @@ export default function LogDetail() {
   const [encryptDoc] = useEncryptMutation();
 
   const formattedLog = data ? formatDailyLogForUI(data) : null;
-
-  // console.log({ data });
-
-  const showConfirmation = () => {
-    Alert.alert(
-      "Are you Sure",
-      "This Action cant be undone",
-      [
-        {
-          text: "Cancel",
-          style: "cancel",
-          onPress: () => console.log("Cancelled"),
-        },
-        {
-          text: "OK",
-          onPress: handleDelete,
-        },
-      ],
-      { cancelable: true },
-    );
-  };
-
-  const handleDelete = async () => {};
 
   useEffect(() => {
     if (data) {

@@ -47,7 +47,6 @@ export default function RootLayout() {
   return (
     <PaperProvider theme={darkTheme as any}>
       <ThemeProvider value={darkTheme as any}>
-        <NotificationManager />
         <Provider store={store}>
           <SafeAreaProvider>
             <SafeAreaView
@@ -57,10 +56,11 @@ export default function RootLayout() {
               }}
             >
               <KeyboardAvoidingView
-                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                behavior={Platform.OS === "ios" ? "padding" : undefined}
                 style={{ flex: 1 }}
                 keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
               >
+                <NotificationManager />
                 <Stack>
                   <Stack.Screen
                     name="index"

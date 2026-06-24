@@ -1,6 +1,29 @@
 import * as Notifications from "expo-notifications";
 import React, { useEffect } from "react";
+
 type Props = {};
+
+const notificationData = [
+  {
+    title: "📝 Journal",
+    body: "Hope you had a great day! Write today's journal",
+    hour: 19,
+    minute: 0,
+  },
+  {
+    title: "😴 Sleep",
+    body: "Time to sleep",
+    hour: 21,
+    minute: 0,
+  },
+  {
+    title: "Good Morning",
+    body: "Hope you have a great day!",
+    hour: 6,
+    minute: 0,
+  },
+];
+
 const NotificationManager = (props: Props) => {
   Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -37,11 +60,14 @@ const NotificationManager = (props: Props) => {
 
     if (status !== "granted") return;
 
-    await scheduleDailyReminder("📝 Journal", "Write today's journal", 20, 0);
-
-    await scheduleDailyReminder("😴 Sleep", "Time to sleep", 21, 5);
-
-    await scheduleDailyReminder("🍽️ Lunch", "Log your lunch", 13, 0);
+    notificationData.forEach(async (data) => {
+      await scheduleDailyReminder(
+        data.title,
+        data.body,
+        data.hour,
+        data.minute,
+      );
+    });
   }
 
   useEffect(() => {
