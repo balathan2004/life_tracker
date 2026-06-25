@@ -1,8 +1,10 @@
+import ChangeLogSheet from "@/components/ChangeLogSheet";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
 import * as Application from "expo-application";
 import { router } from "expo-router";
+import { useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
 
@@ -19,8 +21,14 @@ export default function Account() {
     // handleLogout();
   };
 
+  const [showSheet, setShowSheet] = useState(false);
+
   return (
     <ScrollView>
+      <ChangeLogSheet
+        isVisible={showSheet}
+        onDismiss={() => setShowSheet(false)}
+      />
       <View
         style={{
           backgroundColor: colors.background,
@@ -59,7 +67,7 @@ export default function Account() {
           Joined
           {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
         </ThemeText>
-        <ThemeText>
+        <ThemeText onLongPress={() => setShowSheet(true)}>
           Version
           {" " + version}
         </ThemeText>
