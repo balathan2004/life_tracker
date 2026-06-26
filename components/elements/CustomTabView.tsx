@@ -1,7 +1,7 @@
 import React, { ComponentType, useEffect, useRef, useState } from "react";
 import { FlatList, ScrollView, TouchableOpacity, View } from "react-native";
-import { Text, useTheme } from "react-native-paper";
 
+import { Text, useTheme } from "react-native-paper";
 type Props = {
   data: {
     title: string;
@@ -25,8 +25,10 @@ const CustomTabView = ({ data, commonFooter, selectedPage }: Props) => {
 
   return (
     <FlatList
+      showsVerticalScrollIndicator={false}
       data={[
         <ScrollView
+          key={"topScroll"}
           horizontal
           showsHorizontalScrollIndicator={false}
           style={{
@@ -43,6 +45,8 @@ const CustomTabView = ({ data, commonFooter, selectedPage }: Props) => {
           ))}
         </ScrollView>,
         <FlatList
+          showsVerticalScrollIndicator={false}
+          key={"bottomPager"}
           style={{ flexGrow: 0 }}
           ref={flatListRef}
           onMomentumScrollEnd={(event) => {
@@ -63,7 +67,6 @@ const CustomTabView = ({ data, commonFooter, selectedPage }: Props) => {
             }, 100);
           }}
           showsHorizontalScrollIndicator={false}
-          showsVerticalScrollIndicator={false}
           pagingEnabled
           horizontal
           data={data}

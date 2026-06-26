@@ -9,8 +9,8 @@ import { useLocalSearchParams } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
+import { useKeyboardState } from "react-native-keyboard-controller";
 import Toast from "react-native-toast-message";
-
 const initialValues: Partial<dailyLogInterface> = {
   isBathTaken: false,
   workout: "",
@@ -34,6 +34,11 @@ const Index = () => {
   const { form } = useLocalSearchParams<{ form?: string }>();
   const [selectedPage, setSelectedPage] = useState(parseInt(form || "0"));
   const [formValue, setFormValue] = useState(initialValues);
+  const { height } = useKeyboardState();
+
+  useEffect(() => {
+    console.log({ height });
+  }, [height]);
 
   useEffect(() => {
     if (!dailyLog) return;
@@ -64,25 +69,27 @@ const Index = () => {
   };
 
   return (
-    <Formik
-      enableReinitialize
-      initialValues={formValue}
-      onSubmit={(values) => handleSubmit(values)}
-    >
-      {({ handleSubmit }) => (
-        <CustomTabView
-          selectedPage={selectedPage}
-          data={data}
-          commonFooter={() => (
-            <View style={{ marginHorizontal: 16 }}>
-              <PrimaryButton onPress={() => handleSubmit()}>
-                Submit
-              </PrimaryButton>
-            </View>
-          )}
-        />
-      )}
-    </Formik>
+    <View style={{ flex: 1, paddingBottom: height }}>
+      <Formik
+        enableReinitialize
+        initialValues={formValue}
+        onSubmit={(values) => handleSubmit(values)}
+      >
+        {({ handleSubmit }) => (
+          <CustomTabView
+            selectedPage={selectedPage}
+            data={data}
+            commonFooter={() => (
+              <View style={{ marginHorizontal: 16 }}>
+                <PrimaryButton onPress={() => handleSubmit()}>
+                  Submit
+                </PrimaryButton>
+              </View>
+            )}
+          />
+        )}
+      </Formik>
+    </View>
   );
 };
 

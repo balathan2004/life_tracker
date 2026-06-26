@@ -1,22 +1,28 @@
 import React from "react";
-import { Modal, Pressable, StyleSheet, View } from "react-native";
+import { Modal, StyleSheet, View, ViewStyle } from "react-native";
 import { useTheme } from "react-native-paper";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 type Props = {
   isVisible: boolean;
   onDismiss: () => void;
   children: React.ReactNode;
+  contentStyle: ViewStyle;
 };
 
-const SimpleBottomSheet = ({ children, isVisible, onDismiss }: Props) => {
+const SimpleBottomSheet = ({
+  children,
+  isVisible,
+  onDismiss,
+  contentStyle,
+}: Props) => {
   const { top } = useSafeAreaInsets();
   const { colors } = useTheme();
 
   return (
     <Modal visible={isVisible} transparent onDismiss={onDismiss}>
       <View style={[styles.container, { paddingTop: top }]}>
-        <Pressable onPress={onDismiss} style={{ flex: 1 }}></Pressable>
-        <View style={styles.content}>{children}</View>
+        {/* <Pressable onPress={onDismiss} style={{ flex: 1 }}></Pressable> */}
+        <View style={[styles.content, contentStyle]}>{children}</View>
       </View>
     </Modal>
   );
@@ -30,7 +36,6 @@ const styles = StyleSheet.create({
   },
   content: {
     minHeight: 200,
-    // backgroundColor: "white",
     padding: 16,
     borderTopLeftRadius: 16,
     borderTopRightRadius: 16,
