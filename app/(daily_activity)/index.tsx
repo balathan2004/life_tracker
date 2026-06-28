@@ -4,12 +4,12 @@ import MealsForm from "@/components/forms/MealsForm";
 import WellnessForm from "@/components/forms/WellnessForm";
 import { dailyLogInterface } from "@/components/interfaces";
 import { PrimaryButton } from "@/components/ui/buttons";
+import { useKeyboardHeight } from "@/components/utils/useKeyboard";
 import { useAuth } from "@/redux/api/authSlice";
 import { useLocalSearchParams } from "expo-router";
 import { Formik } from "formik";
 import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { useKeyboardState } from "react-native-keyboard-controller";
 import Toast from "react-native-toast-message";
 const initialValues: Partial<dailyLogInterface> = {
   isBathTaken: false,
@@ -34,11 +34,7 @@ const Index = () => {
   const { form } = useLocalSearchParams<{ form?: string }>();
   const [selectedPage, setSelectedPage] = useState(parseInt(form || "0"));
   const [formValue, setFormValue] = useState(initialValues);
-  const { height } = useKeyboardState();
-
-  useEffect(() => {
-    console.log({ height });
-  }, [height]);
+  const height = useKeyboardHeight();
 
   useEffect(() => {
     if (!dailyLog) return;
@@ -69,7 +65,7 @@ const Index = () => {
   };
 
   return (
-    <View style={{ flex: 1, paddingBottom: height }}>
+    <View style={{ flex: 1, paddingBottom: height + 32 }}>
       <Formik
         enableReinitialize
         initialValues={formValue}

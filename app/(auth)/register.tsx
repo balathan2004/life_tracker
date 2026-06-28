@@ -1,5 +1,6 @@
 import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
+import { useKeyboardHeight } from "@/components/utils/useKeyboard";
 import { useRegisterMutation } from "@/redux/api/authApi";
 import { styles } from "@/styles/auth.css";
 import { Link, router } from "expo-router";
@@ -19,6 +20,8 @@ export default function Login() {
   const [message, setMessage] = useState("");
 
   const { colors } = useTheme();
+
+  const height = useKeyboardHeight();
 
   const [register, { isLoading }] = useRegisterMutation();
 
@@ -47,7 +50,7 @@ export default function Login() {
       text1: res.message,
     });
     if (res && res.data) {
-      router.push("/(tabs)");
+      router.replace("/(tabs)");
     }
   };
 
@@ -56,56 +59,52 @@ export default function Login() {
       style={{
         flex: 1,
         justifyContent: "center",
+        marginHorizontal: 16,
+        paddingBottom: height,
       }}
     >
+      <CenterText style={{ fontSize: 28 }}>Register</CenterText>
+
+      <ThemeText>Email</ThemeText>
+      <TextInput
+        autoCapitalize="none"
+        onChange={(e) => handleInput(e, "email")}
+        style={styles.input}
+        value={userData.email}
+      ></TextInput>
+
+      <ThemeText>Password</ThemeText>
+      <TextInput
+        autoCapitalize="none"
+        onChange={(e) => handleInput(e, "password")}
+        style={styles.input}
+        value={userData.password}
+      ></TextInput>
+
       <View
         style={{
-          marginHorizontal: 16,
+          marginTop: 24,
         }}
       >
-        <CenterText style={{ fontSize: 28 }}>Register</CenterText>
-
-        <ThemeText>Email</ThemeText>
-        <TextInput
-          autoCapitalize="none"
-          onChange={(e) => handleInput(e, "email")}
-          style={styles.input}
-          value={userData.email}
-        ></TextInput>
-
-        <ThemeText>Password</ThemeText>
-        <TextInput
-          autoCapitalize="none"
-          onChange={(e) => handleInput(e, "password")}
-          style={styles.input}
-          value={userData.password}
-        ></TextInput>
-
-        <View
+        <PrimaryButton
+          loading={isLoading}
+          disabled={isLoading}
+          onPress={handleSubmit}
+        >
+          Register
+        </PrimaryButton>
+        <CenterText
           style={{
-            marginTop: 24,
+            marginVertical: 16,
           }}
         >
-          <PrimaryButton
-            loading={isLoading}
-            disabled={isLoading}
-            onPress={handleSubmit}
+          Have an account{" "}
+          <ThemeText
+            style={{ color: colors.primary, textDecorationLine: "underline" }}
           >
-            Register
-          </PrimaryButton>
-          <CenterText
-            style={{
-              marginVertical: 16,
-            }}
-          >
-            Have an account{" "}
-            <ThemeText
-              style={{ color: colors.primary, textDecorationLine: "underline" }}
-            >
-              <Link href="/(auth)">Login Here</Link>
-            </ThemeText>
-          </CenterText>
-        </View>
+            <Link href="/(auth)">Login Here</Link>
+          </ThemeText>
+        </CenterText>
       </View>
     </View>
   );

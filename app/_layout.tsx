@@ -5,8 +5,7 @@ import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
 import Updates from "expo-updates";
 import { useEffect } from "react";
-import { Alert, KeyboardAvoidingView, Platform, StatusBar } from "react-native";
-import { KeyboardProvider } from "react-native-keyboard-controller";
+import { Alert, KeyboardAvoidingView, StatusBar } from "react-native";
 import { PaperProvider } from "react-native-paper";
 import "react-native-reanimated";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
@@ -50,45 +49,40 @@ export default function RootLayout() {
         <Provider store={store}>
           <SafeAreaProvider>
             <SafeAreaView
+              edges={["top", "left", "right"]}
               style={{
                 flex: 1,
                 backgroundColor: darkTheme.colors.background,
               }}
             >
-              <KeyboardProvider>
-                <KeyboardAvoidingView
-                  behavior={Platform.OS === "ios" ? "padding" : undefined}
-                  style={{ flex: 1 }}
-                  keyboardVerticalOffset={Platform.OS === "ios" ? 80 : 0}
-                >
-                  <Stack>
-                    <Stack.Screen
-                      name="index"
-                      options={{ headerShown: false }}
-                    ></Stack.Screen>
-                    <Stack.Screen
-                      name="(auth)"
-                      options={{ headerShown: false }}
-                    />
+              <KeyboardAvoidingView style={{ flex: 1 }}>
+                <Stack>
+                  <Stack.Screen
+                    name="index"
+                    options={{ headerShown: false }}
+                  ></Stack.Screen>
+                  <Stack.Screen
+                    name="(auth)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(tabs)"
-                      options={{ headerShown: false }}
-                    />
+                  <Stack.Screen
+                    name="(tabs)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(daily_activity)"
-                      options={{ headerShown: false }}
-                    />
+                  <Stack.Screen
+                    name="(daily_activity)"
+                    options={{ headerShown: false }}
+                  />
 
-                    <Stack.Screen
-                      name="(logs)"
-                      options={{ headerShown: false }}
-                    />
-                    <Stack.Screen name="+not-found" />
-                  </Stack>
-                </KeyboardAvoidingView>
-              </KeyboardProvider>
+                  <Stack.Screen
+                    name="(logs)"
+                    options={{ headerShown: false }}
+                  />
+                  <Stack.Screen name="+not-found" />
+                </Stack>
+              </KeyboardAvoidingView>
 
               <StatusBar
                 backgroundColor={darkTheme.colors.background}

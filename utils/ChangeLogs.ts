@@ -2,7 +2,15 @@
 
 export const CHANGELOG = [
 
-
+    {
+        version: "1.0.1",
+        date: "2026-06-28 8:00PM",
+        changes: [
+            "Added Logout",
+            "Keyboard Fixed Without third party module",
+            "Added sleep calculation"
+        ],
+    },
     {
         version: "1.0.1",
         date: "2026-06-26 9:15AM",

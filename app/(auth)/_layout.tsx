@@ -10,14 +10,14 @@ export default function AuthLayout() {
           title: "Login",
           headerShown: false,
         }}
-      ></Stack.Screen>
+      />
       <Stack.Screen
         name="register"
         options={{
           title: "Register",
           headerShown: false,
         }}
-      ></Stack.Screen>
+      />
 
       <Stack.Screen
         name="forget_password"
@@ -26,7 +26,7 @@ export default function AuthLayout() {
           // headerShown: false,
           header: (props) => <CustomHeader {...props} />,
         }}
-      ></Stack.Screen>
+      />
     </Stack>
   );
 }

@@ -29,11 +29,7 @@ export const FoodIconsCard = () => {
         </Link>
       </View>
       {Object.entries(dailyLog?.meals).map(([key, value]) => (
-        <SingleElement
-          key={key}
-          keyName={key}
-          value={value || "N/A"}
-        ></SingleElement>
+        <SingleElement key={key} keyName={key} value={value}></SingleElement>
       ))}
     </View>
   );
@@ -66,11 +62,7 @@ export function JournalCard() {
         </Link>
       </View>
       {Object.entries(renderData).map(([key, value]) => (
-        <SingleElement
-          key={key}
-          keyName={key}
-          value={value || "N/A"}
-        ></SingleElement>
+        <SingleElement key={key} keyName={key} value={value}></SingleElement>
       ))}
     </View>
   );
@@ -107,9 +99,7 @@ export function WellnessCard() {
         <SingleElement
           key={key}
           keyName={key.includes(".") ? key.split(".")[1] : key}
-          value={
-            value?.toString() || typeof value === "boolean" ? value : "N/A"
-          }
+          value={value?.toString() || typeof value === "boolean" ? value : ""}
         ></SingleElement>
       ))}
     </View>
@@ -150,9 +140,9 @@ function SingleElement({
             {value ? "Done" : "Not Done"}
           </ThemeText>
         )}
-        {typeof value === "string" && !!value && (
+        {typeof value === "string" && (
           <ThemeText variant="labelMedium" style={styles.text}>
-            {value}
+            {value.trim().length > 0 ? value : "N/A"}
           </ThemeText>
         )}
       </View>

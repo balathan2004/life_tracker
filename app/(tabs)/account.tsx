@@ -1,4 +1,5 @@
 import ChangeLogSheet from "@/components/ChangeLogSheet";
+import { PrimaryButton } from "@/components/ui/buttons";
 import { CenterText, ThemeText } from "@/components/ui/TextElements";
 import { useAuth } from "@/redux/api/authSlice";
 import { formatDistanceToNow } from "date-fns";
@@ -7,7 +8,6 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Image, ScrollView, View } from "react-native";
 import { useTheme } from "react-native-paper";
-
 const image = require("../../assets/images/cat.jpeg");
 export default function Account() {
   const { user, handleLogout } = useAuth();
@@ -18,7 +18,7 @@ export default function Account() {
 
   const logout = () => {
     router.replace("/(auth)");
-    // handleLogout();
+    handleLogout();
   };
 
   const [showSheet, setShowSheet] = useState(false);
@@ -60,18 +60,22 @@ export default function Account() {
             textTransform: "uppercase",
           }}
         >
-          {user?.display_name}
+          {user?.display_name || ""}
         </CenterText>
-        <ThemeText>{user?.email}</ThemeText>
-        <ThemeText>
-          Joined
-          {" " + formatDistanceToNow(new Date(user?.created_at))} Ago
-        </ThemeText>
-        <ThemeText onLongPress={() => setShowSheet(true)}>
+        <ThemeText>{user?.email || ""}</ThemeText>
+        {user?.created_at && (
+          <ThemeText>
+            Joined {formatDistanceToNow(new Date(user.created_at))} Ago
+          </ThemeText>
+        )}
+        <ThemeText
+          style={{ marginBottom: 32 }}
+          onLongPress={() => setShowSheet(true)}
+        >
           Version
           {" " + version}
         </ThemeText>
-        {/* <PrimaryButton onPress={logout}>Logout</PrimaryButton> */}
+        <PrimaryButton onPress={logout}>Logout</PrimaryButton>
       </View>
     </ScrollView>
   );

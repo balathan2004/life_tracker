@@ -39,8 +39,9 @@ const authSlice = createSlice({
     },
     logoutUser: (state) => {
       state.user = {} as any;
-      state.accessToken = "";
-      AsyncStorage.removeItem("refreshToken");
+      state.dailyLog = initDailyLog(),
+        state.accessToken = "";
+      AsyncStorage.multiRemove(["refreshToken", 'dailyLog', "userCred"]);
     },
 
 
@@ -50,7 +51,7 @@ const authSlice = createSlice({
     builder.addMatcher(
       authApi.endpoints.login.matchFulfilled,
       (state, { payload }) => {
-        console.log({ payload });
+
         state.accessToken = payload.data.accessToken || "";
         state.user = payload.data.user as User;
         AsyncStorage.setItem("refreshToken", payload.data.refreshToken || "");
@@ -69,7 +70,7 @@ const authSlice = createSlice({
     builder.addMatcher(
       authApi.endpoints.getAccessToken.matchFulfilled,
       (state, { payload }) => {
-        console.log("accessed getAccetoken");
+
         state.accessToken = payload.data.accessToken || "";
         state.user = payload.data.user;
         AsyncStorage.setItem("userCred", JSON.stringify(payload.data.user));

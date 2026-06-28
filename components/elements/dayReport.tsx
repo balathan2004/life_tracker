@@ -1,4 +1,4 @@
-import { format } from "date-fns";
+import { format, isBefore, isSameDay } from "date-fns";
 import { router } from "expo-router";
 import React from "react";
 import { Pressable, View } from "react-native";
@@ -9,10 +9,10 @@ import { moods } from "./moodAccordition";
 
 interface props {
   data: dailyLogInterface;
-  nextDayWakeupTime: any;
+  nextDayDate: dailyLogInterface | null;
 }
 
-export default function DayReport({ data, nextDayWakeupTime }: props) {
+export default function DayReport({ data, nextDayDate = null }: props) {
   const colorVariant = moodColors.find((item) => item.mood === data.mood);
 
   const handleNavigation = () => {
@@ -34,23 +34,37 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
     return currentMood?.emoji || "\u{1F610}"; // okay mood default
   };
 
+  const sleepTime = calcSleepTime();
+
   function calcSleepTime() {
-    // console.log(data.sleepTime,nextDayWakeupTime);
-    if (!data.sleepTime || !nextDayWakeupTime) return "0 mins";
+    if (!nextDayDate) return null;
 
-    let sleep = data.sleepTime;
-    let wake = nextDayWakeupTime;
+    const sleepMillis = data.sleepTime;
 
-    // If wake is earlier than sleep, add 1 day to wake
-    if (wake <= sleep) {
-      wake = new Date(wake.getTime() + 24 * 60 * 60 * 1000);
+    const wakeMillis = nextDayDate?.wakeUpTime || 0;
+
+    if (!sleepMillis || !wakeMillis) return "Sleep not recorded";
+
+    if (sleepMillis > wakeMillis) return "Invalid sleep record";
+
+    const sleepTime = new Date(sleepMillis);
+
+    const wakeTime = new Date(wakeMillis);
+
+    if (isSameDay(wakeTime, sleepTime) || isBefore(sleepTime, wakeTime)) {
+      let sleep = sleepMillis;
+      let wake = wakeMillis;
+
+      const diffMinutes = Math.floor((wake - sleep) / (1000 * 60));
+
+      const hours = Math.floor(diffMinutes / 60);
+
+      if (hours > 18) return "Missing sleep data";
+
+      const minutes = diffMinutes % 60;
+
+      return `${hours}h ${minutes}m of sleep`;
     }
-
-    const diffMs = wake - sleep;
-    console.log({ diffMs });
-    const mins = Math.floor(diffMs / (1000 * 60));
-
-    return `${mins} mins`;
   }
 
   return (
@@ -102,6 +116,18 @@ export default function DayReport({ data, nextDayWakeupTime }: props) {
             }}
           >
             {data.somethingProductive || data.notes}
+          </ThemeText>
+        )}
+        {sleepTime && (
+          <ThemeText
+            numberOfLines={2}
+            style={{
+              marginRight: 16,
+              lineHeight: 24,
+              flexShrink: 1,
+            }}
+          >
+            {sleepTime}
           </ThemeText>
         )}
       </View>

@@ -55,8 +55,6 @@ Notifications.setNotificationHandler({
 const NotificationManager = (props: Props) => {
   async function init() {
     const { status } = await Notifications.getPermissionsAsync();
-    const result = await Notifications.requestPermissionsAsync();
-    console.log("Request:", result);
 
     if (status !== "granted") return;
 

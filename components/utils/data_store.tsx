@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { dailyLogInterface, UserDataInterface } from "../interfaces";
+import { dailyLogInterface, User } from "../interfaces";
 
 type GetProps = "userCred" | "dailyLog" | "refreshToken";
 
@@ -17,7 +17,7 @@ export const getData = async (key: GetProps) => {
 
   if (!json) return null;
   if (json.startsWith("{") || json.startsWith("[")) {
-    return JSON.parse(json) as UserDataInterface | dailyLogInterface;
+    return JSON.parse(json) as User | dailyLogInterface;
   }
   return json as string;
 };

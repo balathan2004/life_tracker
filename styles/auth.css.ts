@@ -15,7 +15,8 @@ export const styles = StyleSheet.create({
     marginVertical: 10,
     height: 48,
     paddingLeft: 10,
-    fontSize:18,
+    fontSize: 18,
     borderRadius: 8,
+
   },
 });

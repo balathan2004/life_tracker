@@ -109,9 +109,9 @@ export default function Logs() {
         showsVerticalScrollIndicator={false}
         data={logs}
         renderItem={({ item, index }) => {
-          return (
-            <DayReport key={item.date} data={item} nextDayWakeupTime={null} />
-          );
+          const nextDayItem = index === 0 ? null : logs[index - 1];
+
+          return <DayReport data={item} nextDayDate={nextDayItem} />;
         }}
         contentContainerStyle={{
           gap: 16,
