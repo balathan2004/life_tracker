@@ -3,7 +3,7 @@ import { dailyLogInterface } from "@/components/interfaces";
 import { CenterText } from "@/components/ui/TextElements";
 import { useGetDocsQuery } from "@/redux/api/crudApi";
 import { useEffect, useState } from "react";
-import { FlatList, View } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
 import { ActivityIndicator, useTheme } from "react-native-paper";
 
 export default function Logs() {
@@ -114,11 +114,13 @@ export default function Logs() {
           return <DayReport data={item} nextDayDate={nextDayItem} />;
         }}
         contentContainerStyle={{
+          flexGrow: 1,
           gap: 16,
           paddingBottom: 24,
         }}
-        onRefresh={onRefresh}
-        refreshing={refreshing}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         keyExtractor={(item) => item.date}
       ></FlatList>
     </View>
